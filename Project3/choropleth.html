@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+var states;
+var counties;
+var centered;
+var readyUSObj;
+var zoomedIn = false;
+
+var housingStatesD3Map = d3.map();
+var housingCountiesD3Map = d3.map();
+
+
+var quantize = d3.scale.quantize()
+        .domain([0, 800000])
+        .range(d3.range(8).map(function(i) {
+    return "q" + i + "-states";
+}));
+
+var countiesQuantize = d3.scale.quantize()
+        .domain([0, 800000])
+        .range(d3.range(8).map(function(i) {
+    return "q" + i + "-counties";
+}));
+
+var path = d3.geo.path();
+
+var projection = d3.geo.albersUsa();
+
+var svg = d3.select("#mainMap").append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("id", "mainMapSVG");
+
+var tooltip = d3.select("body")
+        .append("div")
+        .style("position", "absolute")
+        .style("z-index", "10")
+        .style("visibility", "hidden")
+        .html("");
+
+queue()
+        .defer(d3.json, "data/us.json")
+        .defer(d3.csv, "data/data_output_ALL_STATES.csv", function(d) {
+            housingStatesD3Map.set(d.STATE_FIPS, d);
+        })
+        .defer(d3.csv, "data/data_output_ALL_COUNTIES.csv", function(d) {
+            housingCountiesD3Map.set(d.FIPS, d);
+        })
+        .await(ready);
+
+svg.append("g").attr("id", "counties");
+
+function ready(error, us) {
+
+    d3.json("data/data_output_county_census_data.json", function(error, data) {
+        choroplethMiniMapsJSONData = data;
+    });
+
+    // set the map title
+    $('#mainMapTitle').html("Housing Prices by State");
+
+    readyUSObj = us;
+
+    states = svg.append("g")
+            .attr("class", "states")
+            .selectAll("path")
+            .data(topojson.object(us, us.objects.states).geometries)
+            .enter().append("path")
+            .attr("class", function(d) {
+                if (housingStatesD3Map.get(d.id) != undefined) {
+                    return quantize(
+                            housingStatesD3Map.get(d.id).AVERAGE_LISTING_PRICE
+                    );
+                }
+            })
+            .attr("id", function(d) {
+                if (housingStatesD3Map.get(d.id) != undefined) {
+                    return housingStatesD3Map.get(d.id).STATE_FIPS;
+                }
+            })
+            .attr("d", path)
+            .on("mouseover", function(d) {
+                return tooltip.style("visibility", "visible");
+            })
+            .on("mousemove", function(d) {
+
+                var tooltipText = "<b>" + housingStatesD3Map.get(d.id).STATE + "</b><br>";
+                tooltipText += "Average Listing Price: <b>" + getFormattedPrice(housingStatesD3Map.get(d.id).AVERAGE_LISTING_PRICE) + "</b><br>";
+                tooltipText += "Median Sales Price: <b>" + getFormattedPrice(housingStatesD3Map.get(d.id).MEDIAN_SALES_PRICE) + "</b><br>";
+
+                tooltip.html(tooltipText);
+                tooltip.attr("class", "tooltip");
+                tooltip.style("top", (event.pageY - 10) + "px").style("left", (event.pageX + 10) + "px");
+
+                return tooltip;
+            })
+            .on("mouseout", function(d) {
+                return tooltip.style("visibility", "hidden");
+            })
+            .on("dblclick", dblclick)
+            .on("click", stateclick);
+
+    showLegend("states");
+}
+
+function stateclick(d) {
+    stateClickedData = housingStatesD3Map.get(d.id);
+    dataToShow = "state";
+    $('#' + housingStatesD3Map.get(d.id).STATE_FIPS).attr("class", "statesSelected");
+
+    var detailsText = "<b><em>" + housingStatesD3Map.get(d.id).STATE + "</em></b><br>";
+    detailsText += "Average Listing Price<br><b>" + getFormattedPrice(housingStatesD3Map.get(d.id).AVERAGE_LISTING_PRICE) + "</b><br>";
+    detailsText += "Median Sales Price<br><b>" + getFormattedPrice(housingStatesD3Map.get(d.id).MEDIAN_SALES_PRICE) + "</b><br>";
+
+    $('#mainMapDetails').show();
+    $('#mainMapDetails').html(detailsText);
+    for (var housingState in housingStatesD3Map) {
+        if (housingStatesD3Map.get(d.id).STATE_FIPS != housingStatesD3Map[housingState].STATE_FIPS) {
+            $('#' + housingStatesD3Map[housingState].STATE_FIPS).attr("class", quantize(
+                    housingStatesD3Map[housingState].AVERAGE_LISTING_PRICE
+            ));
+        }
+    }
+
+    // set the map title
+    $('#mainMapTitle').html("Housing Prices by State");
+
+    // set minimaps data
+    $("#miniMap1").html("");
+    $("#miniMapHTML").load("choroplethMiniMap.html");
+}
+
+function dblclick(d) {
+    var x, y, k;
+
+    if (!zoomedIn) {
+        zoomedIn = true;
+        var centroid = path.centroid(d);
+        x = centroid[0];
+        y = centroid[1];
+        if (housingStatesD3Map.get(d.id).STATE == 'Texas' ||
+                housingStatesD3Map.get(d.id).STATE == 'Alaska' ||
+                housingStatesD3Map.get(d.id).STATE == 'California') {
+            k = 2;
+        } else {
+            k = 4;
+        }
+
+    } else {
+        clearTimeout(timer);
+        zoomedIn = false;
+        x = width / 2;
+        y = height / 2;
+        k = 1;
+
+        svg.select("#counties").transition()
+                .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
+
+        svg.select("#counties").style("visibility", "hidden");
+
+        states.style("visibility", "visible");
+
+        showLegend("states");
+    }
+
+    states.transition()
+            .duration(750)
+            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
+
+    if (zoomedIn) {
+
+        timer = setTimeout(function() {
+
+            $("#miniMap1").html("");
+            states.style("visibility", "hidden");
+
+            svg.select("#counties")
+                    .selectAll("path")
+                    .remove();
+
+            svg.select("#counties")
+                    .selectAll("path")
+                    .data(topojson.object(readyUSObj, readyUSObj.objects.counties).geometries)
+                    .enter().append("path")
+                    .attr("class", "counties")
+                    .attr("class", function(countyD) {
+
+                        if (housingCountiesD3Map.get(countyD.id) != undefined) {
+                            if (housingStatesD3Map.get(d.id).STATE_FIPS == housingCountiesD3Map.get(countyD.id).STATE_FIPS) {
+                                return countiesQuantize(
+                                        housingCountiesD3Map.get(countyD.id).AVERAGE_LISTING_PRICE
+                                );
+                            } else {
+                                return "counties";
+                            }
+                        }
+                    })
+                    .attr("id", function(countyD) {
+                        if (housingCountiesD3Map.get(countyD.id) != undefined) {
+                            return housingCountiesD3Map.get(countyD.id).FIPS;
+                        }
+                    })
+                    .attr("d", path.projection(projection))
+                    .on("mouseover", function() {
+                        return tooltip.style("visibility", "visible");
+                    })
+                    .on("mousemove", function(countyD) {
+                        if (housingCountiesD3Map.get(countyD.id) != undefined) {
+                            var avgListingPrice = housingCountiesD3Map.get(countyD.id).AVERAGE_LISTING_PRICE;
+
+                            avgListingPrice = parseInt(avgListingPrice).formatMoney();
+
+                            var tooltipText = "<b>" + housingCountiesD3Map.get(countyD.id).STATE + ", " + housingCountiesD3Map.get(countyD.id).COUNTY + "</b><br>";
+                            tooltipText += "Average Listing Price: <b>" + avgListingPrice + "</b><br>";
+
+                            tooltip.html(tooltipText);
+                            tooltip.attr("class", "tooltip");
+                            tooltip.style("top", (event.pageY - 10) + "px").style("left", (event.pageX + 10) + "px");
+
+                            return tooltip;
+                        }
+                    })
+                    .on("mouseout", function() {
+                        return tooltip.style("visibility", "hidden");
+                    })
+                    .on("dblclick", dblclick)
+                    .on("click", countyclick);
+
+            svg.select("#counties").style("visibility", "visible");
+
+            svg.select("#counties").transition()
+                    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
+
+            showLegend("counties");
+
+            // set the map title
+            $('#mainMapTitle').html("Housing Prices by County");
+
+        }, 800);
+    }
+}
+
+function countyclick(d) {
+    countyClickedData = housingCountiesD3Map.get(d.id);
+    dataToShow = "county";
+
+    var detailsText = "<b><em>" + housingCountiesD3Map.get(d.id).STATE + ", " + housingCountiesD3Map.get(d.id).COUNTY + "</em></b><br>";
+    detailsText += "Average Listing Price<br><b>" + getFormattedPrice(housingCountiesD3Map.get(d.id).AVERAGE_LISTING_PRICE) + "</b><br>";
+
+    $('#mainMapDetails').show();
+    $('#mainMapDetails').html(detailsText);
+
+    for (var housingCounty in housingCountiesD3Map) {
+        if (housingCountiesD3Map.get(d.id).STATE_FIPS == housingCountiesD3Map[housingCounty].STATE_FIPS) {
+            $('#' + housingCountiesD3Map[housingCounty].FIPS).attr("class", countiesQuantize(
+                    housingCountiesD3Map[housingCounty].AVERAGE_LISTING_PRICE
+            ));
+        } else {
+            $('#' + housingCountiesD3Map[housingCounty].FIPS).attr("class", "counties");
+        }
+    }
+
+    $('#' + housingCountiesD3Map.get(d.id).FIPS).attr("class", "countySelected");
+
+    // set minimaps data
+    $("#miniMap1").html("");
+    $("#miniMapHTML").load("choroplethMiniMap.html");
+}
+
+</script>
+</body>
+</html>

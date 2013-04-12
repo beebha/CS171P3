@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script type="text/javascript">
+$("#mainMapTitle").html("Selected 2011 US County/Municipality Statistics");
+$('#mainMapLegend').html("<h4>Plot Legend</h4>" +
+    "<p>Data point size indicates relative population of county</p>" +
+    "<p><strong>Data source:</strong> US Census 2011 American Community Survey (ACS) Single Year Estimate</p>");
+$("#mainMapLegend").show();
+
+var fieldLabels = [];
+var firstPlot = true;
+
+var defaultXMetric = "medianHouseInc";
+var defaultYMetric = "medianHomeVal";
+var defaultXTitle = "Median Household Income ($)";
+var defaultYTitle = "Median Home Value ($)";
+
+//Width and height
+var margin = {top: 20, right: 20, bottom: 60, left: 100},
+        theWidth = width - margin.left - margin.right,
+        theHeight = height - margin.top - margin.bottom;
+
+var miniChartWidth = 210;
+var miniChartHeight = 220;
+var miniRadius = (miniChartWidth-20)/2;
+var miniChartMargin = 10;
+var miniChartTranslate = miniRadius + miniChartMargin;
+
+var x = d3.scale.linear()
+        .nice()
+        .range([0, theWidth]);
+
+var y = d3.scale.linear()
+        .nice()
+        .range([theHeight, 0]);
+
+var z = d3.scale.linear()
+        .range([4, 15]);
+
+var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom");
+
+var yAxis = d3.svg.axis()
+        .scale(y)
+        .orient("left");
+
+function scaleAxes(selectedData){
+    x.domain(d3.extent(selectedData, function(d) { return d[1]; }));
+    y.domain(d3.extent(selectedData, function(d) { return d[2]; }));
+    z.domain(d3.extent(selectedData, function(d) { return d[3]; }));
+}
+
+//get data and parse it
+d3.json('data/data_output_county_census_data-min.json', function(error, theData)
+{
+    if (error){console.log("Error: " + error)}
+
+    var countyMap = d3.map(theData);
+
+//    var scatterTooltip = d3.select("body")
+//            .append("div")
+//            .attr("id", "scatterTooltip")
+//            .attr("class", "tooltip")
+//            .style("position", "absolute")
+//            .style("z-index", "10")
+//            .style("visibility", "hidden")
+//            .html("");
+
+    //var scatterArray = [];
+    var fieldTitles = [];
+
+    // Create dropdown axis plot controls
+    d3.csv("data/census_field_map.csv", function(error, fieldData) {
+
+        for ( i in fieldData){
+            // Only grab top level keys, ignore groups
+            if (fieldData[i]["grouped"] == 0){
+                fieldTitles.push([fieldData[i]["key"], fieldData[i]["title"]]);
+            }
+        }
+
+        var xSelect = d3.select("#xAxisSelectSpan").append("select")
+                .attr("id", "xAxisSelect")
+                .on("change", rePlot)
+                .selectAll("option")
+                .data(fieldTitles)
+                .enter()
+                .append("option")
+                .attr("value",function(d){return d[0]; })
+                .text( function(d){ return d[1]; });
+
+        var ySelect = d3.select("#yAxisSelectSpan").append("select")
+                .attr("id", "yAxisSelect")
+                .on("change", rePlot)
+                .selectAll("option")
+                .data(fieldTitles)
+                .enter()
+                .append("option")
+                .attr("value",function(d){return d[0]; })
+                .text( function(d){ return d[1]; });
+
+        // Can't seem to get access using D3 so resorted to plain ol' javascript
+        document.getElementById("xAxisSelect").value = defaultXMetric;
+        document.getElementById("yAxisSelect").value = defaultYMetric;
+        $("#mapControls").show();
+        $("#scatterMapControls").show();
+
+    });
+
+//    // Get county name lookup data for tooltip
+//    d3.csv("data/data_output_ALL_COUNTIES.csv", function(d) {
+//        countyNameMap.set(d.FIPS, d);
+//        console.log(countyNameMap.get(1003))
+//    });
+
+    var brush = d3.svg.brush()
+            .x(x)
+            .y(y)
+            .on("brushstart", brushstart)
+            .on("brush", brushmove)
+            .on("brushend", brushend);
+
+    //Create SVG element
+    var svg = d3.select("#mainMap")
+            .append("svg")
+            .attr("id", 'mainMapSVG')
+            .attr("width", width)
+            .attr("height", height)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var race = d3.select("#miniMap1")
+            .append("svg")
+            .attr("id", 'race')
+            .attr("class", 'minichart')
+            .attr("width", miniChartWidth)
+            .attr("height", miniChartHeight);
+
+    var occupation = d3.select("#miniMap4")
+            .append("svg")
+            .attr("id", 'occupation')
+            .attr("class", 'minichart')
+            .attr("width", miniChartWidth)
+            .attr("height", miniChartHeight);
+
+    var education = d3.select("#miniMap2")
+            .append("svg")
+            .attr("id", 'education')
+            .attr("class", 'minichart')
+            .attr("width", miniChartWidth)
+            .attr("height", miniChartHeight);
+
+    var origin = d3.select("#miniMap3")
+            .append("svg")
+            .attr("id", 'origin')
+            .attr("class", 'minichart')
+            .attr("width", miniChartWidth)
+            .attr("height", miniChartHeight);
+
+    var xMetric = defaultXMetric;
+    var yMetric = defaultYMetric;
+
+    function rePlot(){
+        console.log("rePlot...");
+
+        var selectedData = selectData();
+        var xSel = document.getElementById("xAxisSelect");
+        var ySel = document.getElementById("yAxisSelect");
+
+        scaleAxes(selectedData);
+        svg.selectAll("#xAxis").call(xAxis);
+        svg.selectAll("#yAxis").call(yAxis);
+
+        svg.select("#xAxis").select("#xTitle")
+                .text(xSel.options[xSel.selectedIndex].text);
+
+        svg.select("#yAxis").select("#yTitle")
+                .text(ySel.options[ySel.selectedIndex].text);
+
+        svg.selectAll("circle")
+                .data(selectedData)
+                .attr("id", function(d) { return d[0]; })
+                .transition(1500)
+                .attr("cx", function(d) { return x(d[1]); })
+                .transition(1500)
+                .attr("cy", function(d) { return y(d[2]); })
+                .attr("r", function(d) { return z(d[3]); });
+    }
+
+    function plotMiniGraphs(brushedKeys){
+        if (brushedKeys.length){
+            plotRaceMini(brushedKeys);
+            plotOccupationMini(brushedKeys);
+            plotEducationMini(brushedKeys);
+            plotOriginMini(brushedKeys);
+        }
+    }
+
+    function plotRaceMini(brushedKeys){
+        var aggregateData = [
+            {"label":"Af.Amer.", "value":0},
+            {"label":"Amer. Ind.", "value":0},
+            {"label":"Asian", "value":0},
+            {"label":"Pac. Isl.", "value":0},
+            {"label":"White", "value":0},
+            {"label":"Other", "value":0},
+            {"label":"Mixed", "value":0}
+        ];
+
+        for (i in brushedKeys){
+            var pop = countyMap.get(brushedKeys[i])['pop']
+            aggregateData[0].value += (countyMap.get(brushedKeys[i])["race"].afAm * 0.01 * pop);
+            aggregateData[1].value += (countyMap.get(brushedKeys[i])["race"].amInd * 0.01 * pop);
+            aggregateData[2].value += (countyMap.get(brushedKeys[i])["race"].asian * 0.01 * pop);
+            aggregateData[3].value += (countyMap.get(brushedKeys[i])["race"].pacIsland * 0.01 * pop);
+            aggregateData[4].value += (countyMap.get(brushedKeys[i])["race"].white * 0.01 * pop);
+            aggregateData[5].value += (countyMap.get(brushedKeys[i])["race"].other * 0.01 * pop);
+            aggregateData[6].value += (countyMap.get(brushedKeys[i])["race"].moreThanOne * 0.01 * pop);
+        }
+//        console.log(aggregateData);
+        $("#miniMap1Title").html("Race");
+        plotMiniGraph(aggregateData, "#race");
+    }
+
+    function plotOccupationMini(brushedKeys){
+        var aggregateData = [
+            {"label":"Professional", "value":0},
+            {"label":"Service", "value":0},
+            {"label":"Sales/Office", "value":0},
+            {"label":"Constr/Maint", "value":0},
+            {"label":"Prod/Trans", "value":0},
+            {"label":"Ag/Forest/Mine", "value":0}
+        ];
+
+        for (i in brushedKeys){
+            var pop = countyMap.get(brushedKeys[i])['pop']
+            aggregateData[0].value += (countyMap.get(brushedKeys[i])["occ"].mgmtBusSciArt * 0.01 * pop);
+            aggregateData[1].value += (countyMap.get(brushedKeys[i])["occ"].service * 0.01 * pop);
+            aggregateData[2].value += (countyMap.get(brushedKeys[i])["occ"].salesOff * 0.01 * pop);
+            aggregateData[3].value += (countyMap.get(brushedKeys[i])["occ"].natresConstrMaint * 0.01 * pop);
+            aggregateData[4].value += (countyMap.get(brushedKeys[i])["occ"].prodTrans * 0.01 * pop);
+            aggregateData[5].value += (countyMap.get(brushedKeys[i])["occ"].agForMine * 0.01 * pop);
+        }
+//        console.log(aggregateData);
+        $("#miniMap4Title").html("Occupation");
+        plotMiniGraph(aggregateData, "#occupation");        }
+
+    function plotEducationMini(brushedKeys){
+        var aggregateData = [
+            {"label":"Below HS", "value":0},
+            {"label":"HS", "value":0},
+            {"label":"Some College", "value":0},
+            {"label":"Bachelors", "value":0},
+            {"label":"Grad. Degree", "value":0}
+        ];
+
+        for (i in brushedKeys){
+            var pop = countyMap.get(brushedKeys[i])['pop']
+            aggregateData[0].value += (countyMap.get(brushedKeys[i])["ed"].belowHS * 0.01 * pop);
+            aggregateData[1].value += (countyMap.get(brushedKeys[i])["ed"].hs * 0.01 * pop);
+            aggregateData[2].value += (countyMap.get(brushedKeys[i])["ed"].someCollege * 0.01 * pop);
+            aggregateData[3].value += (countyMap.get(brushedKeys[i])["ed"].bs * 0.01 * pop);
+            aggregateData[4].value += (countyMap.get(brushedKeys[i])["ed"].ms * 0.01 * pop);
+        }
+//        console.log(aggregateData);
+        $("#miniMap2Title").html("Education");
+        plotMiniGraph(aggregateData, "#education");
+    }
+
+    function plotOriginMini(brushedKeys){
+        var aggregateData = [
+            {"label":"In State", "value":0},
+            {"label":"In US.", "value":0},
+            {"label":"Foreign Born", "value":0}
+        ];
+
+        for (i in brushedKeys){
+            var pop = countyMap.get(brushedKeys[i])['pop']
+            aggregateData[0].value += (countyMap.get(brushedKeys[i])["birth"].inState * 0.01 * pop);
+            aggregateData[1].value += (countyMap.get(brushedKeys[i])["birth"].outState * 0.01 * pop);
+            aggregateData[2].value += (countyMap.get(brushedKeys[i])["birth"].foreignBorn * 0.01 * pop);
+        }
+//        console.log(aggregateData);
+        $("#miniMap3Title").html("Origin");
+        plotMiniGraph(aggregateData, "#origin");
+    }
+
+    function plotMiniGraph(data, elementID){
+        var colorRange = d3.scale.category10(); //builtin range of colors
+
+        var vis = d3.select(elementID).selectAll("pieGroup")
+                .data([data])
+                .enter()
+                .append("g")
+                .attr("class", 'pieGroup')
+                .attr("transform", "translate(" + miniChartTranslate + "," + (miniChartTranslate + 10) + ")");
+
+        var arc = d3.svg.arc() //create <path> elements using arc data
+                .outerRadius(miniRadius);
+
+        var pie = d3.layout.pie() //create arc data from list of values
+                .value(function(d) { return d.value; });
+
+        var arcs = vis.selectAll("slice")
+                .data(pie)
+                .enter()
+                .append("g")
+                .attr("class", "slice");
+
+        arcs.append("path")
+                .attr("fill", function(d, i) { return colorRange(i); } )
+                .attr("d", arc);
+
+        arcs.append("text") //add a label to each slice
+                .attr("transform", function(d) {
+                    d.innerRadius = 0;
+                    d.outerRadius = miniRadius;
+//                    console.log(arc.centroid(d));
+                    return "translate(" + arc.centroid(d) + ")";
+                })
+                .attr("text-anchor", "middle")
+                .text(function(d, i) { return data[i].label; }); //get the label from data array
+    }
+
+    function selectData(){
+        if (firstPlot){
+            firstPlot = false;
+        } else
+        {
+            xMetric = document.getElementById("xAxisSelect").value;
+            yMetric = document.getElementById("yAxisSelect").value;
+            console.log(xMetric + ":" + yMetric);
+        }
+        var selectedData = [];
+        countyMap.forEach(function(d){
+            selectedData.push([d,countyMap.get(d)[xMetric],countyMap.get(d)[yMetric],countyMap.get(d)['pop']]);
+        });
+        return selectedData
+    }
+
+    var scatterData = selectData();
+    scaleAxes(scatterData);
+
+    svg.append("g")
+            .attr("id", "xAxis")
+            .attr("transform", "translate(0," + theHeight + ")")
+            .call(xAxis)
+            .append("text")
+            .attr("id", "xTitle")
+            .attr("x", theWidth/2)
+            .attr("y", 30)
+            .attr("dy", ".71em")
+            .style("text-anchor", "middle")
+            .text(defaultXTitle);
+
+    svg.append("g")
+            .attr("id", "yAxis")
+            .call(yAxis)
+            .append("text")
+            .attr("id", "yTitle")
+            .attr("transform", "rotate(-90)")
+            .attr("x", -(theHeight/2))
+            .attr("y", -80)
+            .attr("dy", ".71em")
+            .style("text-anchor", "middle")
+            .text(defaultYTitle);
+
+    var circle = svg.selectAll("circle")
+            .data(scatterData)
+            .enter()
+            .append("circle")
+            .attr("id", function(d) { return d[0]; })
+            .attr("cx", function(d) { return x(d[1]); })
+            .attr("cy", function(d) { return y(d[2]); })
+            .attr("r", function(d) { return z(d[3]); });
+
+// Couldn't get this working to provide floating tooltips on hover. Seems to
+// be due to the brush fucntion hijacking the mouse events
+//            .on("mouseover", function(d) {
+//                return scatterTooltip.style("visibility", "visible");
+//                console.log("turning on tooltip");
+//            })
+//            .on("mousemove", function(d) {
+//
+//                var tooltipText = "<h4>" + countyNameMap.get(d[0]).COUNTY + ", ";
+//                tooltipText += countyNameMap.get(d[0]).STATE + "</h4>";
+//                tooltipText += "<p>Population: " + d[3] + "</b><br>";
+//                scatterTooltip.html(tooltipText);
+//                scatterTooltip.attr("class", "tooltip");
+//                scatterTooltip.style("top", (event.pageY - 10) + "px").style("left", (event.pageX + 10) + "px");
+//
+//                return tooltip;
+//            })
+//            .on("mouseout", function(d) {
+//                return scatterTooltip.style("visibility", "hidden");
+//            });
+
+    // Code for brushing data points
+    svg.call(brush);
+
+    function brushstart(p) {
+        svg.classed("selecting", true);
+        console.log("Start brushing...");
+    }
+
+    function brushmove() {
+        console.log("Brushing...");
+        var e = d3.event.target.extent();
+        circle.classed("brushed", function(d) {
+            return e[0][0] <= d[1] && d[1] <= e[1][0]
+                    && e[0][1] <= d[2] && d[2] <= e[1][1];
+        });
+    }
+
+    function brushend() {
+        svg.classed("selecting", !d3.event.target.empty());
+        console.log("Brush ended...");
+        updateBrush();
+
+    }
+
+    function updateBrush(){
+        var brushedElements = svg.selectAll(".brushed");
+        var brushedKeys = [];
+        brushedElements[0].forEach( function(d){
+            brushedKeys.push(d.id);
+        })
+        console.log("Brushed points: " + brushedKeys.length);
+        console.log(brushedKeys);
+        plotMiniGraphs(brushedKeys);
+    }
+
+});
+</script>
+</body>
+</html>

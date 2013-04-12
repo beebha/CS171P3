@@ -1,0 +1,368 @@
+@charset "utf-8";
+
+/* Resets */
+html, body, div, span, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, ol, ul, li, form, table, caption, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline; 
+	}
+
+body {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+h1 {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 40px;
+    font-weight: 200;
+    text-align: left;
+    margin-bottom: 10px;
+}
+h2 {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 24px;
+    font-weight: 200;
+    text-align: left;
+    margin-bottom: 10px;
+}
+h3 {
+    font-size: 18px;
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+h4 {
+    font-size: 14px;
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+p {
+    font-size: 12px;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+#mainMapTitle {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 20px;
+	font-weight: 200;
+    text-align: left;
+    vertical-align: middle;
+}
+
+#pageWrapper {
+    position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+#headDiv {
+    position: absolute;
+	top: 10px;
+	left: 10px;
+}
+
+#mainMap {
+    position: absolute;
+	top: 75px;
+	left: 10px;
+	width: 868px;
+	height: 500px;
+}
+
+#miniMapWrapper {
+    position: absolute;
+    top: 600px;
+    left: 10px;
+    width: 868px;
+    height: 255px;
+}
+
+#miniMap {
+    position: relative;
+    width: 100%;
+}
+
+.miniMapDiv {
+    position: relative;
+    float: left;
+}
+
+#controlsWrapper {
+    position: absolute;
+    top: 75px;
+    left: 900px;
+    width: 280px;
+}
+
+/*#wrapper {*/
+/*clear: left;*/
+/*float: left;*/
+/*position: relative;*/
+/*left: 50%;*/
+/*}*/
+
+#mapSelector {
+    position: relative;
+    width: 100%;
+    padding: 10px;
+    display: block;
+    margin-bottom: 10px;
+    background-color:#FAE0A4;
+}
+
+#mapControls {
+    position: relative;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    display: none;
+    background-color:#FAE0A4;
+}
+
+#scatterMapControls {
+    position: relative;
+    width: 100%;
+    display: none;
+    /*background-color:#FAE0A4;*/
+}
+
+#mapVariablesSelector {
+    position: relative;
+    width: 100%;
+    display: none;
+    /*background-color:#FAE0A4;*/
+}
+
+#mainMapDetails {
+    position: relative;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+	/*height: 120px;*/
+	/*width: 180px;*/
+    background-color:#FAE0A4;
+    display: none;
+}
+
+#projectDetails{
+    position: absolute;
+	top: 485px;
+	/*left: 895px;*/
+    /*position: relative;*/
+    width: 100%;
+    padding: 10px;
+    display: block;
+    margin-top: 40px;
+    margin-bottom: 10px;
+	/*height: 190px;*/
+	/*width: 190px;*/
+    background-color:#A7EBF6;
+    font-size: 70%;
+}
+	
+#container {
+    display: block;
+    float: left;
+    position: relative;
+    right: 50%;
+}
+
+#mainMapColumn {
+    float: right;
+    width: 170px;
+}
+
+#mainMapLegend {
+	/*position: absolute;*/
+	/*top: 385px;*/
+	/*left: 895px;*/
+    position: relative;
+    width: 100%;
+    padding: 10px;
+    display: block;
+    margin-bottom: 10px;    /*height: 190px;*/
+	/*width: 190px;*/
+    background-color:#FAE0A4;
+    /*display: none;*/
+    font-size:75%;
+}
+
+#mainMapSVG {
+    border: ridge #2f4f4f;
+    background-color: #eee;
+    font-size: 10px;
+}
+
+.miniMapTitle {
+    margin-left: 80px;
+    font-size:80%;
+    font-weight: bold;
+}
+
+.docHTML {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    display: none;
+}
+
+.popupDialogCls {
+    font-size:80%;
+    overflow:auto;
+}
+.projectDescMapTitle {
+    text-align: center;
+    font-weight: bold;
+    font-variant: small-caps;
+}
+
+.roundedFrame {
+    background-color:#eee;
+    display: block;
+    position:absolute;
+    font-size:14px;
+    padding:5px 5px;
+    border-style:solid;
+	border-width: thin;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright:5px;
+    -moz-border-radius-bottomleft:5px;
+    -moz-border-radius-bottomright:5px;
+    -webkit-border-top-left-radius:5px;
+    -webkit-border-top-right-radius:5px;
+    -webkit-border-bottom-left-radius:5px;
+    -webkit-border-bottom-right-radius:5px;
+    border-top-left-radius:5px;
+    border-top-right-radius:5px;
+    border-bottom-left-radius:5px;
+    border-bottom-right-radius:5px;
+    -moz-box-shadow:inset 0px 0px 4px #37393A;
+    -webkit-box-shadow:inset 0px 0px 4px #37393A;
+    box-shadow:inset 0px 0px 4px #37393A;
+}
+
+
+.tooltip{
+    background-color:#fafad2;
+    position:absolute;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:12px;
+    padding:5px 10px;
+    border-style:solid;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright:5px;
+    -moz-border-radius-bottomleft:5px;
+    -moz-border-radius-bottomright:5px;
+    -webkit-border-top-left-radius:5px;
+    -webkit-border-top-right-radius:5px;
+    -webkit-border-bottom-left-radius:5px;
+    -webkit-border-bottom-right-radius:5px;
+    border-top-left-radius:5px;
+    border-top-right-radius:5px;
+    border-bottom-left-radius:5px;
+    border-bottom-right-radius:5px;
+    -moz-box-shadow:inset 0px 0px 4px #666666;
+    -webkit-box-shadow:inset 0px 0px 4px #666666;
+    box-shadow:inset 0px 0px 4px #666666;
+}
+
+.counties {
+    fill: #000000;
+}
+
+.states_and_counties {
+    fill: none;
+    stroke: #FFFFFF;
+    stroke-linejoin: round;
+}
+
+.states {
+    fill: none;
+    stroke: #000000;
+    stroke-linejoin: round;
+    stroke-width:1px;
+}
+
+.statesSelected {
+    fill: orange;
+}
+
+.countySelected {
+    fill: orange;
+}
+
+.slice text {
+    font-size: 8pt;
+}
+
+.q0-counties { fill: #FFFFD9; }
+.q1-counties { fill: #EDF8B1; }
+.q2-counties { fill: #C7E9B4; }
+.q3-counties { fill: #7FCDBB; }
+.q4-counties { fill: #41B6C4; }
+.q5-counties { fill: #1D91C0; }
+.q6-counties { fill: #225EA8; }
+.q7-counties { fill: #0C2C84; }
+
+.q0-states { fill: #FFF7F3; }
+.q1-states { fill: #FDE0DD; }
+.q2-states { fill: #FCC5C0; }
+.q3-states { fill: #FA9FB5; }
+.q4-states { fill: #F768A1; }
+.q5-states { fill: #DD3497; }
+.q6-states { fill: #AE017E; }
+.q7-states { fill: #7A0177; }
+
+.counties0 { background-color: #FFFFD9; }
+.counties1 { background-color: #EDF8B1; }
+.counties2 { background-color: #C7E9B4; }
+.counties3 { background-color: #7FCDBB; }
+.counties4 { background-color: #41B6C4; }
+.counties5 { background-color: #1D91C0; }
+.counties6 { background-color: #225EA8; }
+.counties7 { background-color: #0C2C84; }
+
+.states0 { background-color: #FFF7F3; }
+.states1 { background-color: #FDE0DD; }
+.states2 { background-color: #FCC5C0; }
+.states3 { background-color: #FA9FB5; }
+.states4 { background-color: #F768A1; }
+.states5 { background-color: #DD3497; }
+.states6 { background-color: #AE017E; }
+.states7 { background-color: #7A0177; }
+
+.line {
+  fill: none;
+  stroke: #000;
+  stroke-width: 2px;
+}
+
+circle {
+    fill-opacity: .7;
+    fill: #1B9E77;
+}
+
+circle.brushed {
+    fill: #D95F02;
+}
+
+
+.extent {
+    fill: #000;
+    fill-opacity: .075;
+    stroke: #fff;
+}
+
+.domain {
+    stroke: #999;
+    stroke-weight: 1;
+    fill: #eee;
+}
+

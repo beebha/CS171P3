@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+    var radius = Math.min(miniWidth, miniHeight) / 2;
+
+    var color = d3.scale.category20c();
+
+    var arc = d3.svg.arc()
+            .outerRadius(radius - 10)
+            .innerRadius(0);
+
+    var countyData = d3.map(choroplethMiniMapsJSONData);
+    var totalRentalPercentage = 0;
+    var totalCountyCount = 0;
+
+    countyData.forEach(function(d) {
+
+        if (dataToShow == "state") {
+
+            if (parseInt(stateClickedData.STATE_FIPS) == countyData.get(d).stateFIP) {
+                // state data available
+                totalRentalPercentage += countyData.get(d)['occupant']['renterOcc%'];
+                totalCountyCount ++;
+            }
+        } else {
+            if (parseInt(countyClickedData.FIPS) == parseInt(d)) {
+                // county data available
+                totalRentalPercentage = isNaN(countyData.get(d)['occupant']['renterOcc%']) ? 0 : countyData.get(d)['occupant']['renterOcc%'];
+                totalCountyCount = 1;
+            }
+        }
+    });
+
+    var rental = (totalRentalPercentage / totalCountyCount).toFixed(2);
+    var owner = (100 - rental).toFixed(2);
+
+    var choroplethMiniMap1Data = [];
+
+    if(!isNaN(rental)) {
+        choroplethMiniMap1Data = [
+            {"label":"Rental: " + rental + "%", "value":rental},
+            {"label":"Owner: " + owner + "%", "value":owner}
+        ];
+    }
+    if(choroplethMiniMap1Data.length > 0) {
+        $('#miniMap1Title').html(dataToShow == "state" ? stateClickedData.STATE : countyClickedData.COUNTY);
+
+        var pie = d3.layout.pie()
+                .sort(null)
+                .value(function(d) {
+                    return d.value;
+                });
+
+        var miniMap1SVG = d3.select("#miniMap1")
+                .append("svg")
+                .attr("id", "miniMap1SVG")
+                .attr("width", miniWidth)
+                .attr("height", miniHeight)
+                .data([choroplethMiniMap1Data])
+                .append("g")
+                .attr("transform", "translate(" + miniWidth / 2 + "," + miniHeight / 2 + ")");
+
+        var arcs = miniMap1SVG.selectAll("g.slice")
+                .data(pie)
+                .enter()
+                .append("svg:g")
+                .attr("class", "slice");
+
+        arcs.append("svg:path")
+                .attr("fill", function(d, i) {
+                    return color(i);
+                })
+                .attr("d", arc);
+
+        arcs.append("svg:text")
+                .attr("transform", function(d) {
+                    d.innerRadius = 0;
+                    d.outerRadius = radius;
+                    return "translate(" + arc.centroid(d) + ")";
+                })
+                .attr("text-anchor", "middle")
+                .text(function(d, i) {
+                    return choroplethMiniMap1Data[i].label;
+                });
+    } else {
+        $('#miniMap1Title').html(dataToShow == "state" ? "No Data for " + stateClickedData.STATE : "No Data for " + countyClickedData.COUNTY);
+    }
+</script>
+</body>
+</html>
