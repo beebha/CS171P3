@@ -180,23 +180,16 @@ p {
 }
 
 #mainMapLegend {
-	/*position: absolute;*/
-	/*top: 385px;*/
-	/*left: 895px;*/
     position: relative;
     width: 100%;
     padding: 10px;
     display: block;
-    margin-bottom: 10px;    /*height: 190px;*/
-	/*width: 190px;*/
+    margin-bottom: 10px;
     background-color:#FAE0A4;
-    /*display: none;*/
     font-size:75%;
 }
 
 #mainMapSVG {
-    border: ridge #2f4f4f;
-    background-color: #eee;
     font-size: 10px;
 }
 
