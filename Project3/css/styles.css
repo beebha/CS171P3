@@ -267,6 +267,10 @@ p {
 }
 
 .counties {
+    fill: #9C9292;
+}
+
+.countiesNoData {
     fill: #000000;
 }
 

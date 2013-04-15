@@ -254,9 +254,13 @@ function countyclick(d) {
 
     for (var housingCounty in housingCountiesD3Map) {
         if (housingCountiesD3Map.get(d.id).STATE_FIPS == housingCountiesD3Map[housingCounty].STATE_FIPS) {
-            $('#' + housingCountiesD3Map[housingCounty].FIPS).attr("class", countiesQuantize(
-                    housingCountiesD3Map[housingCounty].AVERAGE_LISTING_PRICE
-            ));
+            if (housingCountiesD3Map[housingCounty].AVERAGE_LISTING_PRICE == '-') {
+                $('#' + housingCountiesD3Map[housingCounty].FIPS).attr("class", "countiesNoData");
+            } else {
+                $('#' + housingCountiesD3Map[housingCounty].FIPS).attr("class", countiesQuantize(
+                        housingCountiesD3Map[housingCounty].AVERAGE_LISTING_PRICE
+                ));
+            }
         } else {
             $('#' + housingCountiesD3Map[housingCounty].FIPS).attr("class", "counties");
         }
@@ -264,9 +268,10 @@ function countyclick(d) {
 
     $('#' + housingCountiesD3Map.get(d.id).FIPS).attr("class", "countySelected");
 
-    // set minimaps data
-    $("#miniMap1").html("");
-    $("#miniMapHTML").load("choroplethMiniMap.html");
+    var b = path.bounds(d);
+    svg.select("#counties").transition().duration(750).attr("transform",
+            "translate(" + projection.translate() + ")scale(4)"
+                    + "translate(" + -(b[1][0] + b[0][0]) / 2 + "," + -(b[1][1] + b[0][1]) / 2 + ")");
 }
 
 </script>
