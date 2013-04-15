@@ -38,6 +38,9 @@ function showLegend(type)
             legend += "<span class='" +colorClass+"'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&gt;"+(legendCount+1).formatMoney(2, '')+"<br>";
         }
     }
+    if(type == 'counties') {
+        legend += "<span class='countiesNA'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;No Data For County<br>";
+    }
     $('#mainMapLegend').show();
     $('#mainMapLegend').html(legend);
 }

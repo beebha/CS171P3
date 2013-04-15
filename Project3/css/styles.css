@@ -180,23 +180,16 @@ p {
 }
 
 #mainMapLegend {
-	/*position: absolute;*/
-	/*top: 385px;*/
-	/*left: 895px;*/
     position: relative;
     width: 100%;
     padding: 10px;
     display: block;
-    margin-bottom: 10px;    /*height: 190px;*/
-	/*width: 190px;*/
+    margin-bottom: 10px;
     background-color:#FAE0A4;
-    /*display: none;*/
     font-size:75%;
 }
 
 #mainMapSVG {
-    border: ridge #2f4f4f;
-    background-color: #eee;
     font-size: 10px;
 }
 
@@ -274,6 +267,10 @@ p {
 }
 
 .counties {
+    fill: #9C9292;
+}
+
+.countiesNoData {
     fill: #000000;
 }
 
@@ -328,6 +325,7 @@ p {
 .counties5 { background-color: #1D91C0; }
 .counties6 { background-color: #225EA8; }
 .counties7 { background-color: #0C2C84; }
+.countiesNA { background-color: #000000; }
 
 .states0 { background-color: #FFF7F3; }
 .states1 { background-color: #FDE0DD; }
