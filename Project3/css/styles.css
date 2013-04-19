@@ -82,6 +82,7 @@ p {
     left: 10px;
     width: 868px;
     height: 255px;
+    overflow-x:scroll;
 }
 
 #miniMap {

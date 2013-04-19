@@ -128,7 +128,7 @@ function stateclick(d) {
     $('#mainMapTitle').html("Housing Prices by State");
 
     // set minimaps data
-    $("#miniMap1").html("");
+    removeMiniMaps();
     $("#miniMapHTML").load("choroplethMiniMap.html");
 }
 
@@ -172,8 +172,7 @@ function dblclick(d) {
     if (zoomedIn) {
 
         timer = setTimeout(function() {
-
-            $("#miniMap1").html("");
+            removeMiniMaps();
             states.style("visibility", "hidden");
 
             svg.select("#counties")
@@ -272,6 +271,10 @@ function countyclick(d) {
     svg.select("#counties").transition().duration(750).attr("transform",
             "translate(" + projection.translate() + ")scale(4)"
                     + "translate(" + -(b[1][0] + b[0][0]) / 2 + "," + -(b[1][1] + b[0][1]) / 2 + ")");
+
+    // set minimaps data
+    removeMiniMaps();
+    $("#miniMapHTML").load("choroplethMiniMap.html");
 }
 
 </script>
