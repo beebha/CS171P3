@@ -53,20 +53,20 @@ function scaleAxes(selectedData){
 }
 
 //get data and parse it
-d3.json('data/data_output_county_census_data-min.json', function(error, theData)
+d3.json('data/data_output_locale_census_data.json', function(error, theData)
 {
     if (error){console.log("Error: " + error)}
 
-    var countyMap = d3.map(theData);
+    var localeMap = d3.map(theData);
 
-//    var scatterTooltip = d3.select("body")
-//            .append("div")
-//            .attr("id", "scatterTooltip")
-//            .attr("class", "tooltip")
-//            .style("position", "absolute")
-//            .style("z-index", "10")
-//            .style("visibility", "hidden")
-//            .html("");
+    var scatterTooltip = d3.select("body")
+            .append("div")
+            .attr("id", "scatterTooltip")
+            .attr("class", "tooltip")
+            .style("position", "absolute")
+            .style("z-index", "10")
+            .style("visibility", "hidden")
+            .html("");
 
     //var scatterArray = [];
     var fieldTitles = [];
@@ -118,6 +118,7 @@ d3.json('data/data_output_county_census_data-min.json', function(error, theData)
     var brush = d3.svg.brush()
             .x(x)
             .y(y)
+//            .on("mouseover", callTooltip)
             .on("brushstart", brushstart)
             .on("brush", brushmove)
             .on("brushend", brushend);
@@ -210,18 +211,17 @@ d3.json('data/data_output_county_census_data-min.json', function(error, theData)
         ];
 
         for (i in brushedKeys){
-            var pop = countyMap.get(brushedKeys[i])['pop']
-            aggregateData[0].value += (countyMap.get(brushedKeys[i])["race"].afAm * 0.01 * pop);
-            aggregateData[1].value += (countyMap.get(brushedKeys[i])["race"].amInd * 0.01 * pop);
-            aggregateData[2].value += (countyMap.get(brushedKeys[i])["race"].asian * 0.01 * pop);
-            aggregateData[3].value += (countyMap.get(brushedKeys[i])["race"].pacIsland * 0.01 * pop);
-            aggregateData[4].value += (countyMap.get(brushedKeys[i])["race"].white * 0.01 * pop);
-            aggregateData[5].value += (countyMap.get(brushedKeys[i])["race"].other * 0.01 * pop);
-            aggregateData[6].value += (countyMap.get(brushedKeys[i])["race"].moreThanOne * 0.01 * pop);
+            var pop = localeMap.get(brushedKeys[i])['pop']
+            aggregateData[0].value += (localeMap.get(brushedKeys[i])["race"].afAmPct * 0.01 * pop);
+            aggregateData[1].value += (localeMap.get(brushedKeys[i])["race"].amIndPct * 0.01 * pop);
+            aggregateData[2].value += (localeMap.get(brushedKeys[i])["race"].asianPct * 0.01 * pop);
+            aggregateData[3].value += (localeMap.get(brushedKeys[i])["race"].pacIslandPct * 0.01 * pop);
+            aggregateData[4].value += (localeMap.get(brushedKeys[i])["race"].whitePct * 0.01 * pop);
+            aggregateData[5].value += (localeMap.get(brushedKeys[i])["race"].otherPct * 0.01 * pop);
+            aggregateData[6].value += (localeMap.get(brushedKeys[i])["race"].moreThanOnePct * 0.01 * pop);
         }
 //        console.log(aggregateData);
-        $("#miniMap1Title").html("Race");
-        plotMiniGraph(aggregateData, "#race");
+        plotMiniPie(aggregateData, "Race", "#race");
     }
 
     function plotOccupationMini(brushedKeys){
@@ -235,17 +235,16 @@ d3.json('data/data_output_county_census_data-min.json', function(error, theData)
         ];
 
         for (i in brushedKeys){
-            var pop = countyMap.get(brushedKeys[i])['pop']
-            aggregateData[0].value += (countyMap.get(brushedKeys[i])["occ"].mgmtBusSciArt * 0.01 * pop);
-            aggregateData[1].value += (countyMap.get(brushedKeys[i])["occ"].service * 0.01 * pop);
-            aggregateData[2].value += (countyMap.get(brushedKeys[i])["occ"].salesOff * 0.01 * pop);
-            aggregateData[3].value += (countyMap.get(brushedKeys[i])["occ"].natresConstrMaint * 0.01 * pop);
-            aggregateData[4].value += (countyMap.get(brushedKeys[i])["occ"].prodTrans * 0.01 * pop);
-            aggregateData[5].value += (countyMap.get(brushedKeys[i])["occ"].agForMine * 0.01 * pop);
+            var pop = localeMap.get(brushedKeys[i])['pop']
+            aggregateData[0].value += (localeMap.get(brushedKeys[i])["occ"].mgmtBusSciArtPct * 0.01 * pop);
+            aggregateData[1].value += (localeMap.get(brushedKeys[i])["occ"].servicePct * 0.01 * pop);
+            aggregateData[2].value += (localeMap.get(brushedKeys[i])["occ"].salesOffPct * 0.01 * pop);
+            aggregateData[3].value += (localeMap.get(brushedKeys[i])["occ"].natresConstrMaintPct * 0.01 * pop);
+            aggregateData[4].value += (localeMap.get(brushedKeys[i])["occ"].prodTransPct * 0.01 * pop);
+            aggregateData[5].value += (localeMap.get(brushedKeys[i])["occ"].agForMinePct * 0.01 * pop);
         }
 //        console.log(aggregateData);
-        $("#miniMap4Title").html("Occupation");
-        plotMiniGraph(aggregateData, "#occupation");        }
+        plotMiniPie(aggregateData, "Occupation", "#occupation");        }
 
     function plotEducationMini(brushedKeys){
         var aggregateData = [
@@ -257,16 +256,15 @@ d3.json('data/data_output_county_census_data-min.json', function(error, theData)
         ];
 
         for (i in brushedKeys){
-            var pop = countyMap.get(brushedKeys[i])['pop']
-            aggregateData[0].value += (countyMap.get(brushedKeys[i])["ed"].belowHS * 0.01 * pop);
-            aggregateData[1].value += (countyMap.get(brushedKeys[i])["ed"].hs * 0.01 * pop);
-            aggregateData[2].value += (countyMap.get(brushedKeys[i])["ed"].someCollege * 0.01 * pop);
-            aggregateData[3].value += (countyMap.get(brushedKeys[i])["ed"].bs * 0.01 * pop);
-            aggregateData[4].value += (countyMap.get(brushedKeys[i])["ed"].ms * 0.01 * pop);
+            var pop = localeMap.get(brushedKeys[i])['pop']
+            aggregateData[0].value += (localeMap.get(brushedKeys[i])["ed"].belowHSPct * 0.01 * pop);
+            aggregateData[1].value += (localeMap.get(brushedKeys[i])["ed"].hsPct * 0.01 * pop);
+            aggregateData[2].value += (localeMap.get(brushedKeys[i])["ed"].someCollegePct * 0.01 * pop);
+            aggregateData[3].value += (localeMap.get(brushedKeys[i])["ed"].bsPct * 0.01 * pop);
+            aggregateData[4].value += (localeMap.get(brushedKeys[i])["ed"].msPct * 0.01 * pop);
         }
 //        console.log(aggregateData);
-        $("#miniMap2Title").html("Education");
-        plotMiniGraph(aggregateData, "#education");
+        plotMiniPie(aggregateData, "Education", "#education");
     }
 
     function plotOriginMini(brushedKeys){
@@ -277,18 +275,28 @@ d3.json('data/data_output_county_census_data-min.json', function(error, theData)
         ];
 
         for (i in brushedKeys){
-            var pop = countyMap.get(brushedKeys[i])['pop']
-            aggregateData[0].value += (countyMap.get(brushedKeys[i])["birth"].inState * 0.01 * pop);
-            aggregateData[1].value += (countyMap.get(brushedKeys[i])["birth"].outState * 0.01 * pop);
-            aggregateData[2].value += (countyMap.get(brushedKeys[i])["birth"].foreignBorn * 0.01 * pop);
+            var pop = localeMap.get(brushedKeys[i])['pop']
+            aggregateData[0].value += (localeMap.get(brushedKeys[i])["birth"].inStatePct * 0.01 * pop);
+            aggregateData[1].value += (localeMap.get(brushedKeys[i])["birth"].outStatePct * 0.01 * pop);
+            aggregateData[2].value += (localeMap.get(brushedKeys[i])["birth"].foreignBornPct * 0.01 * pop);
         }
 //        console.log(aggregateData);
-        $("#miniMap3Title").html("Origin");
-        plotMiniGraph(aggregateData, "#origin");
+        plotMiniPie(aggregateData, "Origin", "#origin");
     }
 
-    function plotMiniGraph(data, elementID){
+
+    function plotMiniPie(data, title, elementID){
         var colorRange = d3.scale.category10(); //builtin range of colors
+        //Set title
+        $( elementID + "Title").html(title);
+
+        var otherValue = 0;
+
+        for ( i in data){
+
+            if (data[i].value < 10)
+                console.log(" Under 10: " + data[1].label + ": " + data[1].value);
+        }
 
         var vis = d3.select(elementID).selectAll("pieGroup")
                 .data([data])
@@ -307,7 +315,7 @@ d3.json('data/data_output_county_census_data-min.json', function(error, theData)
                 .data(pie)
                 .enter()
                 .append("g")
-                .attr("class", "slice");
+                .attr("class", "slice")
 
         arcs.append("path")
                 .attr("fill", function(d, i) { return colorRange(i); } )
@@ -317,8 +325,18 @@ d3.json('data/data_output_county_census_data-min.json', function(error, theData)
                 .attr("transform", function(d) {
                     d.innerRadius = 0;
                     d.outerRadius = miniRadius;
-//                    console.log(arc.centroid(d));
-                    return "translate(" + arc.centroid(d) + ")";
+                    var labelX = arc.centroid(d)[0];
+                    var labelY = arc.centroid(d)[1];
+                    var h = Math.sqrt(Math.pow(labelX,2) + Math.pow(labelY,2)); // Get hypotenuse
+                    var cos = Math.sin(labelX/h); // Get sin and cos of opposite and adjacent angles
+                    var sin = Math.sin(labelY/h);
+                    // Calculate new coordinates using desired hypotenuse (distance from center) and sin and cos.
+                    labelX = cos * (miniRadius * 0.75); // Set distance from center to 75% of radius
+                    labelY = sin * (miniRadius * 0.75);
+                    console.log(labelX + ":" + labelY);
+                    // Set transform translation to new coordinates
+                    return "translate(" +
+                            [labelX, labelY] + ")";
                 })
                 .attr("text-anchor", "middle")
                 .text(function(d, i) { return data[i].label; }); //get the label from data array
@@ -334,8 +352,8 @@ d3.json('data/data_output_county_census_data-min.json', function(error, theData)
             console.log(xMetric + ":" + yMetric);
         }
         var selectedData = [];
-        countyMap.forEach(function(d){
-            selectedData.push([d,countyMap.get(d)[xMetric],countyMap.get(d)[yMetric],countyMap.get(d)['pop']]);
+        localeMap.forEach(function(d){
+            selectedData.push([d,localeMap.get(d)[xMetric],localeMap.get(d)[yMetric],localeMap.get(d)['pop']]);
         });
         return selectedData
     }
@@ -367,6 +385,9 @@ d3.json('data/data_output_county_census_data-min.json', function(error, theData)
             .style("text-anchor", "middle")
             .text(defaultYTitle);
 
+    // Code for brushing data points
+    svg.call(brush);
+
     var circle = svg.selectAll("circle")
             .data(scatterData)
             .enter()
@@ -374,31 +395,27 @@ d3.json('data/data_output_county_census_data-min.json', function(error, theData)
             .attr("id", function(d) { return d[0]; })
             .attr("cx", function(d) { return x(d[1]); })
             .attr("cy", function(d) { return y(d[2]); })
-            .attr("r", function(d) { return z(d[3]); });
+            .attr("r", function(d) { return z(d[3]); })
+            .on("mouseover", function(d) {
+                return scatterTooltip.style("visibility", "visible");
+                console.log("turning on tooltip");
+            })
+            .on("mousemove", function(d) {
 
-// Couldn't get this working to provide floating tooltips on hover. Seems to
-// be due to the brush fucntion hijacking the mouse events
-//            .on("mouseover", function(d) {
-//                return scatterTooltip.style("visibility", "visible");
-//                console.log("turning on tooltip");
-//            })
-//            .on("mousemove", function(d) {
-//
-//                var tooltipText = "<h4>" + countyNameMap.get(d[0]).COUNTY + ", ";
-//                tooltipText += countyNameMap.get(d[0]).STATE + "</h4>";
-//                tooltipText += "<p>Population: " + d[3] + "</b><br>";
-//                scatterTooltip.html(tooltipText);
-//                scatterTooltip.attr("class", "tooltip");
-//                scatterTooltip.style("top", (event.pageY - 10) + "px").style("left", (event.pageX + 10) + "px");
-//
-//                return tooltip;
-//            })
-//            .on("mouseout", function(d) {
-//                return scatterTooltip.style("visibility", "hidden");
-//            });
+                var tooltipText = "<h4>" + localeMap.get(d[0]).locale + ", ";
+                tooltipText += localeMap.get(d[0]).state + "</h4>";
+                tooltipText += "<p>Population: " + d[3] + "</b><br>";
+                scatterTooltip.html(tooltipText);
+                scatterTooltip.attr("class", "tooltip");
+                scatterTooltip.style("top", (d3.mouse(this)[1] + 105) + "px").style("left", (d3.mouse(this)[0] + 125) + "px");
+                console.log(d3.mouse(this)[0]);
+                return tooltip;
+            })
+            .on("mouseout", function(d) {
+                return scatterTooltip.style("visibility", "hidden");
+            });
 
-    // Code for brushing data points
-    svg.call(brush);
+
 
     function brushstart(p) {
         svg.classed("selecting", true);
