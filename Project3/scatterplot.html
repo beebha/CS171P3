@@ -410,7 +410,7 @@ d3.json('data/data_output_locale_census_data.json', function(error, theData)
                 tooltipText += "<p>Population: " + d[3] + "</b><br>";
                 scatterTooltip.html(tooltipText);
                 scatterTooltip.attr("class", "tooltip");
-                scatterTooltip.style("top", (d3.mouse(this)[1] + 105) + "px").style("left", (d3.mouse(this)[0] + 125) + "px");
+                scatterTooltip.style("top", (d3.mouse(this)[1] + 450) + "px").style("left", (d3.mouse(this)[0] + 125) + "px");
                 console.log(d3.mouse(this)[0]);
                 return tooltip;
             })
