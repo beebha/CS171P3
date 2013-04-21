@@ -61,17 +61,26 @@ function removeMainMap()
     clearTimeout(timer);
     hideLegend();
     d3.select("#mainMap").select("svg").remove();
+    d3.select("#mainScatterplotMap").select("svg").remove();
     d3.select("#miniMap1").select("svg").remove();
     d3.select("#miniMap2").select("svg").remove();
     d3.select("#miniMap3").select("svg").remove();
     d3.select("#miniMap4").select("svg").remove();
+    d3.select("#miniScatterplotMap1").select("svg").remove();
+    d3.select("#miniScatterplotMap2").select("svg").remove();
+    d3.select("#miniScatterplotMap3").select("svg").remove();
+    d3.select("#miniScatterplotMap4").select("svg").remove();
     d3.select("#mainMap").selectAll("select").remove();
     d3.select("#scatterMapControls").selectAll("select").remove();
     d3.select("#mapVariablesSelector").selectAll("select").remove();
+    $('#scatterplotMapDiv').hide();
     $('#mainMapDetails').hide();
+    $('#mainScatterplotMapDetails').hide();
+    $('#mainScatterplotMapLegend').hide();
     $("#scatterMapControls").hide();
     $("#mapVariablesSelector").hide();
     $("#mapControls").hide();
+    $("#mapControlsForScatterplot").hide();
     $('#miniMap1Title').html("");
     $('#miniMap2Title').html("");
     $('#miniMap3Title').html("");
@@ -146,12 +155,17 @@ $(document).ready(function()
     $("#dialog-screencast").hide();
 
     $("#mainMapHTML").load("choropleth.html");
+    $("#mainScatterplotMapHTML").load("scatterplot.html");
 
     $("#mapSelection").change(function() {
         removeMainMap();
         removeMiniMaps();
         if($("#mapSelection").val() == 'showreel') {
             showreelFilename = "data/data_output_HP_Years_SingleFamilyHomes.csv";
+        }
+        if($("#mapSelection").val() == 'choropleth') {
+            $("#mainScatterplotMapHTML").load("scatterplot.html");
+            $('#scatterplotMapDiv').show();
         }
         var htmlToLoad = $("#mapSelection").val() + ".html";
         $("#mainMapHTML").load(htmlToLoad);

@@ -5,13 +5,12 @@
 
     function drawMiniBarChart(data, mapIDToDraw, mapID, mapWidth, mapHeight, barColor)
     {
-        var valueLabelWidth = 40; // space reserved for value labels (right)
-        var barHeight = 20; // height of one bar
-        var barLabelWidth = 110; // space reserved for bar labels
-        var barLabelPadding = 5; // padding between bar and bar labels (left)
-        var gridLabelHeight = 18; // space reserved for gridline labels
-        var gridChartOffset = 3; // space between start of grid and first bar
-        var maxBarWidth = 25; // width of the bar with the max value
+        var barHeight = 15;
+        var barLabelWidth = 110;
+        var barLabelPadding = 5;
+        var gridLabelHeight = 18;
+        var gridChartOffset = 3;
+        var maxBarWidth = 20;
 
         var barLabel = function(d) { return d.label; };
         var barValue = function(d) { return d.value; };
@@ -27,24 +26,25 @@
                 .attr('width', mapWidth)
                 .attr('height', mapHeight);
 
-        // grid line labels
+
         var gridContainer = miniMap2SVG.append('g')
                 .attr('transform', 'translate(' + barLabelWidth + ',' + gridLabelHeight + ')');
 
-        // bar labels
+
         var labelsContainer = miniMap2SVG.append('g')
                 .attr('transform', 'translate(' + (barLabelWidth - barLabelPadding) + ',' + (gridLabelHeight + gridChartOffset) + ')');
+
         labelsContainer.selectAll('text').data(data).enter().append('text')
                 .attr('y', yText)
                 .attr('stroke', 'none')
                 .attr('fill', 'black')
-                .attr("dy", ".15em")
-                .attr("font-size", "11")
+                .attr("font-size", "10")
                 .attr('text-anchor', 'end')
                 .text(barLabel);
-        // bars
+
         var barsContainer = miniMap2SVG.append('g')
                 .attr('transform', 'translate(' + barLabelWidth + ',' + (gridLabelHeight + gridChartOffset) + ')');
+
         barsContainer.selectAll("rect").data(data).enter().append("rect")
                 .attr('y', y)
                 .attr('height', yScale.rangeBand())
@@ -53,22 +53,21 @@
                 })
                 .attr('stroke', 'white')
                 .attr('fill', barColor);
-        // bar value labels
+
         barsContainer.selectAll("text").data(data).enter().append("text")
                 .attr("x", function(d) {
                     return x(barValue(d));
                 })
                 .attr("y", yText)
-                .attr("dx", 3)
-                .attr("dy", ".15em")
-                .attr("font-size", "11")
+                .attr("dy", ".25em")
+                .attr("font-size", "10")
                 .attr("text-anchor", "start")
                 .attr("fill", "black")
                 .attr("stroke", "none")
                 .text(function(d) {
                     return d3.round(barValue(d), 2);
                 });
-        // start line
+
         barsContainer.append("line")
                 .attr("y1", -gridChartOffset)
                 .attr("y2", yScale.rangeExtent()[1] + gridChartOffset)
@@ -147,6 +146,17 @@
     var houseValue500kto999kPercentage = 0;
     var houseValue1MOrMorePercentage = 0;
 
+    // house age variables
+    var houseAge2005NewerPercentage = 0;
+    var houseAge2000to2004Percentage = 0;
+    var houseAge1990to1999Percentage = 0;
+    var houseAge1980to1989Percentage = 0;
+    var houseAge1970to1979Percentage = 0;
+    var houseAge1960to1969Percentage = 0;
+    var houseAge1950to1959Percentage = 0;
+    var houseAge1940to1949Percentage = 0;
+    var houseAge1939OlderPercentage = 0;
+
     // county count
     var totalCountyCount = 0;
 
@@ -166,7 +176,7 @@
                 houseSize4BrPercentage += countyData.get(d)['houseSize']['4Br%'];
                 houseSize5BrMorePercentage += countyData.get(d)['houseSize']['5BrMore%'];
 
-                // state data available for house size
+                // state data available for house value
                 houseValueLessThan50kPercentage += countyData.get(d)['houseValue']['lessThan50k%'];
                 houseValue50kto99kPercentage += countyData.get(d)['houseValue']['50kto99k%'];
                 houseValue100kto149kPercentage += countyData.get(d)['houseValue']['100kto149k%'];
@@ -175,6 +185,17 @@
                 houseValue300kto499kPercentage += countyData.get(d)['houseValue']['300kto499k%'];
                 houseValue500kto999kPercentage += countyData.get(d)['houseValue']['500kto999k%'];
                 houseValue1MOrMorePercentage += countyData.get(d)['houseValue']['1MOrMore%'];
+
+                // state data available for house age
+                houseAge2005NewerPercentage += countyData.get(d)['houseAge']['2005Newer%'];
+                houseAge2000to2004Percentage += countyData.get(d)['houseAge']['2000to2004%'];
+                houseAge1990to1999Percentage += countyData.get(d)['houseAge']['1990to1999%'];
+                houseAge1980to1989Percentage += countyData.get(d)['houseAge']['1980to1989%'];
+                houseAge1970to1979Percentage += countyData.get(d)['houseAge']['1970to1979%'];
+                houseAge1960to1969Percentage += countyData.get(d)['houseAge']['1960to1969%'];
+                houseAge1950to1959Percentage += countyData.get(d)['houseAge']['1950to1959%'];
+                houseAge1940to1949Percentage += countyData.get(d)['houseAge']['1940to1949%'];
+                houseAge1939OlderPercentage += countyData.get(d)['houseAge']['1939Older%'];
 
                 // increase county count
                 totalCountyCount ++;
@@ -192,6 +213,7 @@
                 houseSize4BrPercentage = isNaN(countyData.get(d)['houseSize']['4Br%']) ? 0 : countyData.get(d)['houseSize']['4Br%'];
                 houseSize5BrMorePercentage = isNaN(countyData.get(d)['houseSize']['5BrMore%']) ? 0 : countyData.get(d)['houseSize']['5BrMore%'];
 
+                // county data available for house value
                 houseValueLessThan50kPercentage = isNaN(countyData.get(d)['houseValue']['lessThan50k%']) ? 0 : countyData.get(d)['houseValue']['lessThan50k%'];
                 houseValue50kto99kPercentage = isNaN(countyData.get(d)['houseValue']['50kto99k%']) ? 0 : countyData.get(d)['houseValue']['50kto99k%'];
                 houseValue100kto149kPercentage = isNaN(countyData.get(d)['houseValue']['100kto149k%']) ? 0 : countyData.get(d)['houseValue']['100kto149k%'];
@@ -200,6 +222,17 @@
                 houseValue300kto499kPercentage = isNaN(countyData.get(d)['houseValue']['300kto499k%']) ? 0 : countyData.get(d)['houseValue']['300kto499k%'];
                 houseValue500kto999kPercentage = isNaN(countyData.get(d)['houseValue']['500kto999k%']) ? 0 : countyData.get(d)['houseValue']['500kto999k%'];
                 houseValue1MOrMorePercentage = isNaN(countyData.get(d)['houseValue']['1MOrMore%']) ? 0 : countyData.get(d)['houseValue']['1MOrMore%'];
+
+                // county data available for house age
+                houseAge2005NewerPercentage = isNaN(countyData.get(d)['houseAge']['2005Newer%']) ? 0 : countyData.get(d)['houseAge']['2005Newer%'];
+                houseAge2000to2004Percentage = isNaN(countyData.get(d)['houseAge']['2000to2004%']) ? 0 : countyData.get(d)['houseAge']['2000to2004%'];
+                houseAge1990to1999Percentage = isNaN(countyData.get(d)['houseAge']['1990to1999%']) ? 0 : countyData.get(d)['houseAge']['1990to1999%'];
+                houseAge1980to1989Percentage = isNaN(countyData.get(d)['houseAge']['1980to1989%']) ? 0 : countyData.get(d)['houseAge']['1980to1989%'];
+                houseAge1970to1979Percentage = isNaN(countyData.get(d)['houseAge']['1970to1979%']) ? 0 : countyData.get(d)['houseAge']['1970to1979%'];
+                houseAge1960to1969Percentage = isNaN(countyData.get(d)['houseAge']['1960to1969%']) ? 0 : countyData.get(d)['houseAge']['1960to1969%'];
+                houseAge1950to1959Percentage = isNaN(countyData.get(d)['houseAge']['1950to1959%']) ? 0 : countyData.get(d)['houseAge']['1950to1959%'];
+                houseAge1940to1949Percentage = isNaN(countyData.get(d)['houseAge']['1940to1949%']) ? 0 : countyData.get(d)['houseAge']['1940to1949%'];
+                houseAge1939OlderPercentage = isNaN(countyData.get(d)['houseAge']['1939Older%']) ? 0 : countyData.get(d)['houseAge']['1939Older%'];
 
                 totalCountyCount = 1;
             }
@@ -255,7 +288,7 @@
     if(choroplethMiniMap2Data.length > 0)
     {
         $('#miniMap2Title').html("Housing Size Info");
-        drawMiniBarChart(choroplethMiniMap2Data, "miniMap2", "miniMap2SVG", 350, miniHeight, '#1B9E77');
+        drawMiniBarChart(choroplethMiniMap2Data, "miniMap2", "miniMap2SVG", 350, 150, '#1B9E77');
     } else
     {
         $('#miniMap2Title').html("");
@@ -290,10 +323,47 @@
     if(choroplethMiniMap3Data.length > 0)
     {
         $('#miniMap3Title').html("Housing Value Info");
-        drawMiniBarChart(choroplethMiniMap3Data, "miniMap3", "miniMap3SVG", 350, miniHeight, '#FDB462');
+        drawMiniBarChart(choroplethMiniMap3Data, "miniMap3", "miniMap3SVG", 350, miniHeight, '#FB8072');
     } else
     {
         $('#miniMap3Title').html("");
+    }
+
+    // House age Bar Chart
+    var houseAge2005Newer = (houseAge2005NewerPercentage / totalCountyCount).toFixed(2);
+    var houseAge2000to2004 = (houseAge2000to2004Percentage / totalCountyCount).toFixed(2);
+    var houseAge1990to1999 = (houseAge1990to1999Percentage / totalCountyCount).toFixed(2);
+    var houseAge1980to1989 = (houseAge1980to1989Percentage / totalCountyCount).toFixed(2);
+    var houseAge1970to1979 = (houseAge1970to1979Percentage / totalCountyCount).toFixed(2);
+    var houseAge1960to1969 = (houseAge1960to1969Percentage / totalCountyCount).toFixed(2);
+    var houseAge1950to1959 = (houseAge1950to1959Percentage / totalCountyCount).toFixed(2);
+    var houseAge1940to1949 = (houseAge1940to1949Percentage / totalCountyCount).toFixed(2);
+    var houseAge1939Older = (houseAge1939OlderPercentage / totalCountyCount).toFixed(2);
+
+
+    var choroplethMiniMap4Data = [];
+
+    if(!isNaN(houseAge2005Newer)) {
+        choroplethMiniMap4Data = [
+            {"label":"> 2005", "value":houseAge2005Newer},
+            {"label":"2000 - 2004", "value":houseAge2000to2004},
+            {"label":"1990 - 1999", "value":houseAge1990to1999},
+            {"label":"1980 - 1989", "value":houseAge1980to1989},
+            {"label":"1970 - 1979", "value":houseAge1970to1979},
+            {"label":"1960 - 1969", "value":houseAge1960to1969},
+            {"label":"1950 - 1959", "value":houseAge1950to1959},
+            {"label":"1940 - 1949", "value":houseAge1940to1949},
+            {"label":"< 1930", "value":houseAge1939Older}
+        ];
+    }
+
+    if(choroplethMiniMap4Data.length > 0)
+    {
+        $('#miniMap4Title').html("Housing Age Info");
+        drawMiniBarChart(choroplethMiniMap4Data, "miniMap4", "miniMap4SVG", 350, 210, '#FDB462');
+    } else
+    {
+        $('#miniMap4Title').html("");
     }
 
 </script>

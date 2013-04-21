@@ -2,11 +2,11 @@
 <html>
 <body>
 <script type="text/javascript">
-$("#mainMapTitle").html("Selected 2011 US County/Municipality Statistics");
-$('#mainMapLegend').html("<h4>Plot Legend</h4>" +
+//$("#mainMapTitle").html("Selected 2011 US County/Municipality Statistics");
+$('#mainScatterplotMapLegend').html("<h4>Plot Legend</h4>" +
     "<p>Data point size indicates relative population of county</p>" +
     "<p><strong>Data source:</strong> US Census 2011 American Community Survey (ACS) Single Year Estimate</p>");
-$("#mainMapLegend").show();
+$("#mainScatterplotMapLegend").show();
 
 var fieldLabels = [];
 var firstPlot = true;
@@ -21,8 +21,8 @@ var margin = {top: 20, right: 20, bottom: 60, left: 100},
         theWidth = width - margin.left - margin.right,
         theHeight = height - margin.top - margin.bottom;
 
-var miniChartWidth = 180;
-var miniChartHeight = 180;
+var miniChartWidth = 210;
+var miniChartHeight = 220;
 var miniRadius = (miniChartWidth-20)/2;
 var miniChartMargin = 10;
 var miniChartTranslate = miniRadius + miniChartMargin;
@@ -104,7 +104,7 @@ d3.json('data/data_output_locale_census_data.json', function(error, theData)
         // Can't seem to get access using D3 so resorted to plain ol' javascript
         document.getElementById("xAxisSelect").value = defaultXMetric;
         document.getElementById("yAxisSelect").value = defaultYMetric;
-        $("#mapControls").show();
+        $("#mapControlsForScatterplot").show();
         $("#scatterMapControls").show();
 
     });
@@ -124,36 +124,36 @@ d3.json('data/data_output_locale_census_data.json', function(error, theData)
             .on("brushend", brushend);
 
     //Create SVG element
-    var svg = d3.select("#mainMap")
+    var svg = d3.select("#mainScatterplotMap")
             .append("svg")
-            .attr("id", 'mainMapSVG')
+            .attr("id", 'mainScatterplotMapSVG')
             .attr("width", width)
             .attr("height", height)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    var race = d3.select("#miniMap1")
+    var race = d3.select("#miniScatterplotMap1")
             .append("svg")
             .attr("id", 'race')
             .attr("class", 'minichart')
             .attr("width", miniChartWidth)
             .attr("height", miniChartHeight);
 
-    var occupation = d3.select("#miniMap4")
+    var occupation = d3.select("#miniScatterplotMap4")
             .append("svg")
             .attr("id", 'occupation')
             .attr("class", 'minichart')
             .attr("width", miniChartWidth)
             .attr("height", miniChartHeight);
 
-    var education = d3.select("#miniMap2")
+    var education = d3.select("#miniScatterplotMap2")
             .append("svg")
             .attr("id", 'education')
             .attr("class", 'minichart')
             .attr("width", miniChartWidth)
             .attr("height", miniChartHeight);
 
-    var origin = d3.select("#miniMap3")
+    var origin = d3.select("#miniScatterplotMap3")
             .append("svg")
             .attr("id", 'origin')
             .attr("class", 'minichart')
@@ -193,7 +193,7 @@ d3.json('data/data_output_locale_census_data.json', function(error, theData)
     function plotMiniGraphs(brushedKeys){
         if (brushedKeys.length){
             plotRaceMini(brushedKeys);
-//            plotOccupationMini(brushedKeys);
+            plotOccupationMini(brushedKeys);
             plotEducationMini(brushedKeys);
             plotOriginMini(brushedKeys);
         }
@@ -221,7 +221,8 @@ d3.json('data/data_output_locale_census_data.json', function(error, theData)
             aggregateData[6].value += (localeMap.get(brushedKeys[i])["race"].moreThanOnePct * 0.01 * pop);
         }
 //        console.log(aggregateData);
-        plotMiniPie(aggregateData, "Race", "#race", colorbrewer.Accent[8]);
+        plotMiniPie(aggregateData, "#race");
+        $("#miniScatterplotMap1Title").html("Race");
     }
 
     function plotOccupationMini(brushedKeys){
@@ -244,7 +245,9 @@ d3.json('data/data_output_locale_census_data.json', function(error, theData)
             aggregateData[5].value += (localeMap.get(brushedKeys[i])["occ"].agForMinePct * 0.01 * pop);
         }
 //        console.log(aggregateData);
-        plotMiniPie(aggregateData, "Occupation", "#occupation", colorbrewer.Pastel1[8]);        }
+        plotMiniPie(aggregateData, "#occupation");
+        $("#miniScatterplotMap4Title").html("Occupation");
+    }
 
     function plotEducationMini(brushedKeys){
         var aggregateData = [
@@ -264,7 +267,8 @@ d3.json('data/data_output_locale_census_data.json', function(error, theData)
             aggregateData[4].value += (localeMap.get(brushedKeys[i])["ed"].msPct * 0.01 * pop);
         }
 //        console.log(aggregateData);
-        plotMiniPie(aggregateData, "Education", "#education", colorbrewer.Set2[8]);
+        plotMiniPie(aggregateData, "#education");
+        $("#miniScatterplotMap2Title").html("Education");
     }
 
     function plotOriginMini(brushedKeys){
@@ -281,18 +285,13 @@ d3.json('data/data_output_locale_census_data.json', function(error, theData)
             aggregateData[2].value += (localeMap.get(brushedKeys[i])["birth"].foreignBornPct * 0.01 * pop);
         }
 //        console.log(aggregateData);
-        plotMiniPie(aggregateData, "Origin", "#origin", colorbrewer.Set1[8]);
+        plotMiniPie(aggregateData, "#origin");
+        $("#miniScatterplotMap3Title").html("Origin");
     }
 
 
-    function plotMiniPie(data, title, elementID, colorScheme){
-//        var colorRange = d3.scale.category10(); //builtin range of colors
-        var colorRange = d3.scale.ordinal() //builtin range of colors
-                .range(colorScheme);
-
-
-        //Set title
-        $( elementID + "Title").html(title);
+    function plotMiniPie(data, elementID){
+        var colorRange = d3.scale.category10(); //builtin range of colors
 
         var otherValue = 0;
 
@@ -402,17 +401,17 @@ d3.json('data/data_output_locale_census_data.json', function(error, theData)
             .attr("r", function(d) { return z(d[3]); })
             .on("mouseover", function(d) {
                 return scatterTooltip.style("visibility", "visible");
-//                console.log("turning on tooltip");
+                console.log("turning on tooltip");
             })
             .on("mousemove", function(d) {
 
                 var tooltipText = "<h4>" + localeMap.get(d[0]).locale + ", ";
                 tooltipText += localeMap.get(d[0]).state + "</h4>";
-                tooltipText += "<p>Population: " + d[3].formatNumber(0) + "</b><br>";
+                tooltipText += "<p>Population: " + d[3] + "</b><br>";
                 scatterTooltip.html(tooltipText);
                 scatterTooltip.attr("class", "tooltip");
-                scatterTooltip.style("top", (d3.mouse(this)[1] + 105) + "px").style("left", (d3.mouse(this)[0] + 125) + "px");
-//                console.log(d3.mouse(this)[0]);
+                scatterTooltip.style("top", (d3.mouse(this)[1] + 450) + "px").style("left", (d3.mouse(this)[0] + 125) + "px");
+                console.log(d3.mouse(this)[0]);
                 return tooltip;
             })
             .on("mouseout", function(d) {

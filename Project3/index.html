@@ -51,33 +51,64 @@
         <h3>Analysis Selector</h3>
         <select id="mapSelection">
             <option value ="choropleth" selected>US Housing Cost Choropleth</option>
-            <option value ="scatterplot">Socio-Economic Factors Scatterplot</option>
             <option value ="showreel">Housing Prices Trends Show Reel</option>
         </select>
         </div>
         <div id="mapControls" class="roundedFrame">
             <h3>Map Variables Selector</h3>
-            <div id="scatterMapControls" >
-                <p>Explore US socio-economic patterns by selecting the data to plot on the X and Y axis of the scatter plot.</p>
-            <p>Click and drag on the scatter plot to select a range of data points for deeper analysis.</p>
-            <h4>X Axis Dataset</h4>
-            <span id="xAxisSelectSpan"></span>
-            <h4>Y Axis Dataset</h4>
-            <span id="yAxisSelectSpan"></span>
-            </div>
             <div id="mapVariablesSelector">
             </div>
         </div>
 		<div id="mainMapDetails" class="roundedFrame"></div>
 		<div id="mainMapLegend" class="roundedFrame"></div>
-		<div id="projectDetails" class="roundedFrame">
-				<h4>US Housing Facts & Figures</h4>
-				<p>This UBER COOL project was brought to you by:</p>
-				<p><em>Bharathi Balasubramanyam</em>&nbsp;&amp;<br>
-				<em>Brian Sullivan</em></p>
-				<p><a href="javascript:showProjectDescription();">Project Description</a><br><br>
-				<a href="javascript:showProjectScreencast();">Project Screencast</a></p>
-		</div>
+		<!--<div id="projectDetails" class="roundedFrame">-->
+				<!--<h4>US Housing Facts & Figures</h4>-->
+				<!--<p>This UBER COOL project was brought to you by:</p>-->
+				<!--<p><em>Bharathi Balasubramanyam</em>&nbsp;&amp;<br>-->
+				<!--<em>Brian Sullivan</em></p>-->
+				<!--<p><a href="javascript:showProjectDescription();">Project Description</a><br><br>-->
+				<!--<a href="javascript:showProjectScreencast();">Project Screencast</a></p>-->
+		<!--</div>-->
+    </div>
+
+    <div id="scatterplotMapDiv">
+        <div id="mainScatterplotMapHTML" class="docHTML"></div>
+        <div id="miniScatterplotMapHTML" class="docHTML"></div>
+        <div id="mainScatterplotMap" class="roundedFrame"></div>
+        <div id="miniScatterplotMapWrapper" class="roundedFrame">
+            <h4>Drill-Down information<span id="miniScatterplotMapTitle"> - Select objects on the left to activate this display</span></h4>
+            <div id="miniScatterplotMap">
+                <div class="miniMapDiv">
+                    <span id="miniScatterplotMap1Title" class="miniMapTitle"></span><br>
+                    <span id="miniScatterplotMap1"></span></div>
+                <div class="miniMapDiv">
+                    <span id="miniScatterplotMap2Title" class="miniMapTitle"></span><br>
+                    <span id="miniScatterplotMap2"></span></div>
+                <div class="miniMapDiv">
+                    <span id="miniScatterplotMap3Title" class="miniMapTitle"></span><br>
+                    <span id="miniScatterplotMap3"></span></div>
+                <div class="miniMapDiv">
+                    <span id="miniScatterplotMap4Title" class="miniMapTitle"></span><br>
+                    <span id="miniScatterplotMap4"></span></div>
+            </div>
+        </div>
+        <div id="controlsScatterplotWrapper">
+            <div id="mapControlsForScatterplot" class="roundedFrame">
+                <h3>Map Variables Selector</h3>
+                <div id="scatterMapControls" >
+                    <p>Explore US socio-economic patterns by selecting the data to plot on the X and Y axis of the scatter plot.</p>
+                <p>Click and drag on the scatter plot to select a range of data points for deeper analysis.</p>
+                <h4>X Axis Dataset</h4>
+                <span id="xAxisSelectSpan"></span>
+                <h4>Y Axis Dataset</h4>
+                <span id="yAxisSelectSpan"></span>
+                </div>
+                <div id="mapVariablesSelectorForScatterplot">
+                </div>
+            </div>
+            <div id="mainScatterplotMapDetails" class="roundedFrame"></div>
+            <div id="mainScatterplotMapLegend" class="roundedFrame"></div>
+        </div>
     </div>
     <div id="dialog-message" title="Project Description">
         <p>
