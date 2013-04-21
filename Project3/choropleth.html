@@ -52,7 +52,8 @@ queue()
 
 svg.append("g").attr("id", "counties");
 
-function ready(error, us) {
+function ready(error, us)
+{
 
     d3.json("data/data_output_county_census_data.json", function(error, data) {
         choroplethMiniMapsJSONData = data;
@@ -100,12 +101,14 @@ function ready(error, us) {
                 return tooltip.style("visibility", "hidden");
             })
             .on("dblclick", dblclick)
-            .on("click", stateclick);
+            .on("click", stateclick)
+            .attr("transform", "scale(0.7)");
 
     showLegend("states");
 }
 
-function stateclick(d) {
+function stateclick(d)
+{
     stateClickedData = housingStatesD3Map.get(d.id);
     dataToShow = "state";
     $('#' + housingStatesD3Map.get(d.id).STATE_FIPS).attr("class", "statesSelected");
@@ -132,7 +135,8 @@ function stateclick(d) {
     $("#miniMapHTML").load("choroplethMiniMap.html");
 }
 
-function dblclick(d) {
+function dblclick(d)
+{
     var x, y, k;
 
     if (!zoomedIn) {
@@ -145,15 +149,19 @@ function dblclick(d) {
                 housingStatesD3Map.get(d.id).STATE == 'California') {
             k = 2;
         } else {
-            k = 4;
+            k = 3;
         }
+
+        states.transition()
+            .duration(750)
+            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
 
     } else {
         clearTimeout(timer);
         zoomedIn = false;
         x = width / 2;
         y = height / 2;
-        k = 1;
+        k = 0.7;
 
         svg.select("#counties").transition()
                 .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
@@ -163,11 +171,11 @@ function dblclick(d) {
         states.style("visibility", "visible");
 
         showLegend("states");
-    }
 
-    states.transition()
+        states.transition()
             .duration(750)
-            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
+            .attr("transform", "translate(" + width / 3 + "," + height / 3 + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
+    }
 
     if (zoomedIn) {
 
@@ -176,61 +184,61 @@ function dblclick(d) {
             states.style("visibility", "hidden");
 
             svg.select("#counties")
-                    .selectAll("path")
-                    .remove();
+                .selectAll("path")
+                .remove();
 
             svg.select("#counties")
-                    .selectAll("path")
-                    .data(topojson.object(readyUSObj, readyUSObj.objects.counties).geometries)
-                    .enter().append("path")
-                    .attr("class", "counties")
-                    .attr("class", function(countyD) {
+                .selectAll("path")
+                .data(topojson.object(readyUSObj, readyUSObj.objects.counties).geometries)
+                .enter().append("path")
+                .attr("class", "counties")
+                .attr("class", function(countyD) {
 
-                        if (housingCountiesD3Map.get(countyD.id) != undefined) {
-                            if (housingStatesD3Map.get(d.id).STATE_FIPS == housingCountiesD3Map.get(countyD.id).STATE_FIPS) {
-                                return countiesQuantize(
-                                        housingCountiesD3Map.get(countyD.id).AVERAGE_LISTING_PRICE
-                                );
-                            } else {
-                                return "counties";
-                            }
+                    if (housingCountiesD3Map.get(countyD.id) != undefined) {
+                        if (housingStatesD3Map.get(d.id).STATE_FIPS == housingCountiesD3Map.get(countyD.id).STATE_FIPS) {
+                            return countiesQuantize(
+                                    housingCountiesD3Map.get(countyD.id).AVERAGE_LISTING_PRICE
+                            );
+                        } else {
+                            return "counties";
                         }
-                    })
-                    .attr("id", function(countyD) {
-                        if (housingCountiesD3Map.get(countyD.id) != undefined) {
-                            return housingCountiesD3Map.get(countyD.id).FIPS;
-                        }
-                    })
-                    .attr("d", path.projection(projection))
-                    .on("mouseover", function() {
-                        return tooltip.style("visibility", "visible");
-                    })
-                    .on("mousemove", function(countyD) {
-                        if (housingCountiesD3Map.get(countyD.id) != undefined) {
-                            var avgListingPrice = housingCountiesD3Map.get(countyD.id).AVERAGE_LISTING_PRICE;
+                    }
+                })
+                .attr("id", function(countyD) {
+                    if (housingCountiesD3Map.get(countyD.id) != undefined) {
+                        return housingCountiesD3Map.get(countyD.id).FIPS;
+                    }
+                })
+                .attr("d", path.projection(projection))
+                .on("mouseover", function() {
+                    return tooltip.style("visibility", "visible");
+                })
+                .on("mousemove", function(countyD) {
+                    if (housingCountiesD3Map.get(countyD.id) != undefined) {
+                        var avgListingPrice = housingCountiesD3Map.get(countyD.id).AVERAGE_LISTING_PRICE;
 
-                            avgListingPrice = parseInt(avgListingPrice).formatMoney();
+                        avgListingPrice = parseInt(avgListingPrice).formatMoney();
 
-                            var tooltipText = "<b>" + housingCountiesD3Map.get(countyD.id).STATE + ", " + housingCountiesD3Map.get(countyD.id).COUNTY + "</b><br>";
-                            tooltipText += "Average Listing Price: <b>" + avgListingPrice + "</b><br>";
+                        var tooltipText = "<b>" + housingCountiesD3Map.get(countyD.id).STATE + ", " + housingCountiesD3Map.get(countyD.id).COUNTY + "</b><br>";
+                        tooltipText += "Average Listing Price: <b>" + avgListingPrice + "</b><br>";
 
-                            tooltip.html(tooltipText);
-                            tooltip.attr("class", "tooltip");
-                            tooltip.style("top", (event.pageY - 10) + "px").style("left", (event.pageX + 10) + "px");
+                        tooltip.html(tooltipText);
+                        tooltip.attr("class", "tooltip");
+                        tooltip.style("top", (event.pageY - 10) + "px").style("left", (event.pageX + 10) + "px");
 
-                            return tooltip;
-                        }
-                    })
-                    .on("mouseout", function() {
-                        return tooltip.style("visibility", "hidden");
-                    })
-                    .on("dblclick", dblclick)
-                    .on("click", countyclick);
+                        return tooltip;
+                    }
+                })
+                .on("mouseout", function() {
+                    return tooltip.style("visibility", "hidden");
+                })
+                .on("dblclick", dblclick)
+                .on("click", countyclick);
 
             svg.select("#counties").style("visibility", "visible");
 
             svg.select("#counties").transition()
-                    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
+                .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
 
             showLegend("counties");
 
@@ -241,7 +249,8 @@ function dblclick(d) {
     }
 }
 
-function countyclick(d) {
+function countyclick(d)
+{
     countyClickedData = housingCountiesD3Map.get(d.id);
     dataToShow = "county";
 
@@ -268,9 +277,8 @@ function countyclick(d) {
     $('#' + housingCountiesD3Map.get(d.id).FIPS).attr("class", "countySelected");
 
     var b = path.bounds(d);
-    svg.select("#counties").transition().duration(750).attr("transform",
-            "translate(" + projection.translate() + ")scale(4)"
-                    + "translate(" + -(b[1][0] + b[0][0]) / 2 + "," + -(b[1][1] + b[0][1]) / 2 + ")");
+    svg.select("#counties").transition().duration(750)
+        .attr("transform", "translate(" + projection.translate() + ")scale(3)translate(" + -(b[1][0] + b[0][0]) / 1.8 + "," + -(b[1][1] + b[0][1]) / 1.8 + ")");
 
     // set minimaps data
     removeMiniMaps();

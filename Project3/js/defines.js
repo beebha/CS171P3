@@ -1,6 +1,6 @@
 // Global variables
 
-var width = 860, height = 490;
+var width = 615, height = 400;
 var miniWidth = 180, miniHeight = 180;
 var dataToShow = "";
 var timer = null;

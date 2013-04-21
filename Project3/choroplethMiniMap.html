@@ -2,86 +2,89 @@
 <html>
 <body>
 <script>
-    // TODO - function to draw bars
-    var radius = Math.min(miniWidth, miniHeight) / 2;
 
-    var colors = ["#9ECAE1", "#3182BD"];
+    function drawMiniBarChart(data, mapIDToDraw, mapID, mapWidth, mapHeight, barColor)
+    {
+        var valueLabelWidth = 40; // space reserved for value labels (right)
+        var barHeight = 20; // height of one bar
+        var barLabelWidth = 110; // space reserved for bar labels
+        var barLabelPadding = 5; // padding between bar and bar labels (left)
+        var gridLabelHeight = 18; // space reserved for gridline labels
+        var gridChartOffset = 3; // space between start of grid and first bar
+        var maxBarWidth = 25; // width of the bar with the max value
 
-    var arc = d3.svg.arc()
-            .outerRadius(radius - 10)
-            .innerRadius(0);
+        var barLabel = function(d) { return d.label; };
+        var barValue = function(d) { return d.value; };
 
-    var countyData = d3.map(choroplethMiniMapsJSONData);
+        var yScale = d3.scale.ordinal().domain(d3.range(0, data.length)).rangeBands([0, data.length * barHeight]);
+        var y = function(d, i) { return yScale(i); };
+        var yText = function(d, i) { return y(d, i) + yScale.rangeBand() / 2; };
+        var x = d3.scale.linear().domain([0, d3.max(data, barValue)]).range([0, maxBarWidth]);
 
-    // rental variables
-    var totalRentalPercentage = 0;
+        var miniMap2SVG = d3.select("#"+mapIDToDraw)
+                .append("svg")
+                .attr("id", mapID)
+                .attr('width', mapWidth)
+                .attr('height', mapHeight);
 
-    // house size variables
-    var houseSize1BrPercentage  = 0;
-    var houseSize2BrPercentage  = 0;
-    var houseSize3BrPercentage  = 0;
-    var houseSize4BrPercentage  = 0;
-    var houseSize5BrMorePercentage  = 0;
+        // grid line labels
+        var gridContainer = miniMap2SVG.append('g')
+                .attr('transform', 'translate(' + barLabelWidth + ',' + gridLabelHeight + ')');
 
-    // county count
-    var totalCountyCount = 0;
+        // bar labels
+        var labelsContainer = miniMap2SVG.append('g')
+                .attr('transform', 'translate(' + (barLabelWidth - barLabelPadding) + ',' + (gridLabelHeight + gridChartOffset) + ')');
+        labelsContainer.selectAll('text').data(data).enter().append('text')
+                .attr('y', yText)
+                .attr('stroke', 'none')
+                .attr('fill', 'black')
+                .attr("dy", ".15em")
+                .attr("font-size", "11")
+                .attr('text-anchor', 'end')
+                .text(barLabel);
+        // bars
+        var barsContainer = miniMap2SVG.append('g')
+                .attr('transform', 'translate(' + barLabelWidth + ',' + (gridLabelHeight + gridChartOffset) + ')');
+        barsContainer.selectAll("rect").data(data).enter().append("rect")
+                .attr('y', y)
+                .attr('height', yScale.rangeBand())
+                .attr('width', function(d) {
+                    return x(barValue(d));
+                })
+                .attr('stroke', 'white')
+                .attr('fill', barColor);
+        // bar value labels
+        barsContainer.selectAll("text").data(data).enter().append("text")
+                .attr("x", function(d) {
+                    return x(barValue(d));
+                })
+                .attr("y", yText)
+                .attr("dx", 3)
+                .attr("dy", ".15em")
+                .attr("font-size", "11")
+                .attr("text-anchor", "start")
+                .attr("fill", "black")
+                .attr("stroke", "none")
+                .text(function(d) {
+                    return d3.round(barValue(d), 2);
+                });
+        // start line
+        barsContainer.append("line")
+                .attr("y1", -gridChartOffset)
+                .attr("y2", yScale.rangeExtent()[1] + gridChartOffset)
+                .style("stroke", "#000");
 
-    countyData.forEach(function(d) {
-
-        if (dataToShow == "state") {
-
-            if (parseInt(stateClickedData.STATE_FIPS) == countyData.get(d).stateFIP)
-            {
-                // state data available for rental vs owner
-                totalRentalPercentage += countyData.get(d)['occupant']['renterOcc%'];
-
-                // state data available for house size
-                houseSize1BrPercentage += countyData.get(d)['houseSize']['1Br%'];
-                houseSize2BrPercentage += countyData.get(d)['houseSize']['2Br%'];
-                houseSize3BrPercentage += countyData.get(d)['houseSize']['3Br%'];
-                houseSize4BrPercentage += countyData.get(d)['houseSize']['4Br%'];
-                houseSize5BrMorePercentage += countyData.get(d)['houseSize']['5BrMore%'];
-
-                // increase county count
-                totalCountyCount ++;
-            }
-        } else {
-            if (parseInt(countyClickedData.FIPS) == parseInt(d))
-            {
-                // county data available for rental vs owner
-                totalRentalPercentage = isNaN(countyData.get(d)['occupant']['renterOcc%']) ? 0 : countyData.get(d)['occupant']['renterOcc%'];
-
-                // county data available for house size
-                houseSize1BrPercentage = isNaN(countyData.get(d)['houseSize']['1Br%']) ? 0 : countyData.get(d)['houseSize']['1Br%'];
-                houseSize2BrPercentage = isNaN(countyData.get(d)['houseSize']['2Br%']) ? 0 : countyData.get(d)['houseSize']['2Br%'];
-                houseSize3BrPercentage = isNaN(countyData.get(d)['houseSize']['3Br%']) ? 0 : countyData.get(d)['houseSize']['3Br%'];
-                houseSize4BrPercentage = isNaN(countyData.get(d)['houseSize']['4Br%']) ? 0 : countyData.get(d)['houseSize']['4Br%'];
-                houseSize5BrMorePercentage = isNaN(countyData.get(d)['houseSize']['5BrMore%']) ? 0 : countyData.get(d)['houseSize']['5BrMore%'];
-
-                totalCountyCount = 1;
-            }
-        }
-    });
-
-    // Rental vs Owner
-    var rental = (totalRentalPercentage / totalCountyCount).toFixed(2);
-    var owner = (100 - rental).toFixed(2);
-
-    var choroplethMiniMap1Data = [];
-
-    if(!isNaN(rental)) {
-        choroplethMiniMap1Data = [
-            {"label":"Rental: " + rental + "%", "value":rental},
-            {"label":"Owner: " + owner + "%", "value":owner}
-        ];
     }
 
-    $('#miniMapTitle').html(dataToShow == "state" ? " for " + stateClickedData.STATE : " for " + countyClickedData.COUNTY);
-
-    if(choroplethMiniMap1Data.length > 0)
+    function drawMiniPieChart(data, mapIDToDraw, mapID, mapWidth, mapHeight, pieColors)
     {
-        $('#miniMap1Title').html("Occupancy Info");
-        $('#miniMap1Title').css("margin-left", "8px");
+        var radius = Math.min(mapWidth, mapHeight) / 2;
+
+        var colors = pieColors;
+
+        var arc = d3.svg.arc()
+                .outerRadius(radius - 10)
+                .innerRadius(0);
 
         var pie = d3.layout.pie()
                 .sort(null)
@@ -89,14 +92,14 @@
                     return d.value;
                 });
 
-        var miniMap1SVG = d3.select("#miniMap1")
+        var miniMap1SVG = d3.select("#"+mapIDToDraw)
                 .append("svg")
-                .attr("id", "miniMap1SVG")
-                .attr("width", miniWidth)
-                .attr("height", miniHeight)
-                .data([choroplethMiniMap1Data])
+                .attr("id", mapID)
+                .attr("width", mapWidth)
+                .attr("height", mapHeight)
+                .data([data])
                 .append("g")
-                .attr("transform", "translate(" + miniWidth / 2 + "," + miniHeight / 2 + ")");
+                .attr("transform", "translate(" + mapWidth / 2 + "," + mapHeight / 2 + ")");
 
         var arcs = miniMap1SVG.selectAll("g.slice")
                 .data(pie)
@@ -118,14 +121,118 @@
                 })
                 .attr("text-anchor", "middle")
                 .text(function(d, i) {
-                    return choroplethMiniMap1Data[i].label;
+                    return data[i].label;
                 });
-    } else {
+    }
+
+    var countyData = d3.map(choroplethMiniMapsJSONData);
+
+    // rental variables
+    var totalRentalPercentage = 0;
+
+    // house size variables
+    var houseSize1BrPercentage = 0;
+    var houseSize2BrPercentage = 0;
+    var houseSize3BrPercentage = 0;
+    var houseSize4BrPercentage = 0;
+    var houseSize5BrMorePercentage = 0;
+
+    // house value variables
+    var houseValueLessThan50kPercentage = 0;
+    var houseValue50kto99kPercentage = 0;
+    var houseValue100kto149kPercentage = 0;
+    var houseValue150kto199kPercentage = 0;
+    var houseValue200kto299kPercentage = 0;
+    var houseValue300kto499kPercentage = 0;
+    var houseValue500kto999kPercentage = 0;
+    var houseValue1MOrMorePercentage = 0;
+
+    // county count
+    var totalCountyCount = 0;
+
+    countyData.forEach(function(d) {
+
+        if (dataToShow == "state") {
+
+            if (parseInt(stateClickedData.STATE_FIPS) == countyData.get(d).stateFIP)
+            {
+                // state data available for rental vs owner
+                totalRentalPercentage += countyData.get(d)['occupant']['renterOcc%'];
+
+                // state data available for house size
+                houseSize1BrPercentage += countyData.get(d)['houseSize']['1Br%'];
+                houseSize2BrPercentage += countyData.get(d)['houseSize']['2Br%'];
+                houseSize3BrPercentage += countyData.get(d)['houseSize']['3Br%'];
+                houseSize4BrPercentage += countyData.get(d)['houseSize']['4Br%'];
+                houseSize5BrMorePercentage += countyData.get(d)['houseSize']['5BrMore%'];
+
+                // state data available for house size
+                houseValueLessThan50kPercentage += countyData.get(d)['houseValue']['lessThan50k%'];
+                houseValue50kto99kPercentage += countyData.get(d)['houseValue']['50kto99k%'];
+                houseValue100kto149kPercentage += countyData.get(d)['houseValue']['100kto149k%'];
+                houseValue150kto199kPercentage += countyData.get(d)['houseValue']['150kto199k%'];
+                houseValue200kto299kPercentage += countyData.get(d)['houseValue']['200kto299k%'];
+                houseValue300kto499kPercentage += countyData.get(d)['houseValue']['300kto499k%'];
+                houseValue500kto999kPercentage += countyData.get(d)['houseValue']['500kto999k%'];
+                houseValue1MOrMorePercentage += countyData.get(d)['houseValue']['1MOrMore%'];
+
+                // increase county count
+                totalCountyCount ++;
+            }
+        } else {
+            if (parseInt(countyClickedData.FIPS) == parseInt(d))
+            {
+                // county data available for rental vs owner
+                totalRentalPercentage = isNaN(countyData.get(d)['occupant']['renterOcc%']) ? 0 : countyData.get(d)['occupant']['renterOcc%'];
+
+                // county data available for house size
+                houseSize1BrPercentage = isNaN(countyData.get(d)['houseSize']['1Br%']) ? 0 : countyData.get(d)['houseSize']['1Br%'];
+                houseSize2BrPercentage = isNaN(countyData.get(d)['houseSize']['2Br%']) ? 0 : countyData.get(d)['houseSize']['2Br%'];
+                houseSize3BrPercentage = isNaN(countyData.get(d)['houseSize']['3Br%']) ? 0 : countyData.get(d)['houseSize']['3Br%'];
+                houseSize4BrPercentage = isNaN(countyData.get(d)['houseSize']['4Br%']) ? 0 : countyData.get(d)['houseSize']['4Br%'];
+                houseSize5BrMorePercentage = isNaN(countyData.get(d)['houseSize']['5BrMore%']) ? 0 : countyData.get(d)['houseSize']['5BrMore%'];
+
+                houseValueLessThan50kPercentage = isNaN(countyData.get(d)['houseValue']['lessThan50k%']) ? 0 : countyData.get(d)['houseValue']['lessThan50k%'];
+                houseValue50kto99kPercentage = isNaN(countyData.get(d)['houseValue']['50kto99k%']) ? 0 : countyData.get(d)['houseValue']['50kto99k%'];
+                houseValue100kto149kPercentage = isNaN(countyData.get(d)['houseValue']['100kto149k%']) ? 0 : countyData.get(d)['houseValue']['100kto149k%'];
+                houseValue150kto199kPercentage = isNaN(countyData.get(d)['houseValue']['150kto199k%']) ? 0 : countyData.get(d)['houseValue']['150kto199k%'];
+                houseValue200kto299kPercentage = isNaN(countyData.get(d)['houseValue']['200kto299k%']) ? 0 : countyData.get(d)['houseValue']['200kto299k%'];
+                houseValue300kto499kPercentage = isNaN(countyData.get(d)['houseValue']['300kto499k%']) ? 0 : countyData.get(d)['houseValue']['300kto499k%'];
+                houseValue500kto999kPercentage = isNaN(countyData.get(d)['houseValue']['500kto999k%']) ? 0 : countyData.get(d)['houseValue']['500kto999k%'];
+                houseValue1MOrMorePercentage = isNaN(countyData.get(d)['houseValue']['1MOrMore%']) ? 0 : countyData.get(d)['houseValue']['1MOrMore%'];
+
+                totalCountyCount = 1;
+            }
+        }
+    });
+
+    // Rental vs Owner Pie Chart
+    var rental = (totalRentalPercentage / totalCountyCount).toFixed(2);
+    var owner = (100 - rental).toFixed(2);
+
+    var choroplethMiniMap1Data = [];
+
+    if(!isNaN(rental)) {
+        choroplethMiniMap1Data = [
+            {"label":"Rental: " + rental + "%", "value":rental},
+            {"label":"Owner: " + owner + "%", "value":owner}
+        ];
+    }
+
+    $('#miniMapTitle').html(dataToShow == "state" ? " for " + stateClickedData.STATE : " for " + countyClickedData.COUNTY);
+
+    if(choroplethMiniMap1Data.length > 0)
+    {
+        $('#miniMap1Title').html("Occupancy Info");
+        drawMiniPieChart(choroplethMiniMap1Data, "miniMap1", "miniMap1SVG", 200, 200, ["#9ECAE1", "#3182BD"]);
+        $('#miniMap1SVG').css("margin-left", "30px");
+
+    } else
+    {
         $('#miniMap1Title').html("");
     }
 
-
-    // House size
+    // House size Bar Chart
     var houseSize1Br = (houseSize1BrPercentage / totalCountyCount).toFixed(2);
     var houseSize2Br = (houseSize2BrPercentage / totalCountyCount).toFixed(2);
     var houseSize3Br = (houseSize3BrPercentage / totalCountyCount).toFixed(2);
@@ -147,82 +254,46 @@
 
     if(choroplethMiniMap2Data.length > 0)
     {
-
         $('#miniMap2Title').html("Housing Size Info");
-
-        var valueLabelWidth = 40; // space reserved for value labels (right)
-        var barHeight = 20; // height of one bar
-        var barLabelWidth = 110; // space reserved for bar labels
-        var barLabelPadding = 5; // padding between bar and bar labels (left)
-        var gridLabelHeight = 18; // space reserved for gridline labels
-        var gridChartOffset = 3; // space between start of grid and first bar
-        var maxBarWidth = 25; // width of the bar with the max value
-
-        // accessor functions
-        var barLabel = function(d) { return d.label; };
-        var barValue = function(d) { return d.value; };
-
-        var yScale = d3.scale.ordinal().domain(d3.range(0, choroplethMiniMap2Data.length)).rangeBands([0, choroplethMiniMap2Data.length * barHeight]);
-        var y = function(d, i) { return yScale(i); };
-        var yText = function(d, i) { return y(d, i) + yScale.rangeBand() / 2; };
-        var x = d3.scale.linear().domain([0, d3.max(choroplethMiniMap2Data, barValue)]).range([0, maxBarWidth]);
-
-        var miniMap2SVG = d3.select("#miniMap2")
-                .append("svg")
-                .attr("id", "miniMap2SVG")
-                .attr('width', 350)
-                .attr('height', miniHeight);
-
-        // grid line labels
-        var gridContainer = miniMap2SVG.append('g')
-                .attr('transform', 'translate(' + barLabelWidth + ',' + gridLabelHeight + ')');
-
-        // bar labels
-        var labelsContainer = miniMap2SVG.append('g')
-                .attr('transform', 'translate(' + (barLabelWidth - barLabelPadding) + ',' + (gridLabelHeight + gridChartOffset) + ')');
-        labelsContainer.selectAll('text').data(choroplethMiniMap2Data).enter().append('text')
-                .attr('y', yText)
-                .attr('stroke', 'none')
-                .attr('fill', 'black')
-                .attr("dy", ".15em")
-                .attr("font-size", "11")
-                .attr('text-anchor', 'end')
-                .text(barLabel);
-        // bars
-        var barsContainer = miniMap2SVG.append('g')
-                .attr('transform', 'translate(' + barLabelWidth + ',' + (gridLabelHeight + gridChartOffset) + ')');
-        barsContainer.selectAll("rect").data(choroplethMiniMap2Data).enter().append("rect")
-                .attr('y', y)
-                .attr('height', yScale.rangeBand())
-                .attr('width', function(d) {
-                    return x(barValue(d));
-                })
-                .attr('stroke', 'white')
-                .attr('fill', '#1B9E77');
-        // bar value labels
-        barsContainer.selectAll("text").data(choroplethMiniMap2Data).enter().append("text")
-                .attr("x", function(d) {
-                    return x(barValue(d));
-                })
-                .attr("y", yText)
-                .attr("dx", 3)
-                .attr("dy", ".15em")
-                .attr("font-size", "11")
-                .attr("text-anchor", "start")
-                .attr("fill", "black")
-                .attr("stroke", "none")
-                .text(function(d) {
-                    return d3.round(barValue(d), 2);
-                });
-        // start line
-        barsContainer.append("line")
-                .attr("y1", -gridChartOffset)
-                .attr("y2", yScale.rangeExtent()[1] + gridChartOffset)
-                .style("stroke", "#000");
-
-
-    } else {
+        drawMiniBarChart(choroplethMiniMap2Data, "miniMap2", "miniMap2SVG", 350, miniHeight, '#1B9E77');
+    } else
+    {
         $('#miniMap2Title').html("");
+    }
+
+    // House value Bar Chart
+    var houseValueLessThan50k = (houseValueLessThan50kPercentage / totalCountyCount).toFixed(2);
+    var houseValue50kto99k = (houseValue50kto99kPercentage / totalCountyCount).toFixed(2);
+    var houseValue100kto149k = (houseValue100kto149kPercentage / totalCountyCount).toFixed(2);
+    var houseValue150kto199k = (houseValue150kto199kPercentage / totalCountyCount).toFixed(2);
+    var houseValue200kto299k = (houseValue200kto299kPercentage / totalCountyCount).toFixed(2);
+    var houseValue300kto499k = (houseValue300kto499kPercentage / totalCountyCount).toFixed(2);
+    var houseValue500kto999k = (houseValue500kto999kPercentage / totalCountyCount).toFixed(2);
+    var houseValue1MOrMore = (houseValue1MOrMorePercentage / totalCountyCount).toFixed(2);
+
+
+    var choroplethMiniMap3Data = [];
+
+    if(!isNaN(houseValueLessThan50k)) {
+        choroplethMiniMap3Data = [
+            {"label":"< 50k", "value":houseValueLessThan50k},
+            {"label":"50k - 99k", "value":houseValue50kto99k},
+            {"label":"100k - 149k", "value":houseValue100kto149k},
+            {"label":"150k - 199k", "value":houseValue150kto199k},
+            {"label":"200k - 299k", "value":houseValue200kto299k},
+            {"label":"300k - 499k", "value":houseValue300kto499k},
+            {"label":"500k - 999k", "value":houseValue500kto999k},
+            {"label":"> 1M", "value":houseValue1MOrMore}
+        ];
+    }
+
+    if(choroplethMiniMap3Data.length > 0)
+    {
+        $('#miniMap3Title').html("Housing Value Info");
+        drawMiniBarChart(choroplethMiniMap3Data, "miniMap3", "miniMap3SVG", 350, miniHeight, '#FDB462');
+    } else
+    {
+        $('#miniMap3Title').html("");
     }
 
 </script>
