@@ -5,13 +5,12 @@
 
     function drawMiniBarChart(data, mapIDToDraw, mapID, mapWidth, mapHeight, barColor)
     {
-        var valueLabelWidth = 40; // space reserved for value labels (right)
-        var barHeight = 20; // height of one bar
-        var barLabelWidth = 110; // space reserved for bar labels
-        var barLabelPadding = 5; // padding between bar and bar labels (left)
-        var gridLabelHeight = 18; // space reserved for gridline labels
-        var gridChartOffset = 3; // space between start of grid and first bar
-        var maxBarWidth = 25; // width of the bar with the max value
+        var barHeight = 15;
+        var barLabelWidth = 110;
+        var barLabelPadding = 5;
+        var gridLabelHeight = 18;
+        var gridChartOffset = 3;
+        var maxBarWidth = 20;
 
         var barLabel = function(d) { return d.label; };
         var barValue = function(d) { return d.value; };
@@ -27,24 +26,25 @@
                 .attr('width', mapWidth)
                 .attr('height', mapHeight);
 
-        // grid line labels
+
         var gridContainer = miniMap2SVG.append('g')
                 .attr('transform', 'translate(' + barLabelWidth + ',' + gridLabelHeight + ')');
 
-        // bar labels
+
         var labelsContainer = miniMap2SVG.append('g')
                 .attr('transform', 'translate(' + (barLabelWidth - barLabelPadding) + ',' + (gridLabelHeight + gridChartOffset) + ')');
+
         labelsContainer.selectAll('text').data(data).enter().append('text')
                 .attr('y', yText)
                 .attr('stroke', 'none')
                 .attr('fill', 'black')
-                .attr("dy", ".15em")
-                .attr("font-size", "11")
+                .attr("font-size", "10")
                 .attr('text-anchor', 'end')
                 .text(barLabel);
-        // bars
+
         var barsContainer = miniMap2SVG.append('g')
                 .attr('transform', 'translate(' + barLabelWidth + ',' + (gridLabelHeight + gridChartOffset) + ')');
+
         barsContainer.selectAll("rect").data(data).enter().append("rect")
                 .attr('y', y)
                 .attr('height', yScale.rangeBand())
@@ -53,22 +53,21 @@
                 })
                 .attr('stroke', 'white')
                 .attr('fill', barColor);
-        // bar value labels
+
         barsContainer.selectAll("text").data(data).enter().append("text")
                 .attr("x", function(d) {
                     return x(barValue(d));
                 })
                 .attr("y", yText)
-                .attr("dx", 3)
-                .attr("dy", ".15em")
-                .attr("font-size", "11")
+                .attr("dy", ".25em")
+                .attr("font-size", "10")
                 .attr("text-anchor", "start")
                 .attr("fill", "black")
                 .attr("stroke", "none")
                 .text(function(d) {
                     return d3.round(barValue(d), 2);
                 });
-        // start line
+
         barsContainer.append("line")
                 .attr("y1", -gridChartOffset)
                 .attr("y2", yScale.rangeExtent()[1] + gridChartOffset)
