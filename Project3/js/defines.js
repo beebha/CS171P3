@@ -194,9 +194,11 @@ $(document).ready(function()
         removeMainMap();
         removeMiniMaps();
         if($("#mapSelection").val() == 'showreel') {
+            $('#miniMapTitle').html(" - NA");
             showreelFilename = "data/data_output_HP_Years_SingleFamilyHomes.csv";
         }
         if($("#mapSelection").val() == 'choropleth') {
+            $('#miniMapTitle').html(" - Select objects on the left to activate this display");
             $("#mainScatterplotMapHTML").load("scatterplot.html");
             $('#scatterplotMapDiv').show();
         }
