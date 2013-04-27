@@ -110,9 +110,24 @@ function removeMiniMaps()
     $('#miniMap4Title').html("");
 }
 
+function showAbout()
+{
+    $("#dialog-about").dialog({
+        dialogClass: "popupDialogCls",
+        width:400,
+        height:150,
+        modal: true,
+        buttons: {
+            Ok: function() {
+              $( this ).dialog("close");
+            }
+        }
+    });
+}
+
 function showProjectDescription()
 {
-    $("#dialog-message").dialog({
+    $("#dialog-description").dialog({
         dialogClass: "popupDialogCls",
         width:550,
         height:400,
@@ -161,7 +176,9 @@ $(document).ready(function()
 {
     $("#mapVariablesSelector").hide();
 
-    $("#dialog-message").hide();
+    $("#dialog-about").hide();
+
+    $("#dialog-description").hide();
 
     $("#dialog-screencast").hide();
 

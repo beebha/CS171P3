@@ -49,14 +49,14 @@
                 .attr('y', y)
                 .attr('height', yScale.rangeBand())
                 .attr('width', function(d) {
-                    return x(barValue(d));
+                    return (2*barValue(d));
                 })
                 .attr('stroke', 'white')
                 .attr('fill', barColor);
 
         barsContainer.selectAll("text").data(data).enter().append("text")
                 .attr("x", function(d) {
-                    return x(barValue(d));
+                    return (2*barValue(d));
                 })
                 .attr("y", yText)
                 .attr("dy", ".25em")
