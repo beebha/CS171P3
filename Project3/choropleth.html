@@ -133,6 +133,17 @@ function stateclick(d)
     // set minimaps data
     removeMiniMaps();
     $("#miniMapHTML").load("choroplethMiniMap.html");
+
+    // get counties in selected state to pass to scatterplot
+    var stateFIP = parseInt(housingStatesD3Map.get(d.id).STATE_FIPS);
+    var FIPOfCountiesInState = [];
+    for (var county in choroplethMiniMapsJSONData) {
+
+        if(choroplethMiniMapsJSONData[county].stateFIP == stateFIP) {
+            FIPOfCountiesInState.push(county);
+        }
+    }
+    reDrawScatterplotForState(FIPOfCountiesInState);
 }
 
 function dblclick(d)

@@ -172,6 +172,11 @@ function redrawShowReel()
     $("#mainMapHTML").load("showreel.html");
 }
 
+function reDrawScatterplotForState(countiesFIPs)
+{
+    console.log(countiesFIPs);
+}
+
 $(document).ready(function()
 {
     $("#mapVariablesSelector").hide();
