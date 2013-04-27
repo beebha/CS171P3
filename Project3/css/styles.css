@@ -28,7 +28,8 @@ h2 {
     margin-bottom: 5px;
 }
 h3 {
-    font-size: 18px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
     text-align: left;
     font-weight: bold;
     margin-bottom: 5px;
@@ -89,10 +90,9 @@ p {
     position: absolute;
     top: 60px;
     left: 643px;
-    width: 300px;
+    width: 250px;
     height: 400px;
     background-color: rgba(128, 128, 128 ,0.2);
-    /*overflow-x:scroll;*/
     overflow:auto;
 }
 
@@ -100,10 +100,9 @@ p {
     position: absolute;
     top: 480px;
     left: 643px;
-    width: 300px;
+    width: 250px;
     height: 400px;
     background-color: rgba(128, 128, 128 ,0.2);
-    /*overflow-x:scroll;*/
     overflow: auto;
 }
 
@@ -125,14 +124,14 @@ p {
 #controlsWrapper {
     position: absolute;
     top: 60px;
-    left: 957px;
+    left: 907px;
     width: 280px;
 }
 
 #controlsScatterplotWrapper {
     position: absolute;
     top: 480px;
-    left: 957px;
+    left: 907px;
     width: 280px;
 }
 
@@ -217,6 +216,14 @@ p {
 
 #mainMapSVG {
     font-size: 10px;
+}
+
+#toolbar {
+    position: relative;
+    width: 100%;
+    padding: 5px 10px 5px 10px;
+    display: block;
+    margin-bottom: 5px;
 }
 
 .axisTitle {

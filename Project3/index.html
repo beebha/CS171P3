@@ -4,6 +4,7 @@
     <meta charset=utf-8 />
     <title>Project 3</title>
     <link rel="stylesheet" type="text/css" href="css/vader/jquery-ui-1.10.2.custom.css"/>
+    <link rel="stylesheet" type="text/css" href="css/introjs.css"/>
     <link rel="stylesheet" type="text/css" href="css/styles.css"/>
 
     <script src="js/jquery-1.9.1.js"></script>
@@ -13,6 +14,7 @@
     <script src="js/colorbrewer.js"></script>
     <script src="js/queue.v1.min.js"></script>
     <script src="js/topojson.v0.min.js"></script>
+    <script src="js/intro.js"></script>
 
     <script src="js/defines.js"></script>
 
@@ -45,7 +47,14 @@
                 <span id="miniMap4"></span></div>
         </div>
     </div>
+
     <div id="controlsWrapper">
+        <div id="toolbar" class="roundedFrame">
+            <button type="button" class="ui-state-default ui-corner-all" onclick="javascript:showAbout();">About</button>
+            <button type="button" class="ui-state-default ui-corner-all" onclick="javascript:showProjectDescription();">Description</button>
+            <button type="button" class="ui-state-default ui-corner-all" onclick="javascript:showProjectScreencast();">Screencast</button>
+            <button type="button" class="ui-state-default ui-corner-all">Story</button>
+        </div>
     	<div id="mapSelector" class="roundedFrame">
         <h3>Analysis Selector</h3>
         <select id="mapSelection">
@@ -60,14 +69,6 @@
         </div>
 		<div id="mainMapDetails" class="roundedFrame"></div>
 		<div id="mainMapLegend" class="roundedFrame"></div>
-		<!--<div id="projectDetails" class="roundedFrame">-->
-				<!--<h4>US Housing Facts & Figures</h4>-->
-				<!--<p>This UBER COOL project was brought to you by:</p>-->
-				<!--<p><em>Bharathi Balasubramanyam</em>&nbsp;&amp;<br>-->
-				<!--<em>Brian Sullivan</em></p>-->
-				<!--<p><a href="javascript:showProjectDescription();">Project Description</a><br><br>-->
-				<!--<a href="javascript:showProjectScreencast();">Project Screencast</a></p>-->
-		<!--</div>-->
     </div>
 
     <div id="scatterplotMapDiv">
@@ -112,7 +113,13 @@
 </div>
 <div id="mainMapHTML" class="docHTML"></div>
 <div id="miniMapHTML" class="docHTML"></div>
-<div id="dialog-message" title="Project Description">
+<div id="dialog-about" title="About">
+    <p>This UBER COOL project was brought to you by:</p>
+    <p>
+        <em>Bharathi Balasubramanyam</em> & <em>Brian Sullivan</em>
+    </p>
+</div>
+<div id="dialog-description" title="Project Description">
     <p>
     <div class="projectDescMapTitle">The US Housing Cost Choropleth</div><br>
     This visualization shows the general trends in housing prices (average listing price in USD ($)) across the US.<br>
@@ -122,8 +129,9 @@
     ⇒	Double clicking any state zooms in to show the county level details.<br>
     ⇒	Double clicking again zooms out to show the states map again.<br>
     ⇒	Clicking any county highlights the clicked county.<br>
+    ⇒	Clicking any county outside the state, selects the new state.<br>
     ⇒	Mousing over any county also displays a tooltip.<br>
-    ⇒	Mini map is displayed based on clicked state or county.<br><br><br>
+    ⇒	Mini maps are displayed based on clicked state or county.<br><br><br>
 
     <div class="projectDescMapTitle">The Socio-Economics Factors Scatterplot</div><br>
     This visualization allows the exploration of US socio-economic patterns
