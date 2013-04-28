@@ -53,7 +53,7 @@ function scaleAxes(selectedData){
 }
 
 //get data and parse it
-d3.json('data/data_output_locale_census_data.json', function(error, theData)
+d3.json('data/data_output_locale_census_data_11-min.json', function(error, theData)
 {
     if (error){console.log("Error: " + error)}
 
@@ -193,7 +193,6 @@ d3.json('data/data_output_locale_census_data.json', function(error, theData)
     function plotMiniGraphs(brushedKeys){
         if (brushedKeys.length){
             plotRaceMini(brushedKeys);
-            plotOccupationMini(brushedKeys);
             plotEducationMini(brushedKeys);
             plotOriginMini(brushedKeys);
         }
@@ -221,32 +220,9 @@ d3.json('data/data_output_locale_census_data.json', function(error, theData)
             aggregateData[6].value += (localeMap.get(brushedKeys[i])["race"].moreThanOnePct * 0.01 * pop);
         }
 //        console.log(aggregateData);
-        plotMiniPie(aggregateData, "#race");
-        $("#miniScatterplotMap1Title").html("Race");
-    }
-
-    function plotOccupationMini(brushedKeys){
-        var aggregateData = [
-            {"label":"Professional", "value":0},
-            {"label":"Service", "value":0},
-            {"label":"Sales/Office", "value":0},
-            {"label":"Constr/Maint", "value":0},
-            {"label":"Prod/Trans", "value":0},
-            {"label":"Ag/Forest/Mine", "value":0}
-        ];
-
-        for (i in brushedKeys){
-            var pop = localeMap.get(brushedKeys[i])['pop']
-            aggregateData[0].value += (localeMap.get(brushedKeys[i])["occ"].mgmtBusSciArtPct * 0.01 * pop);
-            aggregateData[1].value += (localeMap.get(brushedKeys[i])["occ"].servicePct * 0.01 * pop);
-            aggregateData[2].value += (localeMap.get(brushedKeys[i])["occ"].salesOffPct * 0.01 * pop);
-            aggregateData[3].value += (localeMap.get(brushedKeys[i])["occ"].natresConstrMaintPct * 0.01 * pop);
-            aggregateData[4].value += (localeMap.get(brushedKeys[i])["occ"].prodTransPct * 0.01 * pop);
-            aggregateData[5].value += (localeMap.get(brushedKeys[i])["occ"].agForMinePct * 0.01 * pop);
-        }
-//        console.log(aggregateData);
-        plotMiniPie(aggregateData, "#occupation");
-        $("#miniScatterplotMap4Title").html("Occupation");
+//        plotMiniPie(aggregateData, "#race");
+        plotMiniPie(aggregateData, "Race", "#race", colorbrewer.Accent[8]);
+//        $("#miniScatterplotMap1Title").html("Race");
     }
 
     function plotEducationMini(brushedKeys){
@@ -260,15 +236,18 @@ d3.json('data/data_output_locale_census_data.json', function(error, theData)
 
         for (i in brushedKeys){
             var pop = localeMap.get(brushedKeys[i])['pop']
-            aggregateData[0].value += (localeMap.get(brushedKeys[i])["ed"].belowHSPct * 0.01 * pop);
-            aggregateData[1].value += (localeMap.get(brushedKeys[i])["ed"].hsPct * 0.01 * pop);
-            aggregateData[2].value += (localeMap.get(brushedKeys[i])["ed"].someCollegePct * 0.01 * pop);
-            aggregateData[3].value += (localeMap.get(brushedKeys[i])["ed"].bsPct * 0.01 * pop);
+            aggregateData[0].value += (localeMap.get(brushedKeys[i])["ed"].noHSPct * 0.01 * pop);
+            aggregateData[1].value += (localeMap.get(brushedKeys[i])["ed"].someHSPct * 0.01 * pop);
+            aggregateData[2].value += (localeMap.get(brushedKeys[i])["ed"].hsPct * 0.01 * pop);
+            aggregateData[3].value += (localeMap.get(brushedKeys[i])["ed"].someCollegePct * 0.01 * pop);
+            aggregateData[4].value += (localeMap.get(brushedKeys[i])["ed"].asPct * 0.01 * pop);
+            aggregateData[4].value += (localeMap.get(brushedKeys[i])["ed"].bsPct * 0.01 * pop);
             aggregateData[4].value += (localeMap.get(brushedKeys[i])["ed"].msPct * 0.01 * pop);
         }
 //        console.log(aggregateData);
-        plotMiniPie(aggregateData, "#education");
-        $("#miniScatterplotMap2Title").html("Education");
+//        plotMiniPie(aggregateData, "#education");
+//        $("#miniScatterplotMap2Title").html("Education");
+        plotMiniPie(aggregateData, "Education", "#education", colorbrewer.Set2[8]);
     }
 
     function plotOriginMini(brushedKeys){
@@ -285,13 +264,18 @@ d3.json('data/data_output_locale_census_data.json', function(error, theData)
             aggregateData[2].value += (localeMap.get(brushedKeys[i])["birth"].foreignBornPct * 0.01 * pop);
         }
 //        console.log(aggregateData);
-        plotMiniPie(aggregateData, "#origin");
-        $("#miniScatterplotMap3Title").html("Origin");
+//        plotMiniPie(aggregateData, "#origin");
+//        $("#miniScatterplotMap3Title").html("Origin");
+        plotMiniPie(aggregateData, "Origin", "#origin", colorbrewer.Set1[8]);
     }
 
 
-    function plotMiniPie(data, elementID){
-        var colorRange = d3.scale.category10(); //builtin range of colors
+    function plotMiniPie(data, title, elementID, colorScheme){
+        var colorRange = d3.scale.ordinal() //builtin range of colors
+                .range(colorScheme);
+
+        //Set title
+        $( elementID + "Title").html(title);
 
         var otherValue = 0;
 
@@ -370,6 +354,7 @@ d3.json('data/data_output_locale_census_data.json', function(error, theData)
             .call(xAxis)
             .append("text")
             .attr("id", "xTitle")
+            .attr("class", "axisTitle")
             .attr("x", theWidth/2)
             .attr("y", 30)
             .attr("dy", ".71em")
@@ -381,6 +366,7 @@ d3.json('data/data_output_locale_census_data.json', function(error, theData)
             .call(yAxis)
             .append("text")
             .attr("id", "yTitle")
+            .attr("class", "axisTitle")
             .attr("transform", "rotate(-90)")
             .attr("x", -(theHeight/2))
             .attr("y", -80)
@@ -401,17 +387,17 @@ d3.json('data/data_output_locale_census_data.json', function(error, theData)
             .attr("r", function(d) { return z(d[3]); })
             .on("mouseover", function(d) {
                 return scatterTooltip.style("visibility", "visible");
-                console.log("turning on tooltip");
+//                console.log("turning on tooltip");
             })
             .on("mousemove", function(d) {
 
                 var tooltipText = "<h4>" + localeMap.get(d[0]).locale + ", ";
                 tooltipText += localeMap.get(d[0]).state + "</h4>";
-                tooltipText += "<p>Population: " + d[3] + "</b><br>";
+                tooltipText += "<p>Population: " + d[3].formatNumber(0) + "</b><br>";
                 scatterTooltip.html(tooltipText);
                 scatterTooltip.attr("class", "tooltip");
                 scatterTooltip.style("top", (d3.mouse(this)[1] + 450) + "px").style("left", (d3.mouse(this)[0] + 125) + "px");
-                console.log(d3.mouse(this)[0]);
+//                console.log(d3.mouse(this)[0]);
                 return tooltip;
             })
             .on("mouseout", function(d) {
