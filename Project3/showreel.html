@@ -9,6 +9,8 @@ var showreelHeight = height - mapPaddings[0] - mapPaddings[2];
 
 var x, y, duration = 1500, delay = 1000;
 
+var animationPaused = false;
+
 var color = d3.scale.ordinal().range(["#CA0020", "#F4A582", "#92C5DE", "#0571B0"]);
 
 var svg = d3.select("#mainMap").append("svg:svg")
@@ -18,6 +20,13 @@ var svg = d3.select("#mainMap").append("svg:svg")
         .on("click", animationClick)
         .append("svg:g")
         .attr("transform", "translate(" + mapPaddings[3] + "," + mapPaddings[0] + ")");
+
+var tooltip = d3.select("body")
+        .append("div")
+        .style("position", "absolute")
+        .style("z-index", "10")
+        .style("visibility", "hidden")
+        .html("");
 
 var houseprices, housetypes, showreelData;
 
@@ -52,6 +61,7 @@ var housingTypes = [
     ["condo", "Condo"],
     ["all", "All Home Prices"]
 ];
+$('#animationPausedMsg').hide();
 $("#mapControls").show();
 $("#mapVariablesSelector").show();
 d3.select("#mapVariablesSelector").append("select")
@@ -71,12 +81,16 @@ d3.select("#mapVariablesSelector").append("select")
 if (showreelFilename == "data/data_output_HP_Years_SingleFamilyHomes.csv") {
     $('#housingTypeSelect').val('singlefamily');
     $('#mainMapTitle').html("Price trends of Housing Prices by Region for Single Family Homes");
+    showLegend('animationHP');
 } else if (showreelFilename == "data/data_output_HP_Years_Condo.csv") {
     $('#housingTypeSelect').val('condo');
     $('#mainMapTitle').html("Price trends of Housing Prices by Region for Condos");
+    showLegend('animationHP');
 } else if (showreelFilename == "data/data_output_HP_Years_SFC.csv") {
     $('#housingTypeSelect').val('all');
     $('#mainMapTitle').html("Price trends of Housing Prices for Single Family Homes & Condos");
+    color = d3.scale.ordinal().range(["#CA0020", "#0571B0"]);
+    showLegend('animationSFC');
 }
 
 d3.csv(showreelFilename, function(data) {
@@ -227,11 +241,31 @@ function groupedBar()
             .attr("id", function(d) {
                 return d.housetype+d.price;
             })
+            .on("mouseover", function(d) {
+                if(animationPaused) {
+                    return tooltip.style("visibility", "visible");
+                }
+            })
+            .on("mousemove", function(d) {
+
+                var tooltipText = "<b>" + d.housetype + "</b><br>";
+                tooltipText += "Price: <b>" + getFormattedPrice(d.price) + "</b><br>";
+
+                tooltip.html(tooltipText);
+                tooltip.attr("class", "tooltip");
+                tooltip.style("top", (event.pageY - 10) + "px").style("left", (event.pageX + 10) + "px");
+
+                return tooltip;
+            })
+            .on("mouseout", function(d) {
+                return tooltip.style("visibility", "hidden");
+            })
             .style("fill", color(p.key))
             .style("fill-opacity", 1e-6)
             .transition()
             .duration(duration)
             .style("fill-opacity", 1);
+
     });
 
     timer = new Timer(stackedBar, duration + delay);
@@ -453,7 +487,6 @@ function donutExplode() {
     }, duration);
 
 }
-var animationPaused = false;
 
 function animationClick(d)
 {
@@ -463,7 +496,6 @@ function animationClick(d)
     } else {
         timer.pause();
         animationPaused = true;
-        showTooltips();
     }
 
     animationPaused ? $('#animationPausedMsg').show() : $('#animationPausedMsg').hide();
@@ -471,14 +503,8 @@ function animationClick(d)
 
 function showTooltips()
 {
-    for (var i=0; i < showreelData.length; i++)
-    {
-        console.log(showreelData[i]);
-        var tooltip = $('#'+(showreelData[i].housetype + showreelData[i].price));
-        tooltip.html("Test");
-        tooltip.attr("class", "tooltip");
-        tooltip.style("top", (event.pageY - 10) + "px").style("left", (event.pageX + 10) + "px");
-    }
+
+
 }
 
 function Timer(callback, delay) {

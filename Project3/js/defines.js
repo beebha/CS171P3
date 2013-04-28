@@ -35,19 +35,37 @@ Number.prototype.formatNumber = function(places, thousand, decimal) {
 function showLegend(type)
 {
     var noOfColors = 0;
+    var housingRegions = ["West", "Northeast", "South", "Midwest"];
+    var housingTypes = ["Single Family", "Condo"];
     if (type == 'states' || type == 'counties')
         noOfColors = 8;
+    if (type == 'animationHP')
+        noOfColors = 4;
+    if (type == 'animationSFC')
+        noOfColors = 2;
 
     var legend = "<h4>Map Legend (USD, $)</h4>";
+
+    if (type == 'animationHP' || type == 'animationSFC') {
+        legend = "<h4>Map Legend</h4>";
+    }
+
     var legendCount = 0;
     var increment = 100000;
     for(var i=0; i < noOfColors; i++) {
         var colorClass = type+i;
-        if(i < (noOfColors-1)) {
-            legend += "<span class='" +colorClass+"'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;"+(legendCount+1).formatMoney(2, '')+"&nbsp;-&nbsp;"+(legendCount+=increment).formatMoney(2, '')+"<br>";
-        } else {
-            legend += "<span class='" +colorClass+"'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&gt;"+(legendCount+1).formatMoney(2, '')+"<br>";
+        if(type == 'states' || type == 'counties') {
+            if(i < (noOfColors-1)) {
+                legend += "<span class='" +colorClass+"'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;"+(legendCount+1).formatMoney(2, '')+"&nbsp;-&nbsp;"+(legendCount+=increment).formatMoney(2, '')+"<br>";
+            } else {
+                legend += "<span class='" +colorClass+"'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&gt;"+(legendCount+1).formatMoney(2, '')+"<br>";
+            }
+        } else if (type == 'animationHP') {
+            legend += "<span class='" +colorClass+"'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;"+housingRegions[i]+"<br>";
+        } else if (type == 'animationSFC') {
+            legend += "<span class='" +colorClass+"'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;"+housingTypes[i]+"<br>";
         }
+
     }
     if(type == 'counties') {
         legend += "<span class='countiesNA'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;No Data For County<br>";

@@ -365,6 +365,14 @@ p {
 .states6 { background-color: #AE017E; }
 .states7 { background-color: #7A0177; }
 
+.animationHP0 { background-color: #CA0020; }
+.animationHP1 { background-color: #F4A582; }
+.animationHP2 { background-color: #92C5DE; }
+.animationHP3 { background-color: #0571B0; }
+
+.animationSFC0 { background-color: #CA0020; }
+.animationSFC1 { background-color: #0571B0; }
+
 .line {
   fill: none;
   stroke: #000;
