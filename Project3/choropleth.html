@@ -55,7 +55,7 @@ svg.append("g").attr("id", "counties");
 function ready(error, us)
 {
 
-    d3.json("data/data_output_county_census_data.json", function(error, data) {
+    d3.json("data/data_output_locale_census_data-min.json", function(error, data) {
         choroplethMiniMapsJSONData = data;
     });
 
@@ -139,7 +139,7 @@ function stateclick(d)
     var FIPOfCountiesInState = [];
     for (var county in choroplethMiniMapsJSONData) {
 
-        if(choroplethMiniMapsJSONData[county].stateFIP == stateFIP) {
+        if(choroplethMiniMapsJSONData[county].stateID == stateFIP) {
             FIPOfCountiesInState.push(county);
         }
     }

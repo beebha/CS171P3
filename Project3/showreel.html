@@ -224,6 +224,9 @@ function groupedBar()
             .attr("height", function(d) {
                 return showreelHeight - y(d.price);
             })
+            .attr("id", function(d) {
+                return d.housetype+d.price;
+            })
             .style("fill", color(p.key))
             .style("fill-opacity", 1e-6)
             .transition()
@@ -460,9 +463,23 @@ function animationClick(d)
     } else {
         timer.pause();
         animationPaused = true;
+        showTooltips();
     }
+
+    animationPaused ? $('#animationPausedMsg').show() : $('#animationPausedMsg').hide();
 }
 
+function showTooltips()
+{
+    for (var i=0; i < showreelData.length; i++)
+    {
+        console.log(showreelData[i]);
+        var tooltip = $('#'+(showreelData[i].housetype + showreelData[i].price));
+        tooltip.html("Test");
+        tooltip.attr("class", "tooltip");
+        tooltip.style("top", (event.pageY - 10) + "px").style("left", (event.pageX + 10) + "px");
+    }
+}
 
 function Timer(callback, delay) {
     var timerId, start, remaining = delay;

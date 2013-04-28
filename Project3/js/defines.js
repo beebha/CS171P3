@@ -187,6 +187,8 @@ $(document).ready(function()
 
     $("#dialog-screencast").hide();
 
+    $('#animationPausedMsg').hide();
+
     $("#mainMapHTML").load("choropleth.html");
     $("#mainScatterplotMapHTML").load("scatterplot.html");
 

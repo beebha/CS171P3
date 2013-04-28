@@ -164,38 +164,38 @@
 
         if (dataToShow == "state") {
 
-            if (parseInt(stateClickedData.STATE_FIPS) == countyData.get(d).stateFIP)
+            if (parseInt(stateClickedData.STATE_FIPS) == countyData.get(d).stateID)
             {
                 // state data available for rental vs owner
-                totalRentalPercentage += countyData.get(d)['occupant']['renterOcc%'];
+                totalRentalPercentage += countyData.get(d)['occupant']['renterOccPct'];
 
                 // state data available for house size
-                houseSize1BrPercentage += countyData.get(d)['houseSize']['1Br%'];
-                houseSize2BrPercentage += countyData.get(d)['houseSize']['2Br%'];
-                houseSize3BrPercentage += countyData.get(d)['houseSize']['3Br%'];
-                houseSize4BrPercentage += countyData.get(d)['houseSize']['4Br%'];
-                houseSize5BrMorePercentage += countyData.get(d)['houseSize']['5BrMore%'];
+                houseSize1BrPercentage += countyData.get(d)['houseSize']['1BrPct'];
+                houseSize2BrPercentage += countyData.get(d)['houseSize']['2BrPct'];
+                houseSize3BrPercentage += countyData.get(d)['houseSize']['3BrPct'];
+                houseSize4BrPercentage += countyData.get(d)['houseSize']['4BrPct'];
+                houseSize5BrMorePercentage += countyData.get(d)['houseSize']['5BrMorePct'];
 
                 // state data available for house value
-                houseValueLessThan50kPercentage += countyData.get(d)['houseValue']['lessThan50k%'];
-                houseValue50kto99kPercentage += countyData.get(d)['houseValue']['50kto99k%'];
-                houseValue100kto149kPercentage += countyData.get(d)['houseValue']['100kto149k%'];
-                houseValue150kto199kPercentage += countyData.get(d)['houseValue']['150kto199k%'];
-                houseValue200kto299kPercentage += countyData.get(d)['houseValue']['200kto299k%'];
-                houseValue300kto499kPercentage += countyData.get(d)['houseValue']['300kto499k%'];
-                houseValue500kto999kPercentage += countyData.get(d)['houseValue']['500kto999k%'];
-                houseValue1MOrMorePercentage += countyData.get(d)['houseValue']['1MOrMore%'];
+                houseValueLessThan50kPercentage += countyData.get(d)['houseValue']['lessThan50kPct'];
+                houseValue50kto99kPercentage += countyData.get(d)['houseValue']['50kto99kPct'];
+                houseValue100kto149kPercentage += countyData.get(d)['houseValue']['100kto149kPct'];
+                houseValue150kto199kPercentage += countyData.get(d)['houseValue']['150kto199kPct'];
+                houseValue200kto299kPercentage += countyData.get(d)['houseValue']['200kto299kPct'];
+                houseValue300kto499kPercentage += countyData.get(d)['houseValue']['300kto499kPct'];
+                houseValue500kto999kPercentage += countyData.get(d)['houseValue']['500kto999kPct'];
+                houseValue1MOrMorePercentage += countyData.get(d)['houseValue']['1MOrMorePct'];
 
                 // state data available for house age
-                houseAge2005NewerPercentage += countyData.get(d)['houseAge']['2005Newer%'];
-                houseAge2000to2004Percentage += countyData.get(d)['houseAge']['2000to2004%'];
-                houseAge1990to1999Percentage += countyData.get(d)['houseAge']['1990to1999%'];
-                houseAge1980to1989Percentage += countyData.get(d)['houseAge']['1980to1989%'];
-                houseAge1970to1979Percentage += countyData.get(d)['houseAge']['1970to1979%'];
-                houseAge1960to1969Percentage += countyData.get(d)['houseAge']['1960to1969%'];
-                houseAge1950to1959Percentage += countyData.get(d)['houseAge']['1950to1959%'];
-                houseAge1940to1949Percentage += countyData.get(d)['houseAge']['1940to1949%'];
-                houseAge1939OlderPercentage += countyData.get(d)['houseAge']['1939Older%'];
+                houseAge2005NewerPercentage += countyData.get(d)['houseAge']['2005NewerPct'];
+                houseAge2000to2004Percentage += countyData.get(d)['houseAge']['2000to2004Pct'];
+                houseAge1990to1999Percentage += countyData.get(d)['houseAge']['1990to1999Pct'];
+                houseAge1980to1989Percentage += countyData.get(d)['houseAge']['1980to1989Pct'];
+                houseAge1970to1979Percentage += countyData.get(d)['houseAge']['1970to1979Pct'];
+                houseAge1960to1969Percentage += countyData.get(d)['houseAge']['1960to1969Pct'];
+                houseAge1950to1959Percentage += countyData.get(d)['houseAge']['1950to1959Pct'];
+                houseAge1940to1949Percentage += countyData.get(d)['houseAge']['1940to1949Pct'];
+                houseAge1939OlderPercentage += countyData.get(d)['houseAge']['1939OlderPct'];
 
                 // increase county count
                 totalCountyCount ++;
@@ -204,35 +204,35 @@
             if (parseInt(countyClickedData.FIPS) == parseInt(d))
             {
                 // county data available for rental vs owner
-                totalRentalPercentage = isNaN(countyData.get(d)['occupant']['renterOcc%']) ? 0 : countyData.get(d)['occupant']['renterOcc%'];
+                totalRentalPercentage = isNaN(countyData.get(d)['occupant']['renterOccPct']) ? 0 : countyData.get(d)['occupant']['renterOccPct'];
 
                 // county data available for house size
-                houseSize1BrPercentage = isNaN(countyData.get(d)['houseSize']['1Br%']) ? 0 : countyData.get(d)['houseSize']['1Br%'];
-                houseSize2BrPercentage = isNaN(countyData.get(d)['houseSize']['2Br%']) ? 0 : countyData.get(d)['houseSize']['2Br%'];
-                houseSize3BrPercentage = isNaN(countyData.get(d)['houseSize']['3Br%']) ? 0 : countyData.get(d)['houseSize']['3Br%'];
-                houseSize4BrPercentage = isNaN(countyData.get(d)['houseSize']['4Br%']) ? 0 : countyData.get(d)['houseSize']['4Br%'];
-                houseSize5BrMorePercentage = isNaN(countyData.get(d)['houseSize']['5BrMore%']) ? 0 : countyData.get(d)['houseSize']['5BrMore%'];
+                houseSize1BrPercentage = isNaN(countyData.get(d)['houseSize']['1BrPct']) ? 0 : countyData.get(d)['houseSize']['1BrPct'];
+                houseSize2BrPercentage = isNaN(countyData.get(d)['houseSize']['2BrPct']) ? 0 : countyData.get(d)['houseSize']['2BrPct'];
+                houseSize3BrPercentage = isNaN(countyData.get(d)['houseSize']['3BrPct']) ? 0 : countyData.get(d)['houseSize']['3BrPct'];
+                houseSize4BrPercentage = isNaN(countyData.get(d)['houseSize']['4BrPct']) ? 0 : countyData.get(d)['houseSize']['4BrPct'];
+                houseSize5BrMorePercentage = isNaN(countyData.get(d)['houseSize']['5BrMorePct']) ? 0 : countyData.get(d)['houseSize']['5BrMorePct'];
 
                 // county data available for house value
-                houseValueLessThan50kPercentage = isNaN(countyData.get(d)['houseValue']['lessThan50k%']) ? 0 : countyData.get(d)['houseValue']['lessThan50k%'];
-                houseValue50kto99kPercentage = isNaN(countyData.get(d)['houseValue']['50kto99k%']) ? 0 : countyData.get(d)['houseValue']['50kto99k%'];
-                houseValue100kto149kPercentage = isNaN(countyData.get(d)['houseValue']['100kto149k%']) ? 0 : countyData.get(d)['houseValue']['100kto149k%'];
-                houseValue150kto199kPercentage = isNaN(countyData.get(d)['houseValue']['150kto199k%']) ? 0 : countyData.get(d)['houseValue']['150kto199k%'];
-                houseValue200kto299kPercentage = isNaN(countyData.get(d)['houseValue']['200kto299k%']) ? 0 : countyData.get(d)['houseValue']['200kto299k%'];
-                houseValue300kto499kPercentage = isNaN(countyData.get(d)['houseValue']['300kto499k%']) ? 0 : countyData.get(d)['houseValue']['300kto499k%'];
-                houseValue500kto999kPercentage = isNaN(countyData.get(d)['houseValue']['500kto999k%']) ? 0 : countyData.get(d)['houseValue']['500kto999k%'];
-                houseValue1MOrMorePercentage = isNaN(countyData.get(d)['houseValue']['1MOrMore%']) ? 0 : countyData.get(d)['houseValue']['1MOrMore%'];
+                houseValueLessThan50kPercentage = isNaN(countyData.get(d)['houseValue']['lessThan50kPct']) ? 0 : countyData.get(d)['houseValue']['lessThan50kPct'];
+                houseValue50kto99kPercentage = isNaN(countyData.get(d)['houseValue']['50kto99kPct']) ? 0 : countyData.get(d)['houseValue']['50kto99kPct'];
+                houseValue100kto149kPercentage = isNaN(countyData.get(d)['houseValue']['100kto149kPct']) ? 0 : countyData.get(d)['houseValue']['100kto149kPct'];
+                houseValue150kto199kPercentage = isNaN(countyData.get(d)['houseValue']['150kto199kPct']) ? 0 : countyData.get(d)['houseValue']['150kto199kPct'];
+                houseValue200kto299kPercentage = isNaN(countyData.get(d)['houseValue']['200kto299kPct']) ? 0 : countyData.get(d)['houseValue']['200kto299kPct'];
+                houseValue300kto499kPercentage = isNaN(countyData.get(d)['houseValue']['300kto499kPct']) ? 0 : countyData.get(d)['houseValue']['300kto499kPct'];
+                houseValue500kto999kPercentage = isNaN(countyData.get(d)['houseValue']['500kto999kPct']) ? 0 : countyData.get(d)['houseValue']['500kto999kPct'];
+                houseValue1MOrMorePercentage = isNaN(countyData.get(d)['houseValue']['1MOrMorePct']) ? 0 : countyData.get(d)['houseValue']['1MOrMorePct'];
 
                 // county data available for house age
-                houseAge2005NewerPercentage = isNaN(countyData.get(d)['houseAge']['2005Newer%']) ? 0 : countyData.get(d)['houseAge']['2005Newer%'];
-                houseAge2000to2004Percentage = isNaN(countyData.get(d)['houseAge']['2000to2004%']) ? 0 : countyData.get(d)['houseAge']['2000to2004%'];
-                houseAge1990to1999Percentage = isNaN(countyData.get(d)['houseAge']['1990to1999%']) ? 0 : countyData.get(d)['houseAge']['1990to1999%'];
-                houseAge1980to1989Percentage = isNaN(countyData.get(d)['houseAge']['1980to1989%']) ? 0 : countyData.get(d)['houseAge']['1980to1989%'];
-                houseAge1970to1979Percentage = isNaN(countyData.get(d)['houseAge']['1970to1979%']) ? 0 : countyData.get(d)['houseAge']['1970to1979%'];
-                houseAge1960to1969Percentage = isNaN(countyData.get(d)['houseAge']['1960to1969%']) ? 0 : countyData.get(d)['houseAge']['1960to1969%'];
-                houseAge1950to1959Percentage = isNaN(countyData.get(d)['houseAge']['1950to1959%']) ? 0 : countyData.get(d)['houseAge']['1950to1959%'];
-                houseAge1940to1949Percentage = isNaN(countyData.get(d)['houseAge']['1940to1949%']) ? 0 : countyData.get(d)['houseAge']['1940to1949%'];
-                houseAge1939OlderPercentage = isNaN(countyData.get(d)['houseAge']['1939Older%']) ? 0 : countyData.get(d)['houseAge']['1939Older%'];
+                houseAge2005NewerPercentage = isNaN(countyData.get(d)['houseAge']['2005NewerPct']) ? 0 : countyData.get(d)['houseAge']['2005NewerPct'];
+                houseAge2000to2004Percentage = isNaN(countyData.get(d)['houseAge']['2000to2004Pct']) ? 0 : countyData.get(d)['houseAge']['2000to2004Pct'];
+                houseAge1990to1999Percentage = isNaN(countyData.get(d)['houseAge']['1990to1999Pct']) ? 0 : countyData.get(d)['houseAge']['1990to1999Pct'];
+                houseAge1980to1989Percentage = isNaN(countyData.get(d)['houseAge']['1980to1989Pct']) ? 0 : countyData.get(d)['houseAge']['1980to1989Pct'];
+                houseAge1970to1979Percentage = isNaN(countyData.get(d)['houseAge']['1970to1979Pct']) ? 0 : countyData.get(d)['houseAge']['1970to1979Pct'];
+                houseAge1960to1969Percentage = isNaN(countyData.get(d)['houseAge']['1960to1969Pct']) ? 0 : countyData.get(d)['houseAge']['1960to1969Pct'];
+                houseAge1950to1959Percentage = isNaN(countyData.get(d)['houseAge']['1950to1959Pct']) ? 0 : countyData.get(d)['houseAge']['1950to1959Pct'];
+                houseAge1940to1949Percentage = isNaN(countyData.get(d)['houseAge']['1940to1949Pct']) ? 0 : countyData.get(d)['houseAge']['1940to1949Pct'];
+                houseAge1939OlderPercentage = isNaN(countyData.get(d)['houseAge']['1939OlderPct']) ? 0 : countyData.get(d)['houseAge']['1939OlderPct'];
 
                 totalCountyCount = 1;
             }
