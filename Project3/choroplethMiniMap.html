@@ -252,7 +252,7 @@
         ];
     }
 
-    $('#miniMapTitle').html(dataToShow == "state" ? " for " + stateClickedData.STATE : " for " + countyClickedData.COUNTY);
+    $('#miniMapTitle').html("Drill-Down information "+ (dataToShow == "state" ? " for " + stateClickedData.STATE : " for " + countyClickedData.COUNTY));
 
     if(choroplethMiniMap1Data.length > 0)
     {

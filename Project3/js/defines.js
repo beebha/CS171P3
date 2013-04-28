@@ -174,7 +174,7 @@ function redrawShowReel()
 
 function reDrawScatterplotForState(countiesFIPs)
 {
-    console.log(countiesFIPs);
+    console.log("reDrawScatterplotForState");
 }
 
 $(document).ready(function()
@@ -194,11 +194,11 @@ $(document).ready(function()
         removeMainMap();
         removeMiniMaps();
         if($("#mapSelection").val() == 'showreel') {
-            $('#miniMapTitle').html(" - NA");
+            $('#miniMapTitle').html("Animation Story - Click anywhere on the animation on the left to view details");
             showreelFilename = "data/data_output_HP_Years_SingleFamilyHomes.csv";
         }
         if($("#mapSelection").val() == 'choropleth') {
-            $('#miniMapTitle').html(" - Select objects on the left to activate this display");
+            $('#miniMapTitle').html("Drill-Down information - Select objects on the left to activate this display");
             $("#mainScatterplotMapHTML").load("scatterplot.html");
             $('#scatterplotMapDiv').show();
         }

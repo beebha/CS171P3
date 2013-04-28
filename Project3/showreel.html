@@ -7,7 +7,7 @@ var mapPaddings = [20, 20, 40, 20];
 var showreelWidth = width - mapPaddings[1] - mapPaddings[3];
 var showreelHeight = height - mapPaddings[0] - mapPaddings[2];
 
-var x, y, duration = 1500, delay = 500;
+var x, y, duration = 1500, delay = 1000;
 
 var color = d3.scale.ordinal().range(["#CA0020", "#F4A582", "#92C5DE", "#0571B0"]);
 
@@ -15,6 +15,7 @@ var svg = d3.select("#mainMap").append("svg:svg")
         .attr("width", width)
         .attr("height", height)
         .attr("id", "mainMapSVG")
+        .on("click", animationClick)
         .append("svg:g")
         .attr("transform", "translate(" + mapPaddings[3] + "," + mapPaddings[0] + ")");
 
@@ -115,7 +116,8 @@ function setupShowreel()
             .enter().append("svg:g")
             .attr("class", "housetype");
 
-    timer = setTimeout(overlappingArea, duration);
+    timer = new Timer(overlappingArea, duration);
+
 }
 
 function overlappingArea()
@@ -135,7 +137,8 @@ function overlappingArea()
 
     var g = svg.selectAll(".housetype");
 
-    g.each(function(d) {
+    g.each(function(d)
+    {
         var e = d3.select(this);
 
         e.append("svg:text")
@@ -157,36 +160,15 @@ function overlappingArea()
         return d.maxPrice;
     }))]).range([showreelHeight, 0]);
 
-    area.y0(showreelHeight)
-        .y1(function(d) {
-            return y(d.price);
-        });
-
-    line.y(function(d) {
-        return y(d.price);
-    });
-
-    var t = g.transition()
-            .duration(duration);
-
-    t.select(".line")
-            .style("stroke-opacity", 1)
-            .attr("d", function(d) {
-                return line(d.values);
-            });
-
-    t.select(".area")
-            .style("fill-opacity", .5)
-            .attr("d", function(d) {
-                return area(d.values);
-            });
+    var t = g.transition().duration(duration);
 
     t.select("text")
-            .attr("dy", ".31em")
-            .attr("transform", function(d) {
-                d = d.values[d.values.length - 1];
-                return "translate(" + (showreelWidth - 60) + "," + y(d.price) + ")";
-            });
+        .attr("dy", ".31em")
+        .attr("transform", function(d) {
+            d = d.values[d.values.length - 1];
+            var yPosition = d.housetype == 'Condo' ? d.price - 10000 : d.price;
+            return "translate(" + (showreelWidth - 60) + "," + y(yPosition) + ")";
+        });
 
     svg.append("svg:line")
             .attr("class", "line")
@@ -199,7 +181,7 @@ function overlappingArea()
             .duration(duration)
             .style("stroke-opacity", 1);
 
-    timer = setTimeout(groupedBar, duration + delay);
+    timer = new Timer(groupedBar, duration + delay);
 }
 
 function groupedBar()
@@ -249,7 +231,7 @@ function groupedBar()
             .style("fill-opacity", 1);
     });
 
-    timer = setTimeout(stackedBar, duration + delay);
+    timer = new Timer(stackedBar, duration + delay);
 }
 
 function stackedBar()
@@ -311,7 +293,7 @@ function stackedBar()
                     .style("stroke-opacity", 1);
         });
 
-    timer = setTimeout(transposeBar, duration + housetypes[0].values.length * 10 + delay);
+    timer = new Timer(transposeBar, duration + delay);
 }
 
 function transposeBar()
@@ -376,7 +358,7 @@ function transposeBar()
             .duration(duration)
             .attr("x2", showreelWidth);
 
-    timer = setTimeout(donut, duration / 2 + housetypes[0].values.length * 10 + delay);
+    timer = new Timer(donut, duration + delay);
 }
 
 function donut() {
@@ -429,7 +411,7 @@ function donut() {
         };
     }
 
-    timer = setTimeout(donutExplode, duration + delay);
+    timer = new Timer(donutExplode, duration + delay);
 }
 
 function donutExplode() {
@@ -461,11 +443,41 @@ function donutExplode() {
         }
     }
 
-    timer = setTimeout(function() {
+    timer = new Timer(function() {
         svg.selectAll("*").remove();
         svg.selectAll("g").data(housetypes).enter().append("svg:g").attr("class", "housetype");
         overlappingArea();
     }, duration);
+
+}
+var animationPaused = false;
+
+function animationClick(d)
+{
+    if (animationPaused) {
+        timer.resume();
+        animationPaused = false;
+    } else {
+        timer.pause();
+        animationPaused = true;
+    }
+}
+
+
+function Timer(callback, delay) {
+    var timerId, start, remaining = delay;
+
+    this.pause = function() {
+        window.clearTimeout(timerId);
+        remaining -= new Date() - start;
+    };
+
+    this.resume = function() {
+        start = new Date();
+        timerId = window.setTimeout(callback, remaining);
+    };
+
+    this.resume();
 }
 
 </script>
