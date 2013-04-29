@@ -231,6 +231,11 @@ p {
     font-weight: bold;
 }
 
+.animationTitle {
+    font-size:120%;
+    font-weight: bold;
+}
+
 .docHTML {
     position: absolute;
     top: 0px;
