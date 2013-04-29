@@ -88,6 +88,7 @@ function getFormattedPrice(val)
 function removeMainMap()
 {
     clearTimeout(timer);
+    timer = null;
     hideLegend();
     d3.select("#mainMap").select("svg").remove();
     d3.select("#mainScatterplotMap").select("svg").remove();
@@ -110,10 +111,13 @@ function removeMainMap()
     $("#mapVariablesSelector").hide();
     $("#mapControls").hide();
     $("#mapControlsForScatterplot").hide();
+    $('#animationPausedMsg').hide();
     $('#miniMap1Title').html("");
     $('#miniMap2Title').html("");
     $('#miniMap3Title').html("");
     $('#miniMap4Title').html("");
+    $('#animationTitle').html("");
+    $('#animationDetails').html("");
 }
 
 function removeMiniMaps()
@@ -214,7 +218,8 @@ $(document).ready(function()
         removeMainMap();
         removeMiniMaps();
         if($("#mapSelection").val() == 'showreel') {
-            $('#miniMapTitle').html("Animation Story - Click anywhere on the animation on the left to view details");
+            $('#miniMapTitle').html("Click anywhere on the animation on the left to " +
+                "pause the animation and view details via mouseover tooltips.");
             showreelFilename = "data/data_output_HP_Years_SingleFamilyHomes.csv";
         }
         if($("#mapSelection").val() == 'choropleth') {
