@@ -221,6 +221,10 @@ p {
     font-size: 300%;
 }
 
+.sliderDiv {
+    width: 50%;
+}
+
 .axisTitle {
     font-size: 12px;
 }

@@ -5,11 +5,25 @@
 //$("#mainMapTitle").html("Selected 2011 US County/Municipality Statistics");
 $('#mainScatterplotMapLegend').html("<h4>Plot Legend</h4>" +
     "<p>Data point size indicates relative population of county</p>" +
-    "<p><strong>Data source:</strong> US Census 2011 American Community Survey (ACS) Single Year Estimate</p>");
+    "<p><strong>Data source:</strong> US Census American Community Survey (ACS) Single Year Estimates for 2007-2011</p>");
 $("#mainScatterplotMapLegend").show();
+
+$(function() {
+    $( "#slider" ).slider({
+        value:2011,
+        min: 2007,
+        max: 2011,
+        step: 1,
+        slide: function( event, ui ) {
+            $( "#amount" ).val( "$" + ui.value );
+        }
+    });
+    $( "#amount" ).val( "$" + $( "#slider" ).slider( "value" ) );
+});
 
 var fieldLabels = [];
 var firstPlot = true;
+var transitionSpeed = 6000;
 
 var defaultXMetric = "medianHouseInc";
 var defaultYMetric = "medianHomeVal";
@@ -132,26 +146,26 @@ d3.json('data/data_output_locale_census_data_11-min.json', function(error, theDa
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    var race = d3.select("#miniScatterplotMap1")
-            .append("svg")
-            .attr("id", 'race')
-            .attr("class", 'minichart')
-            .attr("width", miniChartWidth)
-            .attr("height", miniChartHeight);
+//    var race = d3.select("#miniScatterplotMap1")
+//            .append("svg")
+//            .attr("id", 'race')
+//            .attr("class", 'minichart')
+//            .attr("width", miniChartWidth)
+//            .attr("height", miniChartHeight);
+//
+//    var occupation = d3.select("#miniScatterplotMap4")
+//            .append("svg")
+//            .attr("id", 'occupation')
+//            .attr("class", 'minichart')
+//            .attr("width", miniChartWidth)
+//            .attr("height", miniChartHeight);
 
-    var occupation = d3.select("#miniScatterplotMap4")
-            .append("svg")
-            .attr("id", 'occupation')
-            .attr("class", 'minichart')
-            .attr("width", miniChartWidth)
-            .attr("height", miniChartHeight);
-
-    var education = d3.select("#miniScatterplotMap2")
-            .append("svg")
-            .attr("id", 'education')
-            .attr("class", 'minichart')
-            .attr("width", miniChartWidth)
-            .attr("height", miniChartHeight);
+//    var education = d3.select("#miniScatterplotMap2")
+//            .append("svg")
+//            .attr("id", 'education')
+//            .attr("class", 'minichart')
+//            .attr("width", miniChartWidth)
+//            .attr("height", miniChartHeight);
 
     var origin = d3.select("#miniScatterplotMap3")
             .append("svg")
@@ -183,11 +197,13 @@ d3.json('data/data_output_locale_census_data_11-min.json', function(error, theDa
         svg.selectAll("circle")
                 .data(selectedData)
                 .attr("id", function(d) { return d[0]; })
-                .transition(1500)
+                .transition(transitionSpeed)
                 .attr("cx", function(d) { return x(d[1]); })
-                .transition(1500)
+//                .transition(transitionSpeed)
                 .attr("cy", function(d) { return y(d[2]); })
-                .attr("r", function(d) { return z(d[3]); });
+//                .transition(transitionSpeed)
+                // if either data point is null set radius to zero
+                .attr("r", function(d) { return (d[1] == null || d[2] == null) ? 0 : z(d[3]); });
     }
 
     function plotMiniGraphs(brushedKeys){
@@ -200,7 +216,7 @@ d3.json('data/data_output_locale_census_data_11-min.json', function(error, theDa
 
     function plotRaceMini(brushedKeys){
         var aggregateData = [
-            {"label":"Af.Amer.", "value":0},
+            {"label":"Black.", "value":0},
             {"label":"Amer. Ind.", "value":0},
             {"label":"Asian", "value":0},
             {"label":"Pac. Isl.", "value":0},
@@ -208,9 +224,11 @@ d3.json('data/data_output_locale_census_data_11-min.json', function(error, theDa
             {"label":"Other", "value":0},
             {"label":"Mixed", "value":0}
         ];
+        var totalPop = 0;
 
         for (i in brushedKeys){
             var pop = localeMap.get(brushedKeys[i])['pop']
+            totalPop += pop;
             aggregateData[0].value += (localeMap.get(brushedKeys[i])["race"].afAmPct * 0.01 * pop);
             aggregateData[1].value += (localeMap.get(brushedKeys[i])["race"].amIndPct * 0.01 * pop);
             aggregateData[2].value += (localeMap.get(brushedKeys[i])["race"].asianPct * 0.01 * pop);
@@ -219,35 +237,45 @@ d3.json('data/data_output_locale_census_data_11-min.json', function(error, theDa
             aggregateData[5].value += (localeMap.get(brushedKeys[i])["race"].otherPct * 0.01 * pop);
             aggregateData[6].value += (localeMap.get(brushedKeys[i])["race"].moreThanOnePct * 0.01 * pop);
         }
-//        console.log(aggregateData);
-//        plotMiniPie(aggregateData, "#race");
-        plotMiniPie(aggregateData, "Race", "#race", colorbrewer.Accent[8]);
-//        $("#miniScatterplotMap1Title").html("Race");
+
+        for (i in aggregateData){
+            aggregateData[i].value = (aggregateData[i].value/totalPop) * 100;
+        }
+
+        $("#miniScatterplotMap1Title").html("Race");
+        drawMiniBarChart(aggregateData, "miniScatterplotMap1", "raceSVG", 200, 150, colorbrewer.Set2[8][2] )
     }
 
     function plotEducationMini(brushedKeys){
         var aggregateData = [
-            {"label":"Below HS", "value":0},
-            {"label":"HS", "value":0},
+            {"label":"No HS", "value":0},
+            {"label":"Some HS", "value":0},
+            {"label":"HS Degree", "value":0},
             {"label":"Some College", "value":0},
+            {"label":"Associates", "value":0},
             {"label":"Bachelors", "value":0},
-            {"label":"Grad. Degree", "value":0}
+            {"label":"Masters", "value":0}
         ];
+        var totalPop = 0;
 
         for (i in brushedKeys){
             var pop = localeMap.get(brushedKeys[i])['pop']
+            totalPop += pop;
             aggregateData[0].value += (localeMap.get(brushedKeys[i])["ed"].noHSPct * 0.01 * pop);
             aggregateData[1].value += (localeMap.get(brushedKeys[i])["ed"].someHSPct * 0.01 * pop);
             aggregateData[2].value += (localeMap.get(brushedKeys[i])["ed"].hsPct * 0.01 * pop);
             aggregateData[3].value += (localeMap.get(brushedKeys[i])["ed"].someCollegePct * 0.01 * pop);
             aggregateData[4].value += (localeMap.get(brushedKeys[i])["ed"].asPct * 0.01 * pop);
-            aggregateData[4].value += (localeMap.get(brushedKeys[i])["ed"].bsPct * 0.01 * pop);
-            aggregateData[4].value += (localeMap.get(brushedKeys[i])["ed"].msPct * 0.01 * pop);
+            aggregateData[5].value += (localeMap.get(brushedKeys[i])["ed"].bsPct * 0.01 * pop);
+            aggregateData[6].value += (localeMap.get(brushedKeys[i])["ed"].msPct * 0.01 * pop);
         }
-//        console.log(aggregateData);
-//        plotMiniPie(aggregateData, "#education");
-//        $("#miniScatterplotMap2Title").html("Education");
-        plotMiniPie(aggregateData, "Education", "#education", colorbrewer.Set2[8]);
+
+        for (i in aggregateData){
+            aggregateData[i].value = (aggregateData[i].value/totalPop) * 100;
+        }
+
+        $("#miniScatterplotMap2Title").html("Education");
+        drawMiniBarChart(aggregateData, "miniScatterplotMap2", "educationSVG", 200, 150, colorbrewer.Set2[8][3] )
     }
 
     function plotOriginMini(brushedKeys){
@@ -263,9 +291,7 @@ d3.json('data/data_output_locale_census_data_11-min.json', function(error, theDa
             aggregateData[1].value += (localeMap.get(brushedKeys[i])["birth"].outStatePct * 0.01 * pop);
             aggregateData[2].value += (localeMap.get(brushedKeys[i])["birth"].foreignBornPct * 0.01 * pop);
         }
-//        console.log(aggregateData);
-//        plotMiniPie(aggregateData, "#origin");
-//        $("#miniScatterplotMap3Title").html("Origin");
+        $("#miniScatterplotMap3Title").html("Origin");
         plotMiniPie(aggregateData, "Origin", "#origin", colorbrewer.Set1[8]);
     }
 
@@ -384,7 +410,7 @@ d3.json('data/data_output_locale_census_data_11-min.json', function(error, theDa
             .attr("id", function(d) { return d[0]; })
             .attr("cx", function(d) { return x(d[1]); })
             .attr("cy", function(d) { return y(d[2]); })
-            .attr("r", function(d) { return z(d[3]); })
+            .attr("r", function(d) { return (d[1] == null || d[2] == null) ? 0 : z(d[3]); })
             .on("mouseover", function(d) {
                 return scatterTooltip.style("visibility", "visible");
 //                console.log("turning on tooltip");
