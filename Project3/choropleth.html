@@ -11,7 +11,6 @@ var zoomedIn = false;
 var housingStatesD3Map = d3.map();
 var housingCountiesD3Map = d3.map();
 
-
 var quantize = d3.scale.quantize()
         .domain([0, 800000])
         .range(d3.range(8).map(function(i) {
@@ -55,9 +54,10 @@ svg.append("g").attr("id", "counties");
 function ready(error, us)
 {
 
-    d3.json("data/data_output_locale_census_data_11-min.json", function(error, data) {
-        choroplethMiniMapsJSONData = data;
-    });
+//    d3.json("data/data_output_locale_census_data_11-min.json", function(error, data) {
+//        localeJsonData11 = data;
+//    });
+    console.log("Choropleth async done");
 
     // set the map title
     $('#mainMapTitle').html("Housing Prices by State");
@@ -137,9 +137,9 @@ function stateclick(d)
     // get counties in selected state to pass to scatterplot
     var stateFIP = parseInt(housingStatesD3Map.get(d.id).STATE_FIPS);
     var FIPOfCountiesInState = [];
-    for (var county in choroplethMiniMapsJSONData) {
+    for (var county in localeJsonData11) {
 
-        if(choroplethMiniMapsJSONData[county].stateID == stateFIP) {
+        if(localeJsonData11[county].stateID == stateFIP) {
             FIPOfCountiesInState.push(county);
         }
     }

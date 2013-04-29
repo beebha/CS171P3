@@ -6,7 +6,14 @@ var dataToShow = "";
 var timer = null;
 var stateClickedData = null;
 var countyClickedData = null;
-var choroplethMiniMapsJSONData;
+
+var localeJsonData11, localeJsonData10, localeJsonData09, localeJsonData08, localeJsonData07;
+var localeDataMap11 = d3.map();
+var localeDataMap10 = d3.map();
+var localeDataMap09 = d3.map();
+var localeDataMap08 = d3.map();
+var localeDataMap07 = d3.map();
+
 var showreelFilename = "data/data_output_HP_Years_SingleFamilyHomes.csv";
 
 Number.prototype.formatMoney = function(places, symbol, thousand, decimal) {
@@ -273,6 +280,8 @@ function reDrawScatterplotForState(countiesFIPs)
 
 $(document).ready(function()
 {
+    console.log("Document is ready...");
+
     $("#mapVariablesSelector").hide();
 
     $("#dialog-about").hide();
@@ -304,4 +313,7 @@ $(document).ready(function()
     });
 
 });
+
+
+
 

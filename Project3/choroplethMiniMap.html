@@ -52,7 +52,7 @@
                 });
     }
 
-    var countyData = d3.map(choroplethMiniMapsJSONData);
+//    var countyData = d3.map(localeJsonData11);
 
     // rental variables
     var totalRentalPercentage = 0;
@@ -88,42 +88,42 @@
     // county count
     var totalCountyCount = 0;
 
-    countyData.forEach(function(d) {
+    localeDataMap11.forEach(function(d) {
 
         if (dataToShow == "state") {
 
-            if (parseInt(stateClickedData.STATE_FIPS) == countyData.get(d).stateID)
+            if (parseInt(stateClickedData.STATE_FIPS) == localeDataMap11.get(d).stateID)
             {
                 // state data available for rental vs owner
-                totalRentalPercentage += countyData.get(d)['occupant']['renterOccPct'];
+                totalRentalPercentage += localeDataMap11.get(d)['occupant']['renterOccPct'];
 
                 // state data available for house size
-                houseSize1BrPercentage += countyData.get(d)['houseSize']['1BrPct'];
-                houseSize2BrPercentage += countyData.get(d)['houseSize']['2BrPct'];
-                houseSize3BrPercentage += countyData.get(d)['houseSize']['3BrPct'];
-                houseSize4BrPercentage += countyData.get(d)['houseSize']['4BrPct'];
-                houseSize5BrMorePercentage += countyData.get(d)['houseSize']['5BrMorePct'];
+                houseSize1BrPercentage += localeDataMap11.get(d)['houseSize']['1BrPct'];
+                houseSize2BrPercentage += localeDataMap11.get(d)['houseSize']['2BrPct'];
+                houseSize3BrPercentage += localeDataMap11.get(d)['houseSize']['3BrPct'];
+                houseSize4BrPercentage += localeDataMap11.get(d)['houseSize']['4BrPct'];
+                houseSize5BrMorePercentage += localeDataMap11.get(d)['houseSize']['5BrMorePct'];
 
                 // state data available for house value
-                houseValueLessThan50kPercentage += countyData.get(d)['houseValue']['lessThan50kPct'];
-                houseValue50kto99kPercentage += countyData.get(d)['houseValue']['50kto99kPct'];
-                houseValue100kto149kPercentage += countyData.get(d)['houseValue']['100kto149kPct'];
-                houseValue150kto199kPercentage += countyData.get(d)['houseValue']['150kto199kPct'];
-                houseValue200kto299kPercentage += countyData.get(d)['houseValue']['200kto299kPct'];
-                houseValue300kto499kPercentage += countyData.get(d)['houseValue']['300kto499kPct'];
-                houseValue500kto999kPercentage += countyData.get(d)['houseValue']['500kto999kPct'];
-                houseValue1MOrMorePercentage += countyData.get(d)['houseValue']['1MOrMorePct'];
+                houseValueLessThan50kPercentage += localeDataMap11.get(d)['houseValue']['lessThan50kPct'];
+                houseValue50kto99kPercentage += localeDataMap11.get(d)['houseValue']['50kto99kPct'];
+                houseValue100kto149kPercentage += localeDataMap11.get(d)['houseValue']['100kto149kPct'];
+                houseValue150kto199kPercentage += localeDataMap11.get(d)['houseValue']['150kto199kPct'];
+                houseValue200kto299kPercentage += localeDataMap11.get(d)['houseValue']['200kto299kPct'];
+                houseValue300kto499kPercentage += localeDataMap11.get(d)['houseValue']['300kto499kPct'];
+                houseValue500kto999kPercentage += localeDataMap11.get(d)['houseValue']['500kto999kPct'];
+                houseValue1MOrMorePercentage += localeDataMap11.get(d)['houseValue']['1MOrMorePct'];
 
                 // state data available for house age
-                houseAge2005NewerPercentage += countyData.get(d)['houseAge']['2005NewerPct'];
-                houseAge2000to2004Percentage += countyData.get(d)['houseAge']['2000to2004Pct'];
-                houseAge1990to1999Percentage += countyData.get(d)['houseAge']['1990to1999Pct'];
-                houseAge1980to1989Percentage += countyData.get(d)['houseAge']['1980to1989Pct'];
-                houseAge1970to1979Percentage += countyData.get(d)['houseAge']['1970to1979Pct'];
-                houseAge1960to1969Percentage += countyData.get(d)['houseAge']['1960to1969Pct'];
-                houseAge1950to1959Percentage += countyData.get(d)['houseAge']['1950to1959Pct'];
-                houseAge1940to1949Percentage += countyData.get(d)['houseAge']['1940to1949Pct'];
-                houseAge1939OlderPercentage += countyData.get(d)['houseAge']['1939OlderPct'];
+                houseAge2005NewerPercentage += localeDataMap11.get(d)['houseAge']['2005NewerPct'];
+                houseAge2000to2004Percentage += localeDataMap11.get(d)['houseAge']['2000to2004Pct'];
+                houseAge1990to1999Percentage += localeDataMap11.get(d)['houseAge']['1990to1999Pct'];
+                houseAge1980to1989Percentage += localeDataMap11.get(d)['houseAge']['1980to1989Pct'];
+                houseAge1970to1979Percentage += localeDataMap11.get(d)['houseAge']['1970to1979Pct'];
+                houseAge1960to1969Percentage += localeDataMap11.get(d)['houseAge']['1960to1969Pct'];
+                houseAge1950to1959Percentage += localeDataMap11.get(d)['houseAge']['1950to1959Pct'];
+                houseAge1940to1949Percentage += localeDataMap11.get(d)['houseAge']['1940to1949Pct'];
+                houseAge1939OlderPercentage += localeDataMap11.get(d)['houseAge']['1939OlderPct'];
 
                 // increase county count
                 totalCountyCount ++;
@@ -132,35 +132,35 @@
             if (parseInt(countyClickedData.FIPS) == parseInt(d))
             {
                 // county data available for rental vs owner
-                totalRentalPercentage = isNaN(countyData.get(d)['occupant']['renterOccPct']) ? 0 : countyData.get(d)['occupant']['renterOccPct'];
+                totalRentalPercentage = isNaN(localeDataMap11.get(d)['occupant']['renterOccPct']) ? 0 : localeDataMap11.get(d)['occupant']['renterOccPct'];
 
                 // county data available for house size
-                houseSize1BrPercentage = isNaN(countyData.get(d)['houseSize']['1BrPct']) ? 0 : countyData.get(d)['houseSize']['1BrPct'];
-                houseSize2BrPercentage = isNaN(countyData.get(d)['houseSize']['2BrPct']) ? 0 : countyData.get(d)['houseSize']['2BrPct'];
-                houseSize3BrPercentage = isNaN(countyData.get(d)['houseSize']['3BrPct']) ? 0 : countyData.get(d)['houseSize']['3BrPct'];
-                houseSize4BrPercentage = isNaN(countyData.get(d)['houseSize']['4BrPct']) ? 0 : countyData.get(d)['houseSize']['4BrPct'];
-                houseSize5BrMorePercentage = isNaN(countyData.get(d)['houseSize']['5BrMorePct']) ? 0 : countyData.get(d)['houseSize']['5BrMorePct'];
+                houseSize1BrPercentage = isNaN(localeDataMap11.get(d)['houseSize']['1BrPct']) ? 0 : localeDataMap11.get(d)['houseSize']['1BrPct'];
+                houseSize2BrPercentage = isNaN(localeDataMap11.get(d)['houseSize']['2BrPct']) ? 0 : localeDataMap11.get(d)['houseSize']['2BrPct'];
+                houseSize3BrPercentage = isNaN(localeDataMap11.get(d)['houseSize']['3BrPct']) ? 0 : localeDataMap11.get(d)['houseSize']['3BrPct'];
+                houseSize4BrPercentage = isNaN(localeDataMap11.get(d)['houseSize']['4BrPct']) ? 0 : localeDataMap11.get(d)['houseSize']['4BrPct'];
+                houseSize5BrMorePercentage = isNaN(localeDataMap11.get(d)['houseSize']['5BrMorePct']) ? 0 : localeDataMap11.get(d)['houseSize']['5BrMorePct'];
 
                 // county data available for house value
-                houseValueLessThan50kPercentage = isNaN(countyData.get(d)['houseValue']['lessThan50kPct']) ? 0 : countyData.get(d)['houseValue']['lessThan50kPct'];
-                houseValue50kto99kPercentage = isNaN(countyData.get(d)['houseValue']['50kto99kPct']) ? 0 : countyData.get(d)['houseValue']['50kto99kPct'];
-                houseValue100kto149kPercentage = isNaN(countyData.get(d)['houseValue']['100kto149kPct']) ? 0 : countyData.get(d)['houseValue']['100kto149kPct'];
-                houseValue150kto199kPercentage = isNaN(countyData.get(d)['houseValue']['150kto199kPct']) ? 0 : countyData.get(d)['houseValue']['150kto199kPct'];
-                houseValue200kto299kPercentage = isNaN(countyData.get(d)['houseValue']['200kto299kPct']) ? 0 : countyData.get(d)['houseValue']['200kto299kPct'];
-                houseValue300kto499kPercentage = isNaN(countyData.get(d)['houseValue']['300kto499kPct']) ? 0 : countyData.get(d)['houseValue']['300kto499kPct'];
-                houseValue500kto999kPercentage = isNaN(countyData.get(d)['houseValue']['500kto999kPct']) ? 0 : countyData.get(d)['houseValue']['500kto999kPct'];
-                houseValue1MOrMorePercentage = isNaN(countyData.get(d)['houseValue']['1MOrMorePct']) ? 0 : countyData.get(d)['houseValue']['1MOrMorePct'];
+                houseValueLessThan50kPercentage = isNaN(localeDataMap11.get(d)['houseValue']['lessThan50kPct']) ? 0 : localeDataMap11.get(d)['houseValue']['lessThan50kPct'];
+                houseValue50kto99kPercentage = isNaN(localeDataMap11.get(d)['houseValue']['50kto99kPct']) ? 0 : localeDataMap11.get(d)['houseValue']['50kto99kPct'];
+                houseValue100kto149kPercentage = isNaN(localeDataMap11.get(d)['houseValue']['100kto149kPct']) ? 0 : localeDataMap11.get(d)['houseValue']['100kto149kPct'];
+                houseValue150kto199kPercentage = isNaN(localeDataMap11.get(d)['houseValue']['150kto199kPct']) ? 0 : localeDataMap11.get(d)['houseValue']['150kto199kPct'];
+                houseValue200kto299kPercentage = isNaN(localeDataMap11.get(d)['houseValue']['200kto299kPct']) ? 0 : localeDataMap11.get(d)['houseValue']['200kto299kPct'];
+                houseValue300kto499kPercentage = isNaN(localeDataMap11.get(d)['houseValue']['300kto499kPct']) ? 0 : localeDataMap11.get(d)['houseValue']['300kto499kPct'];
+                houseValue500kto999kPercentage = isNaN(localeDataMap11.get(d)['houseValue']['500kto999kPct']) ? 0 : localeDataMap11.get(d)['houseValue']['500kto999kPct'];
+                houseValue1MOrMorePercentage = isNaN(localeDataMap11.get(d)['houseValue']['1MOrMorePct']) ? 0 : localeDataMap11.get(d)['houseValue']['1MOrMorePct'];
 
                 // county data available for house age
-                houseAge2005NewerPercentage = isNaN(countyData.get(d)['houseAge']['2005NewerPct']) ? 0 : countyData.get(d)['houseAge']['2005NewerPct'];
-                houseAge2000to2004Percentage = isNaN(countyData.get(d)['houseAge']['2000to2004Pct']) ? 0 : countyData.get(d)['houseAge']['2000to2004Pct'];
-                houseAge1990to1999Percentage = isNaN(countyData.get(d)['houseAge']['1990to1999Pct']) ? 0 : countyData.get(d)['houseAge']['1990to1999Pct'];
-                houseAge1980to1989Percentage = isNaN(countyData.get(d)['houseAge']['1980to1989Pct']) ? 0 : countyData.get(d)['houseAge']['1980to1989Pct'];
-                houseAge1970to1979Percentage = isNaN(countyData.get(d)['houseAge']['1970to1979Pct']) ? 0 : countyData.get(d)['houseAge']['1970to1979Pct'];
-                houseAge1960to1969Percentage = isNaN(countyData.get(d)['houseAge']['1960to1969Pct']) ? 0 : countyData.get(d)['houseAge']['1960to1969Pct'];
-                houseAge1950to1959Percentage = isNaN(countyData.get(d)['houseAge']['1950to1959Pct']) ? 0 : countyData.get(d)['houseAge']['1950to1959Pct'];
-                houseAge1940to1949Percentage = isNaN(countyData.get(d)['houseAge']['1940to1949Pct']) ? 0 : countyData.get(d)['houseAge']['1940to1949Pct'];
-                houseAge1939OlderPercentage = isNaN(countyData.get(d)['houseAge']['1939OlderPct']) ? 0 : countyData.get(d)['houseAge']['1939OlderPct'];
+                houseAge2005NewerPercentage = isNaN(localeDataMap11.get(d)['houseAge']['2005NewerPct']) ? 0 : localeDataMap11.get(d)['houseAge']['2005NewerPct'];
+                houseAge2000to2004Percentage = isNaN(localeDataMap11.get(d)['houseAge']['2000to2004Pct']) ? 0 : localeDataMap11.get(d)['houseAge']['2000to2004Pct'];
+                houseAge1990to1999Percentage = isNaN(localeDataMap11.get(d)['houseAge']['1990to1999Pct']) ? 0 : localeDataMap11.get(d)['houseAge']['1990to1999Pct'];
+                houseAge1980to1989Percentage = isNaN(localeDataMap11.get(d)['houseAge']['1980to1989Pct']) ? 0 : localeDataMap11.get(d)['houseAge']['1980to1989Pct'];
+                houseAge1970to1979Percentage = isNaN(localeDataMap11.get(d)['houseAge']['1970to1979Pct']) ? 0 : localeDataMap11.get(d)['houseAge']['1970to1979Pct'];
+                houseAge1960to1969Percentage = isNaN(localeDataMap11.get(d)['houseAge']['1960to1969Pct']) ? 0 : localeDataMap11.get(d)['houseAge']['1960to1969Pct'];
+                houseAge1950to1959Percentage = isNaN(localeDataMap11.get(d)['houseAge']['1950to1959Pct']) ? 0 : localeDataMap11.get(d)['houseAge']['1950to1959Pct'];
+                houseAge1940to1949Percentage = isNaN(localeDataMap11.get(d)['houseAge']['1940to1949Pct']) ? 0 : localeDataMap11.get(d)['houseAge']['1940to1949Pct'];
+                houseAge1939OlderPercentage = isNaN(localeDataMap11.get(d)['houseAge']['1939OlderPct']) ? 0 : localeDataMap11.get(d)['houseAge']['1939OlderPct'];
 
                 totalCountyCount = 1;
             }

@@ -2,24 +2,6 @@
 <html>
 <body>
 <script type="text/javascript">
-//$("#mainMapTitle").html("Selected 2011 US County/Municipality Statistics");
-$('#mainScatterplotMapLegend').html("<h4>Plot Legend</h4>" +
-    "<p>Data point size indicates relative population of county</p>" +
-    "<p><strong>Data source:</strong> US Census American Community Survey (ACS) Single Year Estimates for 2007-2011</p>");
-$("#mainScatterplotMapLegend").show();
-
-$(function() {
-    $( "#slider" ).slider({
-        value:2011,
-        min: 2007,
-        max: 2011,
-        step: 1,
-        slide: function( event, ui ) {
-            $( "#amount" ).val( "$" + ui.value );
-        }
-    });
-    $( "#amount" ).val( "$" + $( "#slider" ).slider( "value" ) );
-});
 
 var fieldLabels = [];
 var firstPlot = true;
@@ -60,18 +42,68 @@ var yAxis = d3.svg.axis()
         .scale(y)
         .orient("left");
 
+queue()
+    .defer(d3.json, "data/data_output_locale_census_data_11-min.json", function(error, data){
+        if (error){console.log("Error while loading files...") ;}
+        console.log("got data 11");
+        localeJsonData11 = data;
+        localeDataMap11 = d3.map(localeJsonData11);
+        dataReady();
+    })
+    .defer(d3.json, "data/data_output_locale_census_data_10-min.json", function(error, data){
+        console.log("got data 10");
+        localeJsonData10 = data;
+        localeDataMap10 = d3.map(localeJsonData11);
+    })
+    .defer(d3.json, "data/data_output_locale_census_data_09-min.json", function(error, data){
+        console.log("got data 09");
+        localeJsonData09 = data;
+        localeDataMap09 = d3.map(localeJsonData11);
+    })
+    .defer(d3.json, "data/data_output_locale_census_data_08-min.json", function(error, data){
+        console.log("got data 08");
+        localeJsonData08 = data;
+        localeDataMap08 = d3.map(localeJsonData11);
+    })
+    .defer(d3.json, "data/data_output_locale_census_data_07-min.json", function(error, data){
+        console.log("got data 07");
+        localeJsonData07 = data;
+        localeDataMap07 = d3.map(localeJsonData11);
+    });
+
+$(function() {
+    $( "#slider" ).slider({
+        value:2011,
+        min: 2007,
+        max: 2011,
+        step: 1,
+        slide: function( event, ui ) {
+            $( "#amount" ).val( "$" + ui.value );
+        }
+    });
+    $( "#amount" ).val( "$" + $( "#slider" ).slider( "value" ) );
+});
+
 function scaleAxes(selectedData){
     x.domain(d3.extent(selectedData, function(d) { return d[1]; }));
     y.domain(d3.extent(selectedData, function(d) { return d[2]; }));
     z.domain(d3.extent(selectedData, function(d) { return d[3]; }));
 }
 
-//get data and parse it
-d3.json('data/data_output_locale_census_data_11-min.json', function(error, theData)
-{
-    if (error){console.log("Error: " + error)}
+//$("#mainMapTitle").html("Selected 2011 US County/Municipality Statistics");
+$('#mainScatterplotMapLegend').html("<h4>Plot Legend</h4>" +
+        "<p>Data point size indicates relative population of county</p>" +
+        "<p><strong>Data source:</strong> US Census American Community Survey (ACS) Single Year Estimates for 2007-2011</p>");
+$("#mainScatterplotMapLegend").show();
 
-    var localeMap = d3.map(theData);
+//get data and parse it
+//d3.json('data/data_output_locale_census_data_11-min.json', function(error, theData)
+//{
+//    if (error){console.log("Error: " + error)}
+//
+//    var localeDataMap11 = d3.map(theData);
+
+function dataReady(){
 
     var scatterTooltip = d3.select("body")
             .append("div")
@@ -82,7 +114,6 @@ d3.json('data/data_output_locale_census_data_11-min.json', function(error, theDa
             .style("visibility", "hidden")
             .html("");
 
-    //var scatterArray = [];
     var fieldTitles = [];
 
     // Create dropdown axis plot controls
@@ -132,13 +163,12 @@ d3.json('data/data_output_locale_census_data_11-min.json', function(error, theDa
     var brush = d3.svg.brush()
             .x(x)
             .y(y)
-//            .on("mouseover", callTooltip)
             .on("brushstart", brushstart)
             .on("brush", brushmove)
             .on("brushend", brushend);
 
     //Create SVG element
-    var svg = d3.select("#mainScatterplotMap")
+    var scatterSVG = d3.select("#mainScatterplotMap")
             .append("svg")
             .attr("id", 'mainScatterplotMapSVG')
             .attr("width", width)
@@ -153,19 +183,6 @@ d3.json('data/data_output_locale_census_data_11-min.json', function(error, theDa
 //            .attr("width", miniChartWidth)
 //            .attr("height", miniChartHeight);
 //
-//    var occupation = d3.select("#miniScatterplotMap4")
-//            .append("svg")
-//            .attr("id", 'occupation')
-//            .attr("class", 'minichart')
-//            .attr("width", miniChartWidth)
-//            .attr("height", miniChartHeight);
-
-//    var education = d3.select("#miniScatterplotMap2")
-//            .append("svg")
-//            .attr("id", 'education')
-//            .attr("class", 'minichart')
-//            .attr("width", miniChartWidth)
-//            .attr("height", miniChartHeight);
 
     var origin = d3.select("#miniScatterplotMap3")
             .append("svg")
@@ -185,16 +202,16 @@ d3.json('data/data_output_locale_census_data_11-min.json', function(error, theDa
         var ySel = document.getElementById("yAxisSelect");
 
         scaleAxes(selectedData);
-        svg.selectAll("#xAxis").call(xAxis);
-        svg.selectAll("#yAxis").call(yAxis);
+        scatterSVG.selectAll("#xAxis").call(xAxis);
+        scatterSVG.selectAll("#yAxis").call(yAxis);
 
-        svg.select("#xAxis").select("#xTitle")
+        scatterSVG.select("#xAxis").select("#xTitle")
                 .text(xSel.options[xSel.selectedIndex].text);
 
-        svg.select("#yAxis").select("#yTitle")
+        scatterSVG.select("#yAxis").select("#yTitle")
                 .text(ySel.options[ySel.selectedIndex].text);
 
-        svg.selectAll("circle")
+        scatterSVG.selectAll("circle")
                 .data(selectedData)
                 .attr("id", function(d) { return d[0]; })
                 .transition(transitionSpeed)
@@ -227,15 +244,15 @@ d3.json('data/data_output_locale_census_data_11-min.json', function(error, theDa
         var totalPop = 0;
 
         for (i in brushedKeys){
-            var pop = localeMap.get(brushedKeys[i])['pop']
+            var pop = localeDataMap11.get(brushedKeys[i])['pop']
             totalPop += pop;
-            aggregateData[0].value += (localeMap.get(brushedKeys[i])["race"].afAmPct * 0.01 * pop);
-            aggregateData[1].value += (localeMap.get(brushedKeys[i])["race"].amIndPct * 0.01 * pop);
-            aggregateData[2].value += (localeMap.get(brushedKeys[i])["race"].asianPct * 0.01 * pop);
-            aggregateData[3].value += (localeMap.get(brushedKeys[i])["race"].pacIslandPct * 0.01 * pop);
-            aggregateData[4].value += (localeMap.get(brushedKeys[i])["race"].whitePct * 0.01 * pop);
-            aggregateData[5].value += (localeMap.get(brushedKeys[i])["race"].otherPct * 0.01 * pop);
-            aggregateData[6].value += (localeMap.get(brushedKeys[i])["race"].moreThanOnePct * 0.01 * pop);
+            aggregateData[0].value += (localeDataMap11.get(brushedKeys[i])["race"].afAmPct * 0.01 * pop);
+            aggregateData[1].value += (localeDataMap11.get(brushedKeys[i])["race"].amIndPct * 0.01 * pop);
+            aggregateData[2].value += (localeDataMap11.get(brushedKeys[i])["race"].asianPct * 0.01 * pop);
+            aggregateData[3].value += (localeDataMap11.get(brushedKeys[i])["race"].pacIslandPct * 0.01 * pop);
+            aggregateData[4].value += (localeDataMap11.get(brushedKeys[i])["race"].whitePct * 0.01 * pop);
+            aggregateData[5].value += (localeDataMap11.get(brushedKeys[i])["race"].otherPct * 0.01 * pop);
+            aggregateData[6].value += (localeDataMap11.get(brushedKeys[i])["race"].moreThanOnePct * 0.01 * pop);
         }
 
         for (i in aggregateData){
@@ -259,15 +276,15 @@ d3.json('data/data_output_locale_census_data_11-min.json', function(error, theDa
         var totalPop = 0;
 
         for (i in brushedKeys){
-            var pop = localeMap.get(brushedKeys[i])['pop']
+            var pop = localeDataMap11.get(brushedKeys[i])['pop']
             totalPop += pop;
-            aggregateData[0].value += (localeMap.get(brushedKeys[i])["ed"].noHSPct * 0.01 * pop);
-            aggregateData[1].value += (localeMap.get(brushedKeys[i])["ed"].someHSPct * 0.01 * pop);
-            aggregateData[2].value += (localeMap.get(brushedKeys[i])["ed"].hsPct * 0.01 * pop);
-            aggregateData[3].value += (localeMap.get(brushedKeys[i])["ed"].someCollegePct * 0.01 * pop);
-            aggregateData[4].value += (localeMap.get(brushedKeys[i])["ed"].asPct * 0.01 * pop);
-            aggregateData[5].value += (localeMap.get(brushedKeys[i])["ed"].bsPct * 0.01 * pop);
-            aggregateData[6].value += (localeMap.get(brushedKeys[i])["ed"].msPct * 0.01 * pop);
+            aggregateData[0].value += (localeDataMap11.get(brushedKeys[i])["ed"].noHSPct * 0.01 * pop);
+            aggregateData[1].value += (localeDataMap11.get(brushedKeys[i])["ed"].someHSPct * 0.01 * pop);
+            aggregateData[2].value += (localeDataMap11.get(brushedKeys[i])["ed"].hsPct * 0.01 * pop);
+            aggregateData[3].value += (localeDataMap11.get(brushedKeys[i])["ed"].someCollegePct * 0.01 * pop);
+            aggregateData[4].value += (localeDataMap11.get(brushedKeys[i])["ed"].asPct * 0.01 * pop);
+            aggregateData[5].value += (localeDataMap11.get(brushedKeys[i])["ed"].bsPct * 0.01 * pop);
+            aggregateData[6].value += (localeDataMap11.get(brushedKeys[i])["ed"].msPct * 0.01 * pop);
         }
 
         for (i in aggregateData){
@@ -286,13 +303,13 @@ d3.json('data/data_output_locale_census_data_11-min.json', function(error, theDa
         ];
 
         for (i in brushedKeys){
-            var pop = localeMap.get(brushedKeys[i])['pop']
-            aggregateData[0].value += (localeMap.get(brushedKeys[i])["birth"].inStatePct * 0.01 * pop);
-            aggregateData[1].value += (localeMap.get(brushedKeys[i])["birth"].outStatePct * 0.01 * pop);
-            aggregateData[2].value += (localeMap.get(brushedKeys[i])["birth"].foreignBornPct * 0.01 * pop);
+            var pop = localeDataMap11.get(brushedKeys[i])['pop']
+            aggregateData[0].value += (localeDataMap11.get(brushedKeys[i])["birth"].inStatePct * 0.01 * pop);
+            aggregateData[1].value += (localeDataMap11.get(brushedKeys[i])["birth"].outStatePct * 0.01 * pop);
+            aggregateData[2].value += (localeDataMap11.get(brushedKeys[i])["birth"].foreignBornPct * 0.01 * pop);
         }
-        $("#miniScatterplotMap3Title").html("Origin");
-        plotMiniPie(aggregateData, "Origin", "#origin", colorbrewer.Set1[8]);
+        $("#miniScatterplotMap3Title").html("Birthplace");
+        plotMiniPie(aggregateData, "Birthplace", "#origin", colorbrewer.Set1[8]);
     }
 
 
@@ -365,8 +382,8 @@ d3.json('data/data_output_locale_census_data_11-min.json', function(error, theDa
             console.log(xMetric + ":" + yMetric);
         }
         var selectedData = [];
-        localeMap.forEach(function(d){
-            selectedData.push([d,localeMap.get(d)[xMetric],localeMap.get(d)[yMetric],localeMap.get(d)['pop']]);
+        localeDataMap11.forEach(function(d){
+            selectedData.push([d,localeDataMap11.get(d)[xMetric],localeDataMap11.get(d)[yMetric],localeDataMap11.get(d)['pop']]);
         });
         return selectedData
     }
@@ -374,7 +391,7 @@ d3.json('data/data_output_locale_census_data_11-min.json', function(error, theDa
     var scatterData = selectData();
     scaleAxes(scatterData);
 
-    svg.append("g")
+    scatterSVG.append("g")
             .attr("id", "xAxis")
             .attr("transform", "translate(0," + theHeight + ")")
             .call(xAxis)
@@ -387,7 +404,7 @@ d3.json('data/data_output_locale_census_data_11-min.json', function(error, theDa
             .style("text-anchor", "middle")
             .text(defaultXTitle);
 
-    svg.append("g")
+    scatterSVG.append("g")
             .attr("id", "yAxis")
             .call(yAxis)
             .append("text")
@@ -401,9 +418,9 @@ d3.json('data/data_output_locale_census_data_11-min.json', function(error, theDa
             .text(defaultYTitle);
 
     // Code for brushing data points
-    svg.call(brush);
+    scatterSVG.call(brush);
 
-    var circle = svg.selectAll("circle")
+    var circle = scatterSVG.selectAll("circle")
             .data(scatterData)
             .enter()
             .append("circle")
@@ -417,8 +434,8 @@ d3.json('data/data_output_locale_census_data_11-min.json', function(error, theDa
             })
             .on("mousemove", function(d) {
 
-                var tooltipText = "<h4>" + localeMap.get(d[0]).locale + ", ";
-                tooltipText += localeMap.get(d[0]).state + "</h4>";
+                var tooltipText = "<h4>" + localeDataMap11.get(d[0]).locale + ", ";
+                tooltipText += localeDataMap11.get(d[0]).state + "</h4>";
                 tooltipText += "<p>Population: " + d[3].formatNumber(0) + "</b><br>";
                 scatterTooltip.html(tooltipText);
                 scatterTooltip.attr("class", "tooltip");
@@ -433,7 +450,7 @@ d3.json('data/data_output_locale_census_data_11-min.json', function(error, theDa
 
 
     function brushstart(p) {
-        svg.classed("selecting", true);
+        scatterSVG.classed("selecting", true);
         console.log("Start brushing...");
     }
 
@@ -447,14 +464,14 @@ d3.json('data/data_output_locale_census_data_11-min.json', function(error, theDa
     }
 
     function brushend() {
-        svg.classed("selecting", !d3.event.target.empty());
+        scatterSVG.classed("selecting", !d3.event.target.empty());
         console.log("Brush ended...");
         updateBrush();
 
     }
 
     function updateBrush(){
-        var brushedElements = svg.selectAll(".brushed");
+        var brushedElements = scatterSVG.selectAll(".brushed");
         var brushedKeys = [];
         brushedElements[0].forEach( function(d){
             brushedKeys.push(d.id);
@@ -464,7 +481,8 @@ d3.json('data/data_output_locale_census_data_11-min.json', function(error, theDa
         plotMiniGraphs(brushedKeys);
     }
 
-});
+}
+
 </script>
 </body>
 </html>
