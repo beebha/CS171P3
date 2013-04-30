@@ -19,7 +19,6 @@ var svg = d3.select("#mainMap").append("svg:svg")
         .attr("width", width)
         .attr("height", height)
         .attr("id", "mainMapSVG")
-        .on("click", animationClick)
         .append("svg:g")
         .attr("transform", "translate(" + mapPaddings[3] + "," + mapPaddings[0] + ")");
 
@@ -30,7 +29,8 @@ var tooltip = d3.select("body")
         .style("visibility", "hidden")
         .html("");
 
-var houseprices, housetypes, showreelData;
+var houseprices, housetypes;
+var showreelData = [];
 
 var line = d3.svg.line()
         .interpolate("basis")
@@ -100,10 +100,17 @@ if (showreelFilename == "data/data_output_HP_Years_SingleFamilyHomes.csv")
     showLegend('animationSFC');
 }
 
-d3.csv(showreelFilename, function(data) {
-    showreelData = data;
+
+queue().defer(d3.csv, showreelFilename, function(d) {
+            showreelData.push(d);
+        }).await(ready);
+
+function ready(error, data)
+{
+    console.log("Showreel async done");
+    timer = null;
     setupShowreel();
-});
+}
 
 function setupShowreel()
 {
@@ -531,7 +538,7 @@ function transposeBar()
                     svg.selectAll("*").remove();
                     svg.selectAll("g").data(housetypes).enter().append("svg:g").attr("class", "housetype");
                     overlappingArea();
-                }, 3000);
+                }, 4000);
 }
 
 function animationClick(d)
@@ -545,6 +552,10 @@ function animationClick(d)
     }
 
     animationPaused ? $('#animationPausedMsg').show() : $('#animationPausedMsg').hide();
+    animationPaused ? $('#animationPauseButton').html("Resume Animation") : $('#animationPauseButton').html("Pause Animation");
+    animationPaused ? $('#miniMapTitle').html("Click the \"Resume Animation\" below to " +
+                "resume the animation.") : $('#miniMapTitle').html("Click the \"Pause Animation\" below to " +
+                "pause the animation and view details via mouseover tooltips.");
 }
 
 function Timer(callback, delay) {

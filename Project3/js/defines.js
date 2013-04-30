@@ -166,9 +166,8 @@ function getFormattedPrice(val)
 
 function removeMainMap()
 {
-    clearTimeout(timer);
-    timer = null;
     hideLegend();
+    timer = null;
     d3.select("#mainMap").select("svg").remove();
     d3.select("#mainScatterplotMap").select("svg").remove();
     d3.select("#miniMap1").select("svg").remove();
@@ -191,6 +190,8 @@ function removeMainMap()
     $("#mapControls").hide();
     $("#mapControlsForScatterplot").hide();
     $('#animationPausedMsg').hide();
+    $('#animationPauseButton').html("Pause Animation");
+    $('#animationPauseButton').hide();
     $('#miniMap1Title').html("");
     $('#miniMap2Title').html("");
     $('#miniMap3Title').html("");
@@ -262,6 +263,8 @@ function showProjectScreencast()
 
 function redrawShowReel()
 {
+    timer.pause();
+    $('#miniMapTitle').html("Click the \"Pause Animation\" below to " + "pause the animation and view details via mouseover tooltips.");
     if($('#housingTypeSelect').val() == 'singlefamily') {
         showreelFilename = "data/data_output_HP_Years_SingleFamilyHomes.csv";
     } else if ($('#housingTypeSelect').val() == 'condo') {
@@ -271,6 +274,7 @@ function redrawShowReel()
     }
     removeMainMap();
     $("#mainMapHTML").load("showreel.html");
+    $('#animationPauseButton').show();
 }
 
 function reDrawScatterplotForState(countiesFIPs)
@@ -292,6 +296,8 @@ $(document).ready(function()
 
     $('#animationPausedMsg').hide();
 
+    $('#animationPauseButton').hide();
+
     $("#mainMapHTML").load("choropleth.html");
     $("#mainScatterplotMapHTML").load("scatterplot.html");
 
@@ -299,9 +305,10 @@ $(document).ready(function()
         removeMainMap();
         removeMiniMaps();
         if($("#mapSelection").val() == 'showreel') {
-            $('#miniMapTitle').html("Click anywhere on the animation on the left to " +
+            $('#miniMapTitle').html("Click the \"Pause Animation\" below to " +
                 "pause the animation and view details via mouseover tooltips.");
             showreelFilename = "data/data_output_HP_Years_SingleFamilyHomes.csv";
+            $('#animationPauseButton').show();
         }
         if($("#mapSelection").val() == 'choropleth') {
             $('#miniMapTitle').html("Drill-Down information - Select objects on the left to activate this display");
