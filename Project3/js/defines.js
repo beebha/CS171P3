@@ -294,14 +294,12 @@ function showNavigation()
 function showShowreelNavigation()
 {
     console.log("showShowreelNavigation");
-    introJs().setOptions({ skipLabel: "Exit", tooltipPosition: "right" });
     introJs().start();
 }
 
 function showChoroplethScatterplotNavigation()
 {
     console.log("showChoroplethScatterplotNavigation");
-    introJs().setOptions({ skipLabel: "Exit", tooltipPosition: "right" });
     introJs().start();
 }
 

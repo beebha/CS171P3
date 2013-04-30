@@ -36,16 +36,16 @@
     </div>
     <div id="mainMap" class="roundedFrame"
          data-intro='<strong>The US Housing Cost Choropleth</strong><br><br>
-            This visualization shows the general trends in housing prices (average listing price in USD ($)) across the US.<br>
-            Interactivity in this map includes the following:<br><br>
-            ⇒	Mousing over any state displays a tooltip.<br>
-            ⇒	Clicking any state highlights the clicked state.<br>
-            ⇒	Double clicking any state zooms in to show the county level details.<br>
-            ⇒	Double clicking again zooms out to show the states map again.<br>
-            ⇒	Clicking any county highlights the clicked county.<br>
-            ⇒	Clicking any county outside the state, selects the new state.<br>
-            ⇒	Mousing over any county also displays a tooltip.<br>
-            ⇒	Mini maps are displayed based on clicked state or county.<br>'
+                        This visualization shows the general trends in housing prices (average listing price in USD ($)) across the US.<br>
+                        Interactivity in this map includes the following:<br><br>
+                        ⇒	Mousing over any state displays a tooltip.<br>
+                        ⇒	Clicking any state highlights the clicked state.<br>
+                        ⇒	Double clicking any state zooms in to show the county level details.<br>
+                        ⇒	Double clicking again zooms out to show the states map again.<br>
+                        ⇒	Clicking any county highlights the clicked county.<br>
+                        ⇒	Clicking any county outside the state, selects the new state.<br>
+                        ⇒	Mousing over any county also displays a tooltip.<br>
+                        ⇒	Mini maps are displayed based on clicked state or county.<br>'
          data-step='10'>
      </div>
     <div id="miniMapWrapper" class="roundedFrame"
@@ -133,7 +133,17 @@
     </div>
     <div id="animationPausedMsg">ANIMATION PAUSED...</div>
     <div id="scatterplotMapDiv">
-        <div id="mainScatterplotMap" class="roundedFrame"></div>
+        <div id="mainScatterplotMap"
+             class="roundedFrame"
+             data-intro='<strong>The Socio-Economics Factors Scatterplot</strong><br><br>
+                        This visualization allows the exploration of US socio-economic patterns
+                        by selecting the data to plot on the X and Y axis of the scatter plot.<br>
+                        Interactivity in this map includes the following:<br><br>
+                        ⇒	X and Y axes can each be assigned > 30 datasets via the dropdown.<br>
+                        ⇒	Dragging a rectangular selection box brushes data points.<br>
+                        ⇒	Mini maps are displayed based on selected data points.<br>
+                        ⇒	Brushed selections are draggable to new locations.<br>'
+             data-step='12'></div>
         <div id="miniScatterplotMapWrapper" class="roundedFrame">
             <h4>Drill-Down information<span id="miniScatterplotMapTitle"> - Select objects on the left to activate this display</span></h4>
             <div id="miniScatterplotMap">
