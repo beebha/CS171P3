@@ -167,6 +167,9 @@ function getFormattedPrice(val)
 function removeMainMap()
 {
     hideLegend();
+    if(timer != null) {
+        timer.pause();
+    }
     timer = null;
     d3.select("#mainMap").select("svg").remove();
     d3.select("#mainScatterplotMap").select("svg").remove();
@@ -263,7 +266,6 @@ function showProjectScreencast()
 
 function redrawShowReel()
 {
-    timer.pause();
     $('#miniMapTitle').html("Click the \"Pause Animation\" below to " + "pause the animation and view details via mouseover tooltips.");
     if($('#housingTypeSelect').val() == 'singlefamily') {
         showreelFilename = "data/data_output_HP_Years_SingleFamilyHomes.csv";
