@@ -282,6 +282,29 @@ function reDrawScatterplotForState(countiesFIPs)
     console.log("reDrawScatterplotForState");
 }
 
+function showNavigation()
+{
+    if($("#mapSelection").val() == 'showreel') {
+        showShowreelNavigation();
+    } else {
+        showChoroplethScatterplotNavigation();
+    }
+}
+
+function showShowreelNavigation()
+{
+    console.log("showShowreelNavigation");
+    introJs().setOptions({ skipLabel: "Exit", tooltipPosition: "right" });
+    introJs().start();
+}
+
+function showChoroplethScatterplotNavigation()
+{
+    console.log("showChoroplethScatterplotNavigation");
+    introJs().setOptions({ skipLabel: "Exit", tooltipPosition: "right" });
+    introJs().start();
+}
+
 $(document).ready(function()
 {
     console.log("Document is ready...");

@@ -21,16 +21,41 @@
 </head>
 <body>
 <div id="pageWrapper">
-	<div id="headDiv">
+	<div id="headDiv"
+         data-intro='Project Main Title'
+         data-step='1'>
 		<header>
 			<h1>
                 Housing Facts & Figures -
-                <span id="mainMapTitle">Housing Prices by State</span>
+                <span id="mainMapTitle"
+                      data-intro='Project Sub Title'
+                      data-step='2'>Housing Prices by State
+                </span>
             </h1>
 		</header>
     </div>
-    <div id="mainMap" class="roundedFrame"></div>
-    <div id="miniMapWrapper" class="roundedFrame">
+    <div id="mainMap" class="roundedFrame"
+         data-intro='<strong>The US Housing Cost Choropleth</strong><br><br>
+            This visualization shows the general trends in housing prices (average listing price in USD ($)) across the US.<br>
+            Interactivity in this map includes the following:<br><br>
+            ⇒	Mousing over any state displays a tooltip.<br>
+            ⇒	Clicking any state highlights the clicked state.<br>
+            ⇒	Double clicking any state zooms in to show the county level details.<br>
+            ⇒	Double clicking again zooms out to show the states map again.<br>
+            ⇒	Clicking any county highlights the clicked county.<br>
+            ⇒	Clicking any county outside the state, selects the new state.<br>
+            ⇒	Mousing over any county also displays a tooltip.<br>
+            ⇒	Mini maps are displayed based on clicked state or county.<br>'
+         data-step='10'>
+     </div>
+    <div id="miniMapWrapper" class="roundedFrame"
+            data-intro='This section contains the mini graphs associated with the The US Housing Cost Choropleth.<br><br>
+                Based on which state/county has been clicked, 4 graphs are shown if data is available.<br>
+                ⇒	Occupancy Info shows the segregation between Rental and Owned Homes.<br>
+                ⇒	Housing Size Info shows the breakdown for the number of bedrooms.<br>
+                ⇒	Housing Value Info shows the breakdown for the housing prices.<br>
+                ⇒	Housing Age Info shows the breakdown for the age of the house.<br>'
+         data-step='11'>
         <h4><span id="miniMapTitle">Drill-Down information - Select objects on the left to activate this display</span></h4>
         <div id="miniMap">
             <div class="miniMapDiv">
@@ -63,15 +88,33 @@
 
     <div id="controlsWrapper">
         <div id="toolbar" class="roundedFrame">
-            <button type="button" class="ui-state-default ui-corner-all" onclick="javascript:showAbout();">Team</button>
-            <button type="button" class="ui-state-default ui-corner-all" onclick="javascript:showProjectDescription();">About</button>
-            <button type="button" class="ui-state-default ui-corner-all" onclick="javascript:showProjectScreencast();">Screencast</button>
-            <button type="button" class="ui-state-default ui-corner-all">Navigation</button>
-            <button type="button" class="ui-state-default ui-corner-all">Housing Story</button>
-            <button type="button" class="ui-state-default ui-corner-all">Animation Story</button>
+            <button type="button"
+                    class="ui-state-default ui-corner-all"
+                    onclick="javascript:showAbout();"
+                    data-intro='Details of the team that brought you this UBER COOL Project.'
+                    data-step='3'>Team</button>
+            <button type="button"
+                    class="ui-state-default ui-corner-all"
+                    onclick="javascript:showProjectDescription();"
+                    data-intro='Project Description that outlines all the main maps and interactivity.'
+                    data-step='4'>About</button>
+            <button type="button"
+                    class="ui-state-default ui-corner-all"
+                    onclick="javascript:showProjectScreencast();"
+                    data-intro='Project Screencast.'
+                    data-step='5'>Screencast</button>
+            <button type="button"
+                    class="ui-state-default ui-corner-all"
+                    onclick="javascript:showNavigation();"
+                    data-intro='What you clicked to view the navigation details for this project :-).'
+                    data-step='6'>Navigation</button>
+            <button type="button"
+                    class="ui-state-default ui-corner-all"
+                    data-intro='TODO - Animation Story for this view'
+                    data-step='7'>Housing Story</button>
         </div>
     	<div id="mapSelector" class="roundedFrame">
-        <h3>Analysis Selector</h3>
+        <h3 data-intro='The Analysis selector that is a dropdown for all visualizations in this project.' data-step='8'>Analysis Selector</h3>
         <select id="mapSelection">
             <option value ="choropleth" selected>US Housing Cost Choropleth</option>
             <option value ="showreel">Housing Prices Trends Show Reel</option>
@@ -83,7 +126,10 @@
             </div>
         </div>
 		<div id="mainMapDetails" class="roundedFrame"></div>
-		<div id="mainMapLegend" class="roundedFrame"></div>
+		<div id="mainMapLegend"
+             class="roundedFrame"
+             data-intro='The map legend for the US Housing Cost Choropleth visualization.'
+             data-step='9'></div>
     </div>
     <div id="animationPausedMsg">ANIMATION PAUSED...</div>
     <div id="scatterplotMapDiv">
