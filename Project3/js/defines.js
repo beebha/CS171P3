@@ -13,6 +13,7 @@ var localeDataMap10 = d3.map();
 var localeDataMap09 = d3.map();
 var localeDataMap08 = d3.map();
 var localeDataMap07 = d3.map();
+var datasets = [{},{},{},{},{}];
 
 var showreelFilename = "data/data_output_HP_Years_SingleFamilyHomes.csv";
 

@@ -6,6 +6,7 @@
 var fieldLabels = [];
 var firstPlot = true;
 var transitionSpeed = 6000;
+var datasetIndex = 4;
 
 var defaultXMetric = "medianHouseInc";
 var defaultYMetric = "medianHomeVal";
@@ -44,45 +45,39 @@ var yAxis = d3.svg.axis()
 
 queue()
     .defer(d3.json, "data/data_output_locale_census_data_11-min.json", function(error, data){
-        if (error){console.log("Error while loading files...") ;}
+        if (error){console.log("Error while loading file 11") ;}
         console.log("got data 11");
         localeJsonData11 = data;
         localeDataMap11 = d3.map(localeJsonData11);
+        datasets[4] = localeDataMap11;
         dataReady();
     })
     .defer(d3.json, "data/data_output_locale_census_data_10-min.json", function(error, data){
         console.log("got data 10");
         localeJsonData10 = data;
-        localeDataMap10 = d3.map(localeJsonData11);
+        localeDataMap10 = d3.map(localeJsonData10);
+        datasets[3] = localeDataMap10;
     })
     .defer(d3.json, "data/data_output_locale_census_data_09-min.json", function(error, data){
         console.log("got data 09");
         localeJsonData09 = data;
-        localeDataMap09 = d3.map(localeJsonData11);
+        localeDataMap09 = d3.map(localeJsonData09);
+        datasets[2] = localeDataMap09;
     })
     .defer(d3.json, "data/data_output_locale_census_data_08-min.json", function(error, data){
         console.log("got data 08");
         localeJsonData08 = data;
-        localeDataMap08 = d3.map(localeJsonData11);
+        localeDataMap08 = d3.map(localeJsonData08);
+        datasets[1] = localeDataMap08;
     })
     .defer(d3.json, "data/data_output_locale_census_data_07-min.json", function(error, data){
         console.log("got data 07");
         localeJsonData07 = data;
-        localeDataMap07 = d3.map(localeJsonData11);
+        localeDataMap07 = d3.map(localeJsonData07);
+        datasets[0] = localeDataMap07;
     });
 
-$(function() {
-    $( "#slider" ).slider({
-        value:2011,
-        min: 2007,
-        max: 2011,
-        step: 1,
-        slide: function( event, ui ) {
-            $( "#amount" ).val( "$" + ui.value );
-        }
-    });
-    $( "#amount" ).val( "$" + $( "#slider" ).slider( "value" ) );
-});
+
 
 function scaleAxes(selectedData){
     x.domain(d3.extent(selectedData, function(d) { return d[1]; }));
@@ -115,6 +110,21 @@ function dataReady(){
             .html("");
 
     var fieldTitles = [];
+
+    $(function() {
+        $( "#slider" ).slider({
+            value:4,
+            min: 0,
+            max: 4,
+            step: 1,
+            slide: function( event, ui ) {
+                datasetIndex = ui.value;
+                rePlot();
+                $( "#year" ).html( datasetIndex + 2007 );
+            }
+        });
+//    $( "#year" ).html( $( "#slider" ).slider( "value" ) + 2007 );
+    });
 
     // Create dropdown axis plot controls
     d3.csv("data/census_field_map.csv", function(error, fieldData) {
@@ -373,6 +383,10 @@ function dataReady(){
     }
 
     function selectData(){
+        var selectedData = [];
+        var currentDataset = datasets[datasetIndex];
+        console.log("index: " + datasetIndex + ", dataset keys: " + currentDataset.keys().length);
+
         if (firstPlot){
             firstPlot = false;
         } else
@@ -381,9 +395,9 @@ function dataReady(){
             yMetric = document.getElementById("yAxisSelect").value;
             console.log(xMetric + ":" + yMetric);
         }
-        var selectedData = [];
-        localeDataMap11.forEach(function(d){
-            selectedData.push([d,localeDataMap11.get(d)[xMetric],localeDataMap11.get(d)[yMetric],localeDataMap11.get(d)['pop']]);
+
+        currentDataset.forEach(function(d){
+            selectedData.push([d,currentDataset.get(d)[xMetric],currentDataset.get(d)[yMetric],currentDataset.get(d)['pop']]);
         });
         return selectedData
     }

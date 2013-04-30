@@ -20,6 +20,7 @@ h1 {
     text-align: left;
     margin-bottom: 5px;
 }
+
 h2 {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 24px;
@@ -27,6 +28,7 @@ h2 {
     text-align: left;
     margin-bottom: 5px;
 }
+
 h3 {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 16px;
@@ -34,12 +36,15 @@ h3 {
     font-weight: bold;
     margin-bottom: 5px;
 }
+
 h4 {
     font-size: 12px;
     text-align: left;
     font-weight: bold;
     margin-bottom: 5px;
+    margin-top: 5px;
 }
+
 p {
     font-size: 12px;
     text-align: left;
