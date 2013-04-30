@@ -240,7 +240,11 @@ function groupedBar()
         animationDetails += "with the highest price at (<b>$301,700</b>).<br><br>";
         animationDetails += "Throughtout the entire period, the lowest housing price fluctuates between the <b>South</b> and the <b>Midwest</b>.";
     } else if ($('#housingTypeSelect').val() == 'all') {
-        animationDetails = "";
+        animationDetails = "Housing prices from Feb 2012 to Feb 2013 for both Single Family Homes and Condos are compared here.<br><br>";
+        animationDetails += "As seen, generally the housing prices for Single Family Homes are only slightly higher than Condos ";
+        animationDetails += "with the highest price of the Single Family Home at (<b>$238,900</b>) in June 2012.<br><br>";
+        animationDetails += "Throughtout the entire period, Condo prices are lower than Single Family Homes except in "
+        animationDetails += "<b>May ($230,500 vs $229,500)</b> and <b>Nov ($228,400 vs $227,800)</b>.";
     }
 
     $('#animationTitle').html(animationTitle);
@@ -296,6 +300,7 @@ function groupedBar()
 
                 var tooltipText = "<b>" + d.housetype + "</b><br>";
                 tooltipText += "Price: <b>" + getFormattedPrice(d.price) + "</b><br>";
+                tooltipText += "Month: <b>" + $.datepicker.formatDate('MM yy', new Date(d.date)) + "</b><br>";
 
                 tooltip.html(tooltipText);
                 tooltip.attr("class", "tooltip");
@@ -328,7 +333,7 @@ function stackedBar()
         animationDetails = "This graph gives a different perspective, but the results seen are the same as the grouped bar chart.<br><br>";
         animationDetails += "The Midwest's and South's housing prices are the lowest with the Northeast taking the major chunk of the bar.";
     } else if ($('#housingTypeSelect').val() == 'all') {
-        animationDetails = "";
+        animationDetails = "This graph gives a different perspective, but the results seen are the same as the grouped bar chart.<br><br>";
     }
 
 
@@ -401,15 +406,17 @@ function transposeBar()
 
     if($('#housingTypeSelect').val() == 'singlefamily') {
         animationDetails = "This graph sums up the housing prices from Feb 2012 to Feb 2013 for each region.<br><br>";
-        animationDetails += "Based on the time frame, the combined total of the housing prices in the <b>West</b> is the highest (<b>$3,714,100.00</b>).<br><br>";
-        animationDetails += "The combined total of the housing prices in the <b>Midwest</b> is the lowest (<b>$2,230,900.00</b>).<br><br>";
+        animationDetails += "Based on the time frame, the combined total of the housing prices in the <b>West</b> is the highest (<b>$3,714,100</b>).<br><br>";
+        animationDetails += "The combined total of the housing prices in the <b>Midwest</b> is the lowest (<b>$2,230,900</b>).<br><br>";
         animationDetails += "In fact the total of the Midwest is close to <b>1/3 less</b> than that of the West.<br><br>";
     } else if ($('#housingTypeSelect').val() == 'condo') {
         animationDetails = "This graph sums up the housing prices from Feb 2012 to Feb 2013 for each region.<br><br>";
-        animationDetails += "Based on the time frame, the combined total of the housing prices in the <b>Northeast</b> is the highest (<b>$3,614,600.00</b>).<br><br>";
-        animationDetails += "The combined total of the housing prices in the <b>Midwest</b> is the lowest (<b>$2,151,200.00</b>).<br><br>";
+        animationDetails += "Based on the time frame, the combined total of the housing prices in the <b>Northeast</b> is the highest (<b>$3,614,600</b>).<br><br>";
+        animationDetails += "The combined total of the housing prices in the <b>Midwest</b> is the lowest (<b>$2,151,200</b>).<br><br>";
     } else if ($('#housingTypeSelect').val() == 'all') {
-        animationDetails = "";
+        animationDetails = "This graph sums up the housing prices from Feb 2012 to Feb 2013 for each housing type.<br><br>";
+        animationDetails += "Based on the time frame, the combined total of the housing prices for <b>Single Family Homes ($2,926,800)</b> is only slightly higher ";
+        animationDetails += "than the combined total of the housing prices for <b>Condos ($2,884,100)</b>.<br><br>";
     }
 
     $('#animationTitle').html(animationTitle);
