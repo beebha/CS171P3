@@ -153,9 +153,9 @@ function overlappingArea()
     animationTitle = "Beginning the animation...<br>";
 
     if($('#housingTypeSelect').val() == 'singlefamily') {
-        animationDetails = "Housing prices for Single Family Homes across the 4 regions; West, Northeast, South, Midwest are being compared.";
+        animationDetails = "Housing prices for Single Family Homes across the 4 regions are compared:<br><br><ul><li> - West</li><li> - Northeast</li><li> - South</li><li> - Midwest</li></ul>";
     } else if ($('#housingTypeSelect').val() == 'condo') {
-        animationDetails = "Housing prices for Condos across the 4 regions; West, Northeast, South, Midwest are being compared.";
+        animationDetails = "Housing prices for Condos across the 4 regions are compared:<br><br><ul><li> - West</li><li> - Northeast</li><li> - South</li><li> - Midwest</li></ul>";
     } else if ($('#housingTypeSelect').val() == 'all') {
         animationDetails = "Housing prices for Single Family Homes and Condos are being compared.";
     }
@@ -230,19 +230,27 @@ function groupedBar()
 
     if($('#housingTypeSelect').val() == 'singlefamily') {
         animationDetails = "Housing prices from Feb 2012 to Feb 2013 for all regions are compared here.<br><br>";
-        animationDetails += "As seen, housing prices between the West and Northeast are pretty close ";
-        animationDetails += "with the <b>Northeast</b> topping it at the beginning of Feb 2012 (<b>$264,900</b>) ";
-        animationDetails += "and the <b>West</b> topping it at the end of Feb 2013 (<b>$290,000</b>).<br><br>";
-        animationDetails += "Throughtout the entire period, the <b>Midwest</b> has had the lowest housing prices.";
+        animationDetails += "Prices between the West and Northeast are pretty close throughout.";
+        animationDetails += "The <b>Midwest</b> has the lowest housing prices throughout.<br><br>";
+        animationDetails += "<b>West</b> - <b>Highest</b> price is in <b>Dec 2012 ($299,700)</b> and <b>lowest</b> is in <b>Feb 2012 ($250,300)</b>.<br><br>";
+        animationDetails += "<b>Northeast</b> - <b>Highest</b> price is in <b>Jun 2012 ($293,200)</b> and <b>lowest</b> is in <b>Feb 2012 ($264,900)</b>.<br><br>";
+        animationDetails += "<b>South</b> - <b>Highest</b> price is in <b>Jun 2012 ($216,200)</b> and <b>lowest</b> is in <b>Feb 2012 ($181,200)</b>.<br><br>";
+        animationDetails += "<b>Midwest</b> - <b>Highest</b> price is in <b>Jun 2012 ($190,700)</b> and <b>lowest</b> is in <b>Feb 2012 ($148,100)</b>.<br><br>";
+        animationDetails += "The interesting thing to note is that for all regions the lowest prices occur in Feb 2012.<br><br>";
     } else if ($('#housingTypeSelect').val() == 'condo') {
         animationDetails = "Housing prices from Feb 2012 to Feb 2013 for all regions are compared here.<br><br>";
         animationDetails += "As seen, housing prices the <b>Northeast</b> has the highest price throughout the time frame.";
         animationDetails += "with the highest price at (<b>$301,700</b>).<br><br>";
-        animationDetails += "Throughtout the entire period, the lowest housing price fluctuates between the <b>South</b> and the <b>Midwest</b>.";
+        animationDetails += "Throughtout the entire period, the lowest housing price fluctuates between the <b>South</b> and the <b>Midwest</b>.<br><br>";
+        animationDetails += "<b>West</b> - <b>Highest</b> price is in <b>Nov 2012 ($262,200)</b> and <b>lowest</b> is in <b>Feb 2012 ($206,300)</b>.<br><br>";
+        animationDetails += "<b>Northeast</b> - <b>Highest</b> price is in <b>Jun 2012 ($301,700)</b> and <b>lowest</b> is in <b>Feb 2012 ($255,600)</b>.<br><br>";
+        animationDetails += "<b>South</b> - <b>Highest</b> price is in <b>May 2012 ($186,000)</b> and <b>lowest</b> is in <b>Feb 2012 ($157,000)</b>.<br><br>";
+        animationDetails += "<b>Midwest</b> - <b>Highest</b> price is in <b>Jun 2012 ($178,100)</b> and <b>lowest</b> is in <b>Feb 2012 ($145,000)</b>.<br><br>";
+        animationDetails += "The interesting thing to note is that for all regions the lowest prices occur in Feb 2012.<br><br>";
     } else if ($('#housingTypeSelect').val() == 'all') {
         animationDetails = "Housing prices from Feb 2012 to Feb 2013 for both Single Family Homes and Condos are compared here.<br><br>";
         animationDetails += "As seen, generally the housing prices for Single Family Homes are only slightly higher than Condos ";
-        animationDetails += "with the highest price of the Single Family Home at (<b>$238,900</b>) in June 2012.<br><br>";
+        animationDetails += "with the highest price of the Single Family Home at (<b>$238,900</b>) in Jun 2012.<br><br>";
         animationDetails += "Throughtout the entire period, Condo prices are lower than Single Family Homes except in "
         animationDetails += "<b>May ($230,500 vs $229,500)</b> and <b>Nov ($228,400 vs $227,800)</b>.";
     }
@@ -545,7 +553,7 @@ function transposeBar()
                     svg.selectAll("*").remove();
                     svg.selectAll("g").data(housetypes).enter().append("svg:g").attr("class", "housetype");
                     overlappingArea();
-                }, 4000);
+                }, 5000);
 }
 
 function animationClick(d)
@@ -559,9 +567,14 @@ function animationClick(d)
     }
 
     animationPaused ? $('#animationPausedMsg').show() : $('#animationPausedMsg').hide();
-    animationPaused ? $('#animationPauseButton').html("Resume Animation") : $('#animationPauseButton').html("Pause Animation");
-    animationPaused ? $('#miniMapTitle').html("Click the \"Resume Animation\" below to " +
-                "resume the animation.") : $('#miniMapTitle').html("Click the \"Pause Animation\" below to " +
+    animationPaused ? $('#miniMapTitle').html("Click <button type=\"button\"" +
+                        "class=\"ui-state-default ui-corner-all\"" +
+                        "id=\"animationPauseButton\"" +
+                        "onclick=\"javascript:animationClick();\">Resume Animation</button> to " +
+                "resume the animation.") : $('#miniMapTitle').html("Click <button type=\"button\"" +
+                        "class=\"ui-state-default ui-corner-all\"" +
+                        "id=\"animationPauseButton\"" +
+                        "onclick=\"javascript:animationClick();\">Pause Animation</button> to " +
                 "pause the animation and view details via mouseover tooltips.");
 }
 

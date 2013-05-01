@@ -168,7 +168,7 @@ function getFormattedPrice(val)
 function removeMainMap()
 {
     hideLegend();
-    if(timer != null) {
+    if(timer != null && jQuery.type(timer) === 'object') {
         timer.pause();
     }
     timer = null;
@@ -194,7 +194,6 @@ function removeMainMap()
     $("#mapControls").hide();
     $("#mapControlsForScatterplot").hide();
     $('#animationPausedMsg').hide();
-    $('#animationPauseButton').html("Pause Animation");
     $('#animationPauseButton').hide();
     $('#miniMap1Title').html("");
     $('#miniMap2Title').html("");
@@ -267,7 +266,11 @@ function showProjectScreencast()
 
 function redrawShowReel()
 {
-    $('#miniMapTitle').html("Click the \"Pause Animation\" below to " + "pause the animation and view details via mouseover tooltips.");
+    $('#miniMapTitle').html("Click <button type=\"button\"" +
+                        "class=\"ui-state-default ui-corner-all\"" +
+                        "id=\"animationPauseButton\"" +
+                        "onclick=\"javascript:animationClick();\">Pause Animation</button> to " +
+                "pause the animation and view details via mouseover tooltips.");
     if($('#housingTypeSelect').val() == 'singlefamily') {
         showreelFilename = "data/data_output_HP_Years_SingleFamilyHomes.csv";
     } else if ($('#housingTypeSelect').val() == 'condo') {
@@ -288,6 +291,11 @@ function reDrawScatterplotForState(countiesFIPs)
 function showNavigation()
 {
     introJs().start();
+}
+
+function startHousingStory()
+{
+
 }
 
 $(document).ready(function()
@@ -313,7 +321,10 @@ $(document).ready(function()
         removeMainMap();
         removeMiniMaps();
         if($("#mapSelection").val() == 'showreel') {
-            $('#miniMapTitle').html("Click the \"Pause Animation\" below to " +
+            $('#miniMapTitle').html("Click <button type=\"button\"" +
+                        "class=\"ui-state-default ui-corner-all\"" +
+                        "id=\"animationPauseButton\"" +
+                        "onclick=\"javascript:animationClick();\">Pause Animation</button> to " +
                 "pause the animation and view details via mouseover tooltips.");
             showreelFilename = "data/data_output_HP_Years_SingleFamilyHomes.csv";
             $('#animationPauseButton').show();
