@@ -119,11 +119,11 @@ p {
 #miniScatterplotMap {
     position: relative;
     width: 100%;
+    overflow: auto;
 }
 
 .miniMapDiv {
     position: relative;
-    float: left;
 }
 
 #controlsWrapper {
@@ -241,7 +241,9 @@ p {
 }
 
 .miniMapTitle {
-    margin-left: 80px;
+    /*margin-left: 80px;*/
+    position: relative;
+    text-align: center;
     font-size:100%;
     font-weight: bold;
 }

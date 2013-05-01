@@ -217,6 +217,18 @@ function removeMiniMaps()
     $('#miniMap4Title').html("");
 }
 
+function removeMiniScatterMaps()
+{
+    d3.select("#miniScatterplotMap1").select("svg").remove();
+    d3.select("#miniScatterplotMap2").select("svg").remove();
+    d3.select("#miniScatterplotMap3").select("svg").remove();
+    d3.select("#miniScatterplotMap4").select("svg").remove();
+    $('#miniScatterplotMap1Title').html("");
+    $('#miniScatterplotMap2Title').html("");
+    $('#miniScatterplotMap3Title').html("");
+    $('#miniScatterplotMap4Title').html("");
+}
+
 function showAbout()
 {
     $("#dialog-about").dialog({
@@ -291,12 +303,22 @@ function reDrawScatterplotForState(localeArray)
         .classed("brushed", false);
 
     d3.select("#mainScatterplotMapSVG").selectAll("circle")
-//        .select( function(d){
-//            return jQuery.inArray(d, localeArray) == -1 ? null: d; })
         .classed("brushed", function(d){
-            return (jQuery.inArray(d[0], localeArray) + 1); });
+            // not found returns -1 so adding 1 results in essentially a boolean for found/not found
+            return (jQuery.inArray(d[0], localeArray) + 1);
+        });
 
-    console.log("reDrawScatterplotForState: " + localeArray );
+    redrawScatter();
+
+//    console.log("reDrawScatterplotForState: " + localeArray );
+}
+
+function redrawScatter(){
+    yearSlider=$('#slider').slider();
+
+    yearSlider.slider('option', 'value', datasetIndex);
+    yearSlider.slider('option','slide')
+        .call(yearSlider,null,{ handle: $('.ui-slider-handle', yearSlider), value: datasetIndex });
 }
 
 function showNavigation()

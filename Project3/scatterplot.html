@@ -145,6 +145,7 @@ function dataReady()
             slide: function( event, ui ) {
                 datasetIndex = ui.value;
                 rePlot();
+                plotMiniGraphs();
                 $( "#year" ).html( datasetIndex + 2007 );
             }
         });
@@ -219,7 +220,7 @@ function dataReady()
 //            .attr("height", miniChartHeight);
 //
 
-    var origin = d3.select("#miniScatterplotMap3")
+    var origin = d3.select("#miniScatterplotMap4")
             .append("svg")
             .attr("id", 'origin')
             .attr("class", 'minichart')
@@ -260,15 +261,25 @@ function dataReady()
                 ;
     }
 
-    function plotMiniGraphs(brushedKeys){
+    function plotMiniGraphs(){
+        var miniDataset = datasets[datasetIndex];
+        var brushedElements = scatterSVG.selectAll(".brushed");
+        var brushedKeys = [];
+        brushedElements[0].forEach( function(d){
+            brushedKeys.push(d.id);
+        })
+        removeMiniScatterMaps();
+//        console.log("Brushed points: " + brushedKeys.length);
+//        console.log(brushedKeys);
         if (brushedKeys.length){
-            plotRaceMini(brushedKeys);
-            plotEducationMini(brushedKeys);
-            plotOriginMini(brushedKeys);
+            plotRaceMini(miniDataset, brushedKeys);
+            plotEducationMini(miniDataset, brushedKeys);
+            plotOriginMini(miniDataset, brushedKeys);
+            plotAgeMini(miniDataset, brushedKeys);
         }
     }
 
-    function plotRaceMini(brushedKeys){
+    function plotRaceMini(miniDataset, brushedKeys){
         var aggregateData = [
             {"label":"Black.", "value":0},
             {"label":"Amer. Ind.", "value":0},
@@ -281,26 +292,26 @@ function dataReady()
         var totalPop = 0;
 
         for (i in brushedKeys){
-            var pop = localeDataMap11.get(brushedKeys[i])['pop']
+            var pop = miniDataset.get(brushedKeys[i])['pop']
             totalPop += pop;
-            aggregateData[0].value += (localeDataMap11.get(brushedKeys[i])["race"].afAmPct * 0.01 * pop);
-            aggregateData[1].value += (localeDataMap11.get(brushedKeys[i])["race"].amIndPct * 0.01 * pop);
-            aggregateData[2].value += (localeDataMap11.get(brushedKeys[i])["race"].asianPct * 0.01 * pop);
-            aggregateData[3].value += (localeDataMap11.get(brushedKeys[i])["race"].pacIslandPct * 0.01 * pop);
-            aggregateData[4].value += (localeDataMap11.get(brushedKeys[i])["race"].whitePct * 0.01 * pop);
-            aggregateData[5].value += (localeDataMap11.get(brushedKeys[i])["race"].otherPct * 0.01 * pop);
-            aggregateData[6].value += (localeDataMap11.get(brushedKeys[i])["race"].moreThanOnePct * 0.01 * pop);
+            aggregateData[0].value += (miniDataset.get(brushedKeys[i])["race"].afAmPct * 0.01 * pop);
+            aggregateData[1].value += (miniDataset.get(brushedKeys[i])["race"].amIndPct * 0.01 * pop);
+            aggregateData[2].value += (miniDataset.get(brushedKeys[i])["race"].asianPct * 0.01 * pop);
+            aggregateData[3].value += (miniDataset.get(brushedKeys[i])["race"].pacIslandPct * 0.01 * pop);
+            aggregateData[4].value += (miniDataset.get(brushedKeys[i])["race"].whitePct * 0.01 * pop);
+            aggregateData[5].value += (miniDataset.get(brushedKeys[i])["race"].otherPct * 0.01 * pop);
+            aggregateData[6].value += (miniDataset.get(brushedKeys[i])["race"].moreThanOnePct * 0.01 * pop);
         }
 
         for (i in aggregateData){
             aggregateData[i].value = (aggregateData[i].value/totalPop) * 100;
         }
 
-        $("#miniScatterplotMap1Title").html("Race");
+        $("#miniScatterplotMap1Title").html("Racial Composition (%)");
         drawMiniBarChart(aggregateData, "miniScatterplotMap1", "raceSVG", 200, 150, colorbrewer.Set2[8][2] )
     }
 
-    function plotEducationMini(brushedKeys){
+    function plotEducationMini(miniDataset, brushedKeys){
         var aggregateData = [
             {"label":"No HS", "value":0},
             {"label":"Some HS", "value":0},
@@ -313,26 +324,26 @@ function dataReady()
         var totalPop = 0;
 
         for (i in brushedKeys){
-            var pop = localeDataMap11.get(brushedKeys[i])['pop']
+            var pop = miniDataset.get(brushedKeys[i])['pop']
             totalPop += pop;
-            aggregateData[0].value += (localeDataMap11.get(brushedKeys[i])["ed"].noHSPct * 0.01 * pop);
-            aggregateData[1].value += (localeDataMap11.get(brushedKeys[i])["ed"].someHSPct * 0.01 * pop);
-            aggregateData[2].value += (localeDataMap11.get(brushedKeys[i])["ed"].hsPct * 0.01 * pop);
-            aggregateData[3].value += (localeDataMap11.get(brushedKeys[i])["ed"].someCollegePct * 0.01 * pop);
-            aggregateData[4].value += (localeDataMap11.get(brushedKeys[i])["ed"].asPct * 0.01 * pop);
-            aggregateData[5].value += (localeDataMap11.get(brushedKeys[i])["ed"].bsPct * 0.01 * pop);
-            aggregateData[6].value += (localeDataMap11.get(brushedKeys[i])["ed"].msPct * 0.01 * pop);
+            aggregateData[0].value += (miniDataset.get(brushedKeys[i])["ed"].noHSPct * 0.01 * pop);
+            aggregateData[1].value += (miniDataset.get(brushedKeys[i])["ed"].someHSPct * 0.01 * pop);
+            aggregateData[2].value += (miniDataset.get(brushedKeys[i])["ed"].hsPct * 0.01 * pop);
+            aggregateData[3].value += (miniDataset.get(brushedKeys[i])["ed"].someCollegePct * 0.01 * pop);
+            aggregateData[4].value += (miniDataset.get(brushedKeys[i])["ed"].asPct * 0.01 * pop);
+            aggregateData[5].value += (miniDataset.get(brushedKeys[i])["ed"].bsPct * 0.01 * pop);
+            aggregateData[6].value += (miniDataset.get(brushedKeys[i])["ed"].msPct * 0.01 * pop);
         }
 
         for (i in aggregateData){
             aggregateData[i].value = (aggregateData[i].value/totalPop) * 100;
         }
 
-        $("#miniScatterplotMap2Title").html("Education");
+        $("#miniScatterplotMap2Title").html("Educational Attainment (%)");
         drawMiniBarChart(aggregateData, "miniScatterplotMap2", "educationSVG", 200, 150, colorbrewer.Set2[8][3] )
     }
 
-    function plotOriginMini(brushedKeys){
+    function plotOriginMini(miniDataset, brushedKeys){
         var aggregateData = [
             {"label":"In State", "value":0},
             {"label":"In US.", "value":0},
@@ -340,13 +351,57 @@ function dataReady()
         ];
 
         for (i in brushedKeys){
-            var pop = localeDataMap11.get(brushedKeys[i])['pop']
-            aggregateData[0].value += (localeDataMap11.get(brushedKeys[i])["birth"].inStatePct * 0.01 * pop);
-            aggregateData[1].value += (localeDataMap11.get(brushedKeys[i])["birth"].outStatePct * 0.01 * pop);
-            aggregateData[2].value += (localeDataMap11.get(brushedKeys[i])["birth"].foreignBornPct * 0.01 * pop);
+            var pop = miniDataset.get(brushedKeys[i])['pop']
+            aggregateData[0].value += (miniDataset.get(brushedKeys[i])["birth"].inStatePct * 0.01 * pop);
+            aggregateData[1].value += (miniDataset.get(brushedKeys[i])["birth"].outStatePct * 0.01 * pop);
+            aggregateData[2].value += (miniDataset.get(brushedKeys[i])["birth"].foreignBornPct * 0.01 * pop);
         }
-        $("#miniScatterplotMap3Title").html("Birthplace");
+        $("#miniScatterplotMap4Title").html("Birthplace (%)");
         plotMiniPie(aggregateData, "Birthplace", "#origin", colorbrewer.Set1[8]);
+    }
+
+    function plotAgeMini(miniDataset, brushedKeys){
+        var aggregateData = [
+            {"label":"Under 5", "value":0},
+            {"label":"5-9", "value":0},
+            {"label":"10-14", "value":0},
+            {"label":"15-19", "value":0},
+            {"label":"20-24", "value":0},
+            {"label":"25-34", "value":0},
+            {"label":"35-44", "value":0},
+            {"label":"45-54", "value":0},
+            {"label":"55-59", "value":0},
+            {"label":"60-64", "value":0},
+            {"label":"65-74", "value":0},
+            {"label":"75-84", "value":0},
+            {"label":"85+", "value":0}
+        ];
+        var totalPop = 0;
+
+        for (i in brushedKeys){
+            var pop = miniDataset.get(brushedKeys[i])['pop']
+            totalPop += pop;
+            aggregateData[0].value += (miniDataset.get(brushedKeys[i])["age"]["under5Pct"] * 0.01 * pop);
+            aggregateData[1].value += (miniDataset.get(brushedKeys[i])["age"]["5to9Pct"] * 0.01 * pop);
+            aggregateData[2].value += (miniDataset.get(brushedKeys[i])["age"]["10to14Pct"] * 0.01 * pop);
+            aggregateData[3].value += (miniDataset.get(brushedKeys[i])["age"]["15to19Pct"] * 0.01 * pop);
+            aggregateData[4].value += (miniDataset.get(brushedKeys[i])["age"]["20to24Pct"] * 0.01 * pop);
+            aggregateData[5].value += (miniDataset.get(brushedKeys[i])["age"]["25to34Pct"] * 0.01 * pop);
+            aggregateData[6].value += (miniDataset.get(brushedKeys[i])["age"]["35to44Pct"] * 0.01 * pop);
+            aggregateData[7].value += (miniDataset.get(brushedKeys[i])["age"]["45to54Pct"] * 0.01 * pop);
+            aggregateData[8].value += (miniDataset.get(brushedKeys[i])["age"]["55to59Pct"] * 0.01 * pop);
+            aggregateData[9].value += (miniDataset.get(brushedKeys[i])["age"]["60to64Pct"] * 0.01 * pop);
+            aggregateData[10].value += (miniDataset.get(brushedKeys[i])["age"]["65to74Pct"] * 0.01 * pop);
+            aggregateData[11].value += (miniDataset.get(brushedKeys[i])["age"]["75to84Pct"] * 0.01 * pop);
+            aggregateData[12].value += (miniDataset.get(brushedKeys[i])["age"]["85abovePct"] * 0.01 * pop);
+        }
+
+        for (i in aggregateData){
+            aggregateData[i].value = (aggregateData[i].value/totalPop) * 100;
+        }
+
+        $("#miniScatterplotMap3Title").html("Age Composition (%)");
+        drawMiniBarChart(aggregateData, "miniScatterplotMap3", "ageSVG", 200, 250, colorbrewer.Set2[8][4] )
     }
 
 
@@ -355,7 +410,7 @@ function dataReady()
                 .range(colorScheme);
 
         //Set title
-        $( elementID + "Title").html(title);
+//        $( elementID + "Title").html(title);
 
         var vis = d3.select(elementID).selectAll("pieGroup")
                 .data([data])
@@ -511,20 +566,21 @@ function dataReady()
     function brushend() {
         scatterSVG.classed("selecting", !d3.event.target.empty());
         console.log("Brush ended...");
-        updateBrush();
+//        updateBrush();
+        plotMiniGraphs();
 
     }
 
-    function updateBrush(){
-        var brushedElements = scatterSVG.selectAll(".brushed");
-        var brushedKeys = [];
-        brushedElements[0].forEach( function(d){
-            brushedKeys.push(d.id);
-        })
-        console.log("Brushed points: " + brushedKeys.length);
-        console.log(brushedKeys);
-        plotMiniGraphs(brushedKeys);
-    }
+//    function updateBrush(){
+//        var brushedElements = scatterSVG.selectAll(".brushed");
+//        var brushedKeys = [];
+//        brushedElements[0].forEach( function(d){
+//            brushedKeys.push(d.id);
+//        })
+//        console.log("Brushed points: " + brushedKeys.length);
+//        console.log(brushedKeys);
+//        plotMiniGraphs(brushedKeys);
+//    }
 
 }
 
