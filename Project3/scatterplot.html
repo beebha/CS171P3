@@ -75,6 +75,7 @@ queue()
         localeJsonData07 = data;
         localeDataMap07 = d3.map(localeJsonData07);
         datasets[0] = localeDataMap07;
+        $("#loading-mask").dialog("close");
     });
 
 
@@ -98,8 +99,8 @@ $("#mainScatterplotMapLegend").show();
 //
 //    var localeDataMap11 = d3.map(theData);
 
-function dataReady(){
-
+function dataReady()
+{
     var scatterTooltip = d3.select("body")
             .append("div")
             .attr("id", "scatterTooltip")

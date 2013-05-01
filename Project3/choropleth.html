@@ -2,14 +2,15 @@
 <html>
 <body>
 <script>
+
 var states;
 var counties;
 var centered;
 var readyUSObj;
 var zoomedIn = false;
 
-var housingStatesD3Map = d3.map();
-var housingCountiesD3Map = d3.map();
+housingStatesD3Map = d3.map();
+housingCountiesD3Map = d3.map();
 
 var quantize = d3.scale.quantize()
         .domain([0, 800000])

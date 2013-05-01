@@ -108,6 +108,7 @@ queue().defer(d3.csv, showreelFilename, function(d) {
 function ready(error, data)
 {
     console.log("Showreel async done");
+    $("#loading-mask").dialog("close");
     timer = null;
     setupShowreel();
 }

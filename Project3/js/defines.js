@@ -6,6 +6,8 @@ var dataToShow = "";
 var timer = null;
 var stateClickedData = null;
 var countyClickedData = null;
+var housingStatesD3Map = null;
+var housingCountiesD3Map = null;
 
 var localeJsonData11, localeJsonData10, localeJsonData09, localeJsonData08, localeJsonData07;
 var localeDataMap11 = d3.map();
@@ -295,14 +297,49 @@ function showNavigation()
 
 function startHousingStory()
 {
+    // most interesting state selected NY
+    $("#housing-story-intro").dialog({
+        dialogClass: "popupDialogCls",
+        width:300,
+        height:250,
+        modal: true,
+        buttons: {
+            Ok: function() {
+                $(this).dialog("close");
+                selectStoryState();
+            }
+        }
+    });
+}
 
+function selectStoryState()
+{
+    for(indStateData in housingStatesD3Map) {
+        if(housingStatesD3Map[indStateData].STATE == "New York") {
+            console.log($('#'+housingStatesD3Map[indStateData].STATE_FIPS))
+        }
+    }
+}
+
+function loadingVisualizations()
+{
+    $("#loading-mask").dialog({
+        dialogClass: "popupDialogCls",
+        width:300,
+        height:150,
+        modal: true
+    });
 }
 
 $(document).ready(function()
 {
     console.log("Document is ready...");
 
-    $("#mapVariablesSelector").hide();
+    $('#loading-mask').hide();
+
+    loadingVisualizations();
+
+    $('#housing-story-intro').hide();
 
     $("#dialog-about").hide();
 
@@ -314,10 +351,13 @@ $(document).ready(function()
 
     $('#animationPauseButton').hide();
 
+    $("#mapVariablesSelector").hide();
+
     $("#mainMapHTML").load("choropleth.html");
     $("#mainScatterplotMapHTML").load("scatterplot.html");
 
     $("#mapSelection").change(function() {
+        loadingVisualizations();
         removeMainMap();
         removeMiniMaps();
         if($("#mapSelection").val() == 'showreel') {
