@@ -15,7 +15,7 @@ var localeDataMap10 = d3.map();
 var localeDataMap09 = d3.map();
 var localeDataMap08 = d3.map();
 var localeDataMap07 = d3.map();
-var datasets = [{},{},{},{},{}];
+var datasets = new Array(5);
 
 var showreelFilename = "data/data_output_HP_Years_SingleFamilyHomes.csv";
 
@@ -285,9 +285,18 @@ function redrawShowReel()
     $('#animationPauseButton').show();
 }
 
-function reDrawScatterplotForState(countiesFIPs)
+function reDrawScatterplotForState(localeArray)
 {
-    console.log("reDrawScatterplotForState");
+    d3.select("#mainScatterplotMapSVG").selectAll(".brushed")
+        .classed("brushed", false);
+
+    d3.select("#mainScatterplotMapSVG").selectAll("circle")
+//        .select( function(d){
+//            return jQuery.inArray(d, localeArray) == -1 ? null: d; })
+        .classed("brushed", function(d){
+            return (jQuery.inArray(d[0], localeArray) + 1); });
+
+    console.log("reDrawScatterplotForState: " + localeArray );
 }
 
 function showNavigation()

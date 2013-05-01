@@ -227,7 +227,13 @@ p {
 }
 
 .sliderDiv {
-    width: 50%;
+    width: 130px;
+}
+
+#scatterAnimation {
+    position: absolute;
+    top: 207px;
+    left: 148px;
 }
 
 .axisTitle {
@@ -394,11 +400,12 @@ p {
 }
 
 circle {
-    fill-opacity: .7;
+    fill-opacity: .3;
     fill: #1B9E77;
 }
 
 circle.brushed {
+    fill-opacity: .8;
     fill: #D95F02;
 }
 
