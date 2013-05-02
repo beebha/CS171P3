@@ -105,43 +105,11 @@ function ready(error, us)
     showLegend("states");
 }
 
+
 function stateclick(d)
 {
-    stateClickedData = housingStatesD3Map.get(d.id);
-    dataToShow = "state";
-    $('#' + housingStatesD3Map.get(d.id).STATE_FIPS).attr("class", "statesSelected");
-
-    var detailsText = "<b><em>" + housingStatesD3Map.get(d.id).STATE + "</em></b><br>";
-    detailsText += "Average Listing Price<br><b>" + getFormattedPrice(housingStatesD3Map.get(d.id).AVERAGE_LISTING_PRICE) + "</b><br>";
-    detailsText += "Median Sales Price<br><b>" + getFormattedPrice(housingStatesD3Map.get(d.id).MEDIAN_SALES_PRICE) + "</b><br>";
-
-    $('#mainMapDetails').show();
-    $('#mainMapDetails').html(detailsText);
-    for (var housingState in housingStatesD3Map) {
-        if (housingStatesD3Map.get(d.id).STATE_FIPS != housingStatesD3Map[housingState].STATE_FIPS) {
-            $('#' + housingStatesD3Map[housingState].STATE_FIPS).attr("class", quantize(
-                    housingStatesD3Map[housingState].AVERAGE_LISTING_PRICE
-            ));
-        }
-    }
-
-    // set the map title
-    $('#mainMapTitle').html("Housing Prices by State");
-
-    // set minimaps data
-    removeMiniMaps();
-    $("#miniMapHTML").load("choroplethMiniMap.html");
-
-    // get counties in selected state to pass to scatterplot
-    var stateFIP = parseInt(housingStatesD3Map.get(d.id).STATE_FIPS);
-    var FIPOfCountiesInState = [];
-    for (var county in localeJsonData11) {
-
-        if(localeJsonData11[county].stateID == stateFIP) {
-            FIPOfCountiesInState.push(county);
-        }
-    }
-    reDrawScatterplotForState(FIPOfCountiesInState);
+    var data = housingStatesD3Map.get(d.id);
+    setStateClick(data);
 }
 
 function dblclick(d)

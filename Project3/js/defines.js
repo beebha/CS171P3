@@ -323,12 +323,14 @@ function redrawScatter(){
 
 function showNavigation()
 {
+    setIntroDetails('NAVIGATION');
     introJs().start();
 }
 
 function startHousingStory()
 {
     // most interesting state selected NY
+    setIntroDetails('STORY');
     $("#housing-story-intro").dialog({
         dialogClass: "popupDialogCls",
         width:300,
@@ -347,9 +349,49 @@ function selectStoryState()
 {
     for(indStateData in housingStatesD3Map) {
         if(housingStatesD3Map[indStateData].STATE == "New York") {
-            console.log($('#'+housingStatesD3Map[indStateData].STATE_FIPS))
+            setStateClick(housingStatesD3Map[indStateData]);
+            introJs().goToStep(10).start();
         }
     }
+}
+
+function setStateClick(stateData)
+{
+    stateClickedData = stateData;
+    dataToShow = "state";
+    $('#' + stateData.STATE_FIPS).attr("class", "statesSelected");
+
+    var detailsText = "<b><em>" + stateData.STATE + "</em></b><br>";
+    detailsText += "Average Listing Price<br><b>" + getFormattedPrice(stateData.AVERAGE_LISTING_PRICE) + "</b><br>";
+    detailsText += "Median Sales Price<br><b>" + getFormattedPrice(stateData.MEDIAN_SALES_PRICE) + "</b><br>";
+
+    $('#mainMapDetails').show();
+    $('#mainMapDetails').html(detailsText);
+    for (var housingState in housingStatesD3Map) {
+        if (stateData.STATE_FIPS != housingStatesD3Map[housingState].STATE_FIPS) {
+            $('#' + housingStatesD3Map[housingState].STATE_FIPS).attr("class", quantize(
+                    housingStatesD3Map[housingState].AVERAGE_LISTING_PRICE
+            ));
+        }
+    }
+
+    // set the map title
+    $('#mainMapTitle').html("Housing Prices by State");
+
+    // set minimaps data
+    removeMiniMaps();
+    $("#miniMapHTML").load("choroplethMiniMap.html");
+
+    // get counties in selected state to pass to scatterplot
+    var stateFIP = parseInt(stateData.STATE_FIPS);
+    var FIPOfCountiesInState = [];
+    for (var county in localeJsonData11) {
+
+        if(localeJsonData11[county].stateID == stateFIP) {
+            FIPOfCountiesInState.push(county);
+        }
+    }
+    reDrawScatterplotForState(FIPOfCountiesInState);
 }
 
 function loadingVisualizations()
@@ -360,6 +402,60 @@ function loadingVisualizations()
         height:150,
         modal: true
     });
+}
+
+function setIntroDetails(navigationType)
+{
+    var choroplethMainMapStep = "";
+    var choroplethMiniMapStep = "";
+    var scatterplotMapStep = "";
+
+    if(navigationType == 'NAVIGATION')
+    {
+        choroplethMainMapStep = "<strong>The US Housing Cost Choropleth</strong><br><br>" +
+                        "This visualization shows the general trends in housing prices (average listing price in USD ($)) across the US.<br>" +
+                        "Interactivity in this map includes the following:<br><br>" +
+                        "⇒	Mousing over any state displays a tooltip.<br>" +
+                        "⇒	Clicking any state highlights the clicked state.<br>" +
+                        "⇒	Double clicking any state zooms in to show the county level details.<br>" +
+                        "⇒	Double clicking again zooms out to show the states map again.<br>" +
+                        "⇒	Clicking any county highlights the clicked county.<br>" +
+                        "⇒	Clicking any county outside the state, selects the new state.<br>" +
+                        "⇒	Mousing over any county also displays a tooltip.<br>" +
+                        "⇒	Mini maps are displayed based on clicked state or county.<br>";
+
+        choroplethMiniMapStep = "This section contains the mini graphs associated with the The US Housing Cost Choropleth.<br><br>" +
+                        "Based on which state/county has been clicked, 4 graphs are shown if data is available.<br>" +
+                        "⇒	Occupancy Info shows the segregation between Rental and Owned Homes.<br>" +
+                        "⇒	Housing Size Info shows the breakdown for the number of bedrooms.<br>" +
+                        "⇒	Housing Value Info shows the breakdown for the housing prices.<br>" +
+                        "⇒	Housing Age Info shows the breakdown for the age of the house.<br>";
+
+        scatterplotMapStep = "<strong>The Socio-Economics Factors Scatterplot</strong><br><br>" +
+                        "This visualization allows the exploration of US socio-economic patterns" +
+                        "by selecting the data to plot on the X and Y axis of the scatter plot.<br>" +
+                        "Interactivity in this map includes the following:<br><br>" +
+                        "⇒	X and Y axes can each be assigned > 30 datasets via the dropdown.<br>" +
+                        "⇒	Dragging a rectangular selection box brushes data points.<br>" +
+                        "⇒	Mini maps are displayed based on selected data points.<br>" +
+                        "⇒	Brushed selections are draggable to new locations.<br>";
+    }
+    if(navigationType == 'STORY')
+    {
+        choroplethMainMapStep = "As seen in this choropleth, the average listing price for the for New York is <b>$734,338</b>.<br>" +
+                                "The Median Sales Price is <b>$350,000</b>.<br>" +
+                                "This puts New York in the top 3 states that have the highest housing price, i.e. <b>> $700,0001</b>.<br>" +
+                                "Let's take a closer look at the mini map details for this state.<br><br>" +
+                                "Please click the \"<b>Next</b>\" button below to proceed.";
+
+        choroplethMiniMapStep = "";
+
+        scatterplotMapStep = "";
+    }
+    $('#mainMap').attr("data-intro", choroplethMainMapStep);
+    $('#miniMapWrapper').attr("data-intro", choroplethMiniMapStep);
+    $('#mainScatterplotMap').attr("data-intro", scatterplotMapStep);
+
 }
 
 $(document).ready(function()
