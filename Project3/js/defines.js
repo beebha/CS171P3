@@ -362,9 +362,9 @@ function setStateClick(stateData)
     dataToShow = "state";
     $('#' + stateData.STATE_FIPS).attr("class", "statesSelected");
 
-    var detailsText = "<b><em>" + stateData.STATE + "</em></b><br>";
-    detailsText += "Average Listing Price<br><b>" + getFormattedPrice(stateData.AVERAGE_LISTING_PRICE) + "</b><br>";
-    detailsText += "Median Sales Price<br><b>" + getFormattedPrice(stateData.MEDIAN_SALES_PRICE) + "</b><br>";
+    var detailsText = "<h3>Selection Info</h3><p><strong><em>" + stateData.STATE + "</em></strong><br>";
+    detailsText += "Average Listing Price: <strong>" + getFormattedPrice(stateData.AVERAGE_LISTING_PRICE) + "</strong><br>";
+    detailsText += "Median Sales Price: <strong>" + getFormattedPrice(stateData.MEDIAN_SALES_PRICE) + "</strong></p>";
 
     $('#mainMapDetails').show();
     $('#mainMapDetails').html(detailsText);

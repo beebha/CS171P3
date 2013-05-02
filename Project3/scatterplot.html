@@ -75,6 +75,12 @@ function animateScatter(){
 
 }
 
+//$("#mainMapTitle").html("Selected 2011 US County/Municipality Statistics");
+$('#mainScatterplotMapLegend').html("<h4>Plot Legend</h4>" +
+        "<p>Data point size indicates relative population of locale.</p>" +
+        "<p><strong>Data source:</strong> US Census American Community Survey (ACS) Single Year Estimates for 2007-2011</p>");
+$("#mainScatterplotMapLegend").show();
+
 queue()
     .defer(d3.json, "data/data_output_locale_census_data_11-min.json", function(error, data){
         if (error){console.log("Error while loading file 11") ;}
@@ -111,11 +117,7 @@ queue()
         $("#loading-mask").dialog("close");
     });
 
-//$("#mainMapTitle").html("Selected 2011 US County/Municipality Statistics");
-$('#mainScatterplotMapLegend').html("<h4>Plot Legend</h4>" +
-        "<p>Data point size indicates relative population of county</p>" +
-        "<p><strong>Data source:</strong> US Census American Community Survey (ACS) Single Year Estimates for 2007-2011</p>");
-$("#mainScatterplotMapLegend").show();
+
 
 //get data and parse it
 //d3.json('data/data_output_locale_census_data_11-min.json', function(error, theData)
@@ -295,7 +297,7 @@ function dataReady()
         }
 
         $("#miniScatterplotMap1Title").html("Racial Composition (%)");
-        drawMiniBarChart(aggregateData, "miniScatterplotMap1", "raceSVG", 200, 150, colorbrewer.Set2[8][2] )
+        drawMiniBarChart(aggregateData, "miniScatterplotMap1", "raceSVG", 210, 150, colorbrewer.Set2[8][2] )
     }
 
     function plotEducationMini(miniDataset, brushedKeys){

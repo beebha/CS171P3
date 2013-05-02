@@ -68,21 +68,13 @@
 
     <div id="controlsWrapper">
         <div id="toolbar" class="roundedFrame">
+            <h3>Guidance Center</h3>
             <button type="button"
                     class="ui-state-default ui-corner-all"
-                    onclick="javascript:showAbout();"
-                    data-intro='Details of the team that brought you this UBER COOL Project'
-                    data-step='3'>Team</button>
-            <button type="button"
-                    class="ui-state-default ui-corner-all"
-                    onclick="javascript:showProjectDescription();"
-                    data-intro='Project Description that outlines all the main maps and interactivity'
-                    data-step='4'>About</button>
-            <button type="button"
-                    class="ui-state-default ui-corner-all"
-                    onclick="javascript:showProjectScreencast();"
-                    data-intro='Project Screencast'
-                    data-step='5'>Screencast</button>
+                    id = "housingStoryBtn"
+                    onclick="javascript:startHousingStory();"
+                    data-intro='Animation Story for this view'
+                    data-step='7'>Housing Story</button>
             <button type="button"
                     class="ui-state-default ui-corner-all"
                     id = "navigationBtn"
@@ -91,10 +83,20 @@
                     data-step='6'>Navigation</button>
             <button type="button"
                     class="ui-state-default ui-corner-all"
-                    id = "housingStoryBtn"
-                    onclick="javascript:startHousingStory();"
-                    data-intro='Animation Story for this view'
-                    data-step='7'>Housing Story</button>
+                    onclick="javascript:showProjectDescription();"
+                    data-intro='Project Description that outlines all the main maps and interactivity'
+                    data-step='4'>About this Project</button>
+            <button type="button"
+                    class="ui-state-default ui-corner-all"
+                    onclick="javascript:showProjectScreencast();"
+                    data-intro='Project Screencast'
+                    data-step='5'>Screencast</button>
+            <button type="button"
+                    class="ui-state-default ui-corner-all help-btn"
+                    onclick="javascript:showAbout();"
+                    data-intro='Details of the team that brought you this UBER COOL Project'
+                    data-step='3'>Team</button>
+
         </div>
     	<div id="mapSelector" class="roundedFrame">
         <h3 data-intro='The Analysis selector that is a dropdown for all visualizations in this project.' data-step='8'>Analysis Selector</h3>
@@ -122,7 +124,7 @@
              data-step='12'
              data-position='top'></div>
         <div id="miniScatterplotMapWrapper" class="roundedFrame">
-            <h4>Locale Demographics</h4>
+            <h4>Selected Areas Demographics</h4>
             <p id="miniScatterplotMapTitle">Select points on the scatterplot to activate this display</p>
             <div id="miniScatterplotMap">
                 <div class="miniMapDiv">
@@ -160,7 +162,6 @@
                 <div id="mapVariablesSelectorForScatterplot">
                 </div>
             </div>
-            <div id="mainScatterplotMapDetails" class="roundedFrame"></div>
             <div id="mainScatterplotMapLegend" class="roundedFrame"></div>
         </div>
     </div>
@@ -178,25 +179,26 @@
 <div id="dialog-description" title="Project Description">
     <p>
     <div class="projectDescMapTitle">The US Housing Cost Choropleth</div><br>
-    This visualization shows the general trends in housing prices (average listing price in USD ($)) across the US.<br>
+    This visualization shows the general trends in housing prices
+    (average listing price in USD ($)) across the US.<br>
     Interactivity in this map includes the following:<br><br>
     ⇒	Mousing over any state displays a tooltip.<br>
     ⇒	Clicking any state highlights the clicked state.<br>
-    ⇒	Double clicking any state zooms in to show the county level details.<br>
-    ⇒	Double clicking again zooms out to show the states map again.<br>
+    ⇒	Double-clicking any state zooms in to show the county level details.<br>
+    ⇒	Double-clicking again zooms out to show the states map again.<br>
     ⇒	Clicking any county highlights the clicked county.<br>
     ⇒	Clicking any county outside the state, selects the new state.<br>
     ⇒	Mousing over any county also displays a tooltip.<br>
     ⇒	Mini maps are displayed based on clicked state or county.<br><br><br>
 
     <div class="projectDescMapTitle">The Socio-Economics Factors Scatterplot</div><br>
-    This visualization allows the exploration of US socio-economic patterns
-    by selecting the data to plot on the X and Y axis of the scatter plot.<br>
+    This visualization encourages the exploration of US socio-economic patterns by providing the ability to choose the data to plotted on the X and Y axis of the scatter plot.<br>
     Interactivity in this map includes the following:<br><br>
-    ⇒	X and Y axes can each be assigned > 30 datasets via the dropdown.<br>
+    ⇒	X and Y axes can each be assigned 20 datasets via the dropdown.<br>
     ⇒	Dragging a rectangular selection box brushes data points.<br>
-    ⇒	Mini maps are displayed based on selected data points.<br>
-    ⇒	Brushed selections are draggable to new locations.<br><br><br>
+    ⇒	Mini charts are displayed based on the brushed data points.<br>
+    ⇒	Brushed selections are draggable to new locations.<br>
+    ⇒	Brushed selections stay selected when new data are plotted.<br><br><br>
 
     <div class="projectDescMapTitle">The Housing Prices Trends Show Reel</div><br>
     This visualization shows an animated trend in housing prices across the 4 regions (Northeast, South, West, Midwest).

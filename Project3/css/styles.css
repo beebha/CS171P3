@@ -232,8 +232,12 @@ p {
 
 #scatterAnimation {
     position: absolute;
-    top: 207px;
+    top: 190px;
     left: 148px;
+}
+
+.help-btn {
+    margin: 2px;
 }
 
 .axisTitle {
@@ -264,6 +268,7 @@ p {
     font-size:80%;
     overflow:auto;
 }
+
 .projectDescMapTitle {
     text-align: center;
     font-weight: bold;
