@@ -34,6 +34,7 @@ js folder
 	- topojson.v0.min.js - D3 plugin TopoJSON JS Library (http://d3js.org/topojson.v0.min.js)
 	- d3.v3.min.js - D3 JS Library (http://d3js.org/d3.v3.min.js)
 	- colorbrewer.js - D3 provided colorbrewer Library (https://github.com/mbostock/d3/tree/master/lib/colorbrewer)
+	  (This file comes with the associated LICENSE file as well)
 
 Notes:
     - Each html file other than the index.html is loaded into the index.html into a div allocated to load the html via JQuery.
@@ -44,5 +45,6 @@ Notes:
         => About this Project (Project Description)
         => Screencast (Project Screencast)
         => Team (Project Team Details)
+    - The showreel animation was based upon the following example and was modified for the Project's needs (http://bl.ocks.org/mbostock/1256572)
 
 Screencast URL : http://www.youtube.com/watch?v=8QuOhsTeqN0&feature=youtu.be
