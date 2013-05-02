@@ -39,6 +39,10 @@ Notes:
     - Each html file other than the index.html is loaded into the index.html into a div allocated to load the html via JQuery.
     - All libraries are being hosted within the project
     - All button behavior is explained in detail in the Process Book, but here's a brief overview:
-        =>
+        => Housing Story (Storytelling for Choropleth/Scatterplot Visualization)
+        => Navigation (Highlights details for navigating in the Choropleth/Scatterplot Visualization)
+        => About this Project (Project Description)
+        => Screencast (Project Screencast)
+        => Team (Project Team Details)
 
 Screencast URL : http://www.youtube.com/watch?v=8QuOhsTeqN0&feature=youtu.be
