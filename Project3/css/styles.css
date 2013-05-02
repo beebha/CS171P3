@@ -98,7 +98,8 @@ p {
     width: 250px;
     height: 400px;
     background-color: rgba(128, 128, 128 ,0.2);
-    overflow:auto;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 #miniScatterplotMapWrapper {

@@ -32,7 +32,7 @@
     this._options = {
       nextLabel: 'Next &rarr;',
       prevLabel: '&larr; Back',
-      skipLabel: 'Skip',
+      skipLabel: 'Close',
       tooltipPosition: 'bottom'
     };
   }

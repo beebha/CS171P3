@@ -313,8 +313,6 @@ function reDrawScatterplotForState(localeArray)
         });
 
     redrawScatter();
-
-//    console.log("reDrawScatterplotForState: " + localeArray );
 }
 
 function redrawScatter(){
@@ -337,8 +335,8 @@ function startHousingStory()
     setIntroDetails('STORY');
     $("#housing-story-intro").dialog({
         dialogClass: "popupDialogCls",
-        width:300,
-        height:250,
+        width:500,
+        height:300,
         modal: true,
         buttons: {
             Ok: function() {
@@ -412,7 +410,7 @@ function setIntroDetails(navigationType)
 {
     var choroplethMainMapStep = "";
     var choroplethMiniMapStep = "";
-    var scatterplotMapStep = "";
+    var scatterplotMainMapStep = "";
 
     if(navigationType == 'NAVIGATION')
     {
@@ -436,7 +434,7 @@ function setIntroDetails(navigationType)
                         "⇒	Housing Age Info shows the breakdown for the age of the house.<br>" +
                         "NOTE: This section is scrollable. This is required to view all graphs.<br>";
 
-        scatterplotMapStep = "<strong>The Socio-Economics Factors Scatterplot</strong><br><br>" +
+        scatterplotMainMapStep = "<strong>The Socio-Economics Factors Scatterplot</strong><br><br>" +
                         "This visualization allows the exploration of US socio-economic patterns" +
                         "by selecting the data to plot on the X and Y axis of the scatter plot.<br>" +
                         "Interactivity in this map includes the following:<br><br>" +
@@ -444,31 +442,36 @@ function setIntroDetails(navigationType)
                         "⇒	Dragging a rectangular selection box brushes data points.<br>" +
                         "⇒	Mini maps are displayed based on selected data points.<br>" +
                         "⇒	Brushed selections are draggable to new locations.<br>";
+
     }
     if(navigationType == 'STORY')
     {
-        choroplethMainMapStep = "As seen in this choropleth, the average listing price for the for New York is <b>$734,338</b>.<br>" +
+        choroplethMainMapStep = "As seen in this choropleth, the average listing price in New York State is <b>$734,338</b>.<br>" +
                                 "The Median Sales Price is <b>$350,000</b>.<br>" +
-                                "This puts New York in the top 3 states that have the highest housing price, i.e. <b>> $700,0001</b>.<br>" +
-                                "Let's take a closer look at the mini map details for this state.<br><br>" +
+                                "This puts New York in the top 3 states with the highest listing prices, i.e. <b>>$700,0001</b>.<br>" +
+                                "Let's take a closer look at the drilldown details for New York.<br><br>" +
                                 "Please click the \"<b>Next</b>\" button below to proceed.";
 
-        choroplethMiniMapStep = "The first graph is a pie chart showing the Occupancy Info for New York.<br>" +
-                                "Here the % of Owner is > % of Rental, i.e. 64.46% vs 35.54%.<br><br>" +
-                                "The next graph is a bar chart that shows the breakdown of the housing size.<br>" +
-                                "For New York, the housing size that has the highest % are 3 Bedroom houses " +
-                                "and the lowest % are 5 Bedroom or More houses.<br><br>" +
-                                "It's interesting to note that for the Housing Value Info bar chart, " +
+        choroplethMiniMapStep = "The first graph is a pie chart showing Occupancy Info for New York.<br>" +
+                                "Here, the % of owner occupied housing is > % of renter occupants, i.e. 64.5% vs 35.5%.<br><br>" +
+                                "The next graph is a bar chart that shows the breakdown of house sizes.<br>" +
+                                "In New York, the most common house size is 3 Bedroom houses " +
+                                "and the smallest % is 5 Bedroom or More housing.<br><br>" +
+                                "It's interesting to note that for in Housing Value Info bar chart, " +
                                 "most houses fall between the price ranges of 50k - 499k, with the highest % in the range of 50-99k.<br><br>" +
-                                "Coming to the final bar chart that shows the Housing Age, it is surprsing to " +
-                                "see that the biggest % falls in the range of < 1930, i.e. most houses " +
-                                "being occupied in New York were built before 1930!";
+                                "Coming to the final bar chart that shows the Housing Year Built breakdown, it is surprising to " +
+                                "see that the biggest % falls in the range of < 1940, i.e. there are many more houses " +
+                                "occupied in New York built before 1940 than during more recent periods!";
 
-        scatterplotMapStep = "";
+        scatterplotMainMapStep = "<p>Scatterplot points representing areas of New York with 65,000 or more inhabitants are colored orange. Choosing a different state will change the selected points. Unlike Los Angeles, datapoints representing New York are not particularly large, due to smaller counties in the most populous areas. </p>" +
+                                 "<p>Some of the more interesting findings in New York are the extrordinarily high property values relative to median household incomes. This is illustrated by the New York County, NY datapoint, representing the top of the property value scale but the midrange of household incomes. This fact isn't quite what it seems, though, as looking at the mean household income, instead of the median, moves the datapoint to the high end of both income and housing values.</p>" +
+                                 "<p>A rather dubious distinction for New York be seen when looking at household incomes and food stamp recipient levels. Bronx County shows the highest proportion of food stamp recipients in the US, with nearly the lowest median household incomes.</p>";
+
+
     }
     $('#mainMap').attr("data-intro", choroplethMainMapStep);
     $('#miniMapWrapper').attr("data-intro", choroplethMiniMapStep);
-    $('#mainScatterplotMap').attr("data-intro", scatterplotMapStep);
+    $('#mainScatterplotMap').attr("data-intro", scatterplotMainMapStep);
 
 }
 
