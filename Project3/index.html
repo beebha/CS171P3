@@ -151,39 +151,42 @@
                 <span id="xAxisSelectSpan"></span>
                 <h4>Y Axis Dataset</h4>
                 <span id="yAxisSelectSpan"></span>
-                <h4 id="sliderValue">Selected Year: <span id="year">2011</span></h4>
-                    <div id="slider" class="sliderDiv"></div>
-                    <div id="scatterAnimation">
-                        <img class="controlBtn" src="images/play.png" onclick="javascript:startScatterAnimation();"/>
-                        <img class="controlBtn" src="images/pause.png" onclick="javascript:stopScatterAnimation();"/>
-                    </div>
+                    <br />
                 <h4>Selected Example Plots</h4>
                     <button type="button"
                             class="ui-state-default ui-corner-all guide-btn"
                             id = "scatterExample01"
-                            onclick="scatterExample01();">
+                            onclick="scatterExample('Texas', 'medianHouseInc', 'medianHomeVal');">
                             Texas Household Income:Housing Values</button>
                     <button type="button"
                             class="ui-state-default ui-corner-all guide-btn"
                             id = "scatterExample02"
-                            onclick="scatterExample02();">
+                            onclick="scatterExample('Florida', 'houseSocSecPct', 'medianAge');">
                         Florida Social Security Income:Median Age</button>
                     <button type="button"
                             class="ui-state-default ui-corner-all guide-btn"
                             id = "scatterExample03"
-                            onclick="scatterExample03();">
+                            onclick="scatterExample('Nevada', 'ownerVacPct', 'medianHomeVal');">
                         Nevada Housing Vacancy:Housing Values</button>
                     <button type="button"
                             class="ui-state-default ui-corner-all guide-btn"
                             id = "scatterExample04"
-                            onclick="scatterExample04();">
+                            onclick="scatterExample('California', 'povFamAllPct', 'medianHouseInc');">
                         California Familes in Poverty:Household Income</button>
                 </div>
-
-                <div id="mapVariablesSelectorForScatterplot">
-                </div>
             </div>
-            <div id="mainScatterplotMapLegend" class="roundedFrame"></div>
+
+        <div id="animationControlsForScatterplot" class="roundedFrame">
+            <h3>Dataset Animation Controller</h3>
+            <h4 id="sliderValue">Selected Year: <span id="year">2011</span></h4>
+            <div id="slider" class="sliderDiv"></div>
+            <div id="scatterAnimation">
+                <img class="controlBtn" src="images/play.png" onclick="javascript:startScatterAnimation();"/>
+                <img class="controlBtn" src="images/pause.png" onclick="javascript:stopScatterAnimation();"/>
+            </div>
+        </div>
+
+        <div id="mainScatterplotMapLegend" class="roundedFrame"></div>
 
         </div>
     </div>

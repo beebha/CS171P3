@@ -75,6 +75,23 @@ function animateScatter(){
 
 }
 
+function scatterExample(theState, xAxis, yAxis){
+    var localeArray = [];
+    datasetIndex = 0;
+    var currentDataset = datasets[datasetIndex];
+
+    document.getElementById("xAxisSelect").value = xAxis;
+    document.getElementById("yAxisSelect").value = yAxis;
+
+    currentDataset.forEach(function(d){
+        if (currentDataset.get(d)["state"] === theState)
+            localeArray.push(d);
+    });
+
+    reDrawScatterplotForState(localeArray);
+    startScatterAnimation();
+}
+
 //$("#mainMapTitle").html("Selected 2011 US County/Municipality Statistics");
 $('#mainScatterplotMapLegend').html("<h3>Plot Legend</h3>" +
         "<p>Data point size indicates relative population of locale.</p>" +
@@ -189,6 +206,7 @@ function dataReady()
         document.getElementById("xAxisSelect").value = defaultXMetric;
         document.getElementById("yAxisSelect").value = defaultYMetric;
         $("#mapControlsForScatterplot").show();
+        $("#animationControlsForScatterplot").show();
         $("#scatterMapControls").show();
 
     });

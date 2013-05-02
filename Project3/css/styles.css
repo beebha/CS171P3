@@ -129,7 +129,7 @@ p {
 #controlsWrapper {
     position: absolute;
     top: 60px;
-    left: 907px;
+    left: 910px;
     width: 280px;
 }
 
@@ -148,7 +148,7 @@ p {
     margin-bottom: 5px;
 }
 
-#mapControls, #mapControlsForScatterplot {
+#mapControls, #mapControlsForScatterplot, #animationControlsForScatterplot  {
     position: relative;
     width: 100%;
     padding: 10px;
@@ -232,8 +232,8 @@ p {
 
 #scatterAnimation {
     position: absolute;
-    top: 190px;
-    left: 148px;
+    top: 50px;
+    left: 155px;
 }
 
 .guide-btn {

@@ -88,20 +88,20 @@ function drawMiniBarChart(data, mapIDToDraw, mapID, mapWidth, mapHeight, barColo
         .attr('y', y)
         .attr('height', yScale.rangeBand())
         .attr('width', function(d) {
-            return (barValue(d) * 2);
+            return (barValue(d));
         })
         .attr('stroke', 'white')
         .attr('fill', barColor);
 
     barsContainer.selectAll("text").data(data).enter().append("text")
         .attr("x", function(d) {
-            return barValue(d) < 70 ? (barValue(d) * 2) + 5: (barValue(d) * 2) - 35;
+            return barValue(d) < 80 ? (barValue(d)) + 5: (barValue(d)) - 5;
         })
         .attr("y", yText)
-        .attr("dy", ".25em")
+        .attr("dy", ".35em")
         .attr("font-size", "10")
         .attr("text-anchor", function(d){
-            return barValue(d) < 70 ? "start": "end";
+            return barValue(d) < 80 ? "start": "end";
         })
         .attr("fill", "black")
         .attr("stroke", "none")
@@ -197,6 +197,7 @@ function removeMainMap()
     $("#mapVariablesSelector").hide();
     $("#mapControls").hide();
     $("#mapControlsForScatterplot").hide();
+    $("#animationControlsForScatterplot").hide();
     $('#animationPausedMsg').hide();
     $('#animationPauseButton').hide();
     $('#miniMap1Title').html("");
