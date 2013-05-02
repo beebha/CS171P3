@@ -45,7 +45,7 @@ Number.prototype.formatNumber = function(places, thousand, decimal) {
 function drawMiniBarChart(data, mapIDToDraw, mapID, mapWidth, mapHeight, barColor)
 {
     var barHeight = 15;
-    var barLabelWidth = 110;
+    var barLabelWidth = 90;
     var barLabelPadding = 5;
     var gridLabelHeight = 18;
     var gridChartOffset = 3;
@@ -88,23 +88,25 @@ function drawMiniBarChart(data, mapIDToDraw, mapID, mapWidth, mapHeight, barColo
         .attr('y', y)
         .attr('height', yScale.rangeBand())
         .attr('width', function(d) {
-            return (2*barValue(d));
+            return (barValue(d) * 2);
         })
         .attr('stroke', 'white')
         .attr('fill', barColor);
 
     barsContainer.selectAll("text").data(data).enter().append("text")
         .attr("x", function(d) {
-            return (2*barValue(d));
+            return barValue(d) < 70 ? (barValue(d) * 2) + 5: (barValue(d) * 2) - 35;
         })
         .attr("y", yText)
         .attr("dy", ".25em")
         .attr("font-size", "10")
-        .attr("text-anchor", "start")
+        .attr("text-anchor", function(d){
+            return barValue(d) < 70 ? "start": "end";
+        })
         .attr("fill", "black")
         .attr("stroke", "none")
         .text(function(d) {
-            return d3.round(barValue(d), 2);
+            return d3.round(barValue(d), 1);
         });
 
     barsContainer.append("line")

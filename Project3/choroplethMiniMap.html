@@ -50,7 +50,7 @@
                     var cos = Math.sin(labelX/h); // Get sin and cos of opposite and adjacent angles
                     var sin = Math.sin(labelY/h);
                     // Calculate new coordinates using desired hypotenuse (distance from center) and sin and cos.
-                    labelX = cos * (radius * 0.6); // Set distance from center to 75% of radius
+                    labelX = cos * (radius * 0.65); // Set distance from center to 75% of radius
                     labelY = sin * (radius * 0.6);
                     console.log(labelX + ":" + labelY);
                     // Set transform translation to new coordinates
@@ -178,15 +178,15 @@
     });
 
     // Rental vs Owner Pie Chart
-    var rental = (totalRentalPercentage / totalCountyCount).toFixed(2);
-    var owner = (100 - rental).toFixed(2);
+    var rental = (totalRentalPercentage / totalCountyCount);
+    var owner = (100 - rental);
 
     var choroplethMiniMap1Data = [];
 
     if(!isNaN(rental)) {
         choroplethMiniMap1Data = [
-            {"label":"Rental: " + rental + "%", "value":rental},
-            {"label":"Owner: " + owner + "%", "value":owner}
+            {"label":"Rental: " + rental.toFixed(1) + "%", "value":rental},
+            {"label":"Owner: " + owner.toFixed(1) + "%", "value":owner}
         ];
     }
 
@@ -204,11 +204,11 @@
     }
 
     // House size Bar Chart
-    var houseSize1Br = (houseSize1BrPercentage / totalCountyCount).toFixed(2);
-    var houseSize2Br = (houseSize2BrPercentage / totalCountyCount).toFixed(2);
-    var houseSize3Br = (houseSize3BrPercentage / totalCountyCount).toFixed(2);
-    var houseSize4Br = (houseSize4BrPercentage / totalCountyCount).toFixed(2);
-    var houseSize5BrMore = (houseSize5BrMorePercentage / totalCountyCount).toFixed(2);
+    var houseSize1Br = (houseSize1BrPercentage / totalCountyCount);
+    var houseSize2Br = (houseSize2BrPercentage / totalCountyCount);
+    var houseSize3Br = (houseSize3BrPercentage / totalCountyCount);
+    var houseSize4Br = (houseSize4BrPercentage / totalCountyCount);
+    var houseSize5BrMore = (houseSize5BrMorePercentage / totalCountyCount);
 
 
     var choroplethMiniMap2Data = [];
@@ -219,7 +219,7 @@
             {"label":"2 Br", "value":houseSize2Br},
             {"label":"3 Br", "value":houseSize3Br},
             {"label":"4 Br", "value":houseSize4Br},
-            {"label":"5 Br And More", "value":houseSize5BrMore}
+            {"label":"5 Br +", "value":houseSize5BrMore}
         ];
     }
 
@@ -233,14 +233,14 @@
     }
 
     // House value Bar Chart
-    var houseValueLessThan50k = (houseValueLessThan50kPercentage / totalCountyCount).toFixed(2);
-    var houseValue50kto99k = (houseValue50kto99kPercentage / totalCountyCount).toFixed(2);
-    var houseValue100kto149k = (houseValue100kto149kPercentage / totalCountyCount).toFixed(2);
-    var houseValue150kto199k = (houseValue150kto199kPercentage / totalCountyCount).toFixed(2);
-    var houseValue200kto299k = (houseValue200kto299kPercentage / totalCountyCount).toFixed(2);
-    var houseValue300kto499k = (houseValue300kto499kPercentage / totalCountyCount).toFixed(2);
-    var houseValue500kto999k = (houseValue500kto999kPercentage / totalCountyCount).toFixed(2);
-    var houseValue1MOrMore = (houseValue1MOrMorePercentage / totalCountyCount).toFixed(2);
+    var houseValueLessThan50k = (houseValueLessThan50kPercentage / totalCountyCount);
+    var houseValue50kto99k = (houseValue50kto99kPercentage / totalCountyCount);
+    var houseValue100kto149k = (houseValue100kto149kPercentage / totalCountyCount);
+    var houseValue150kto199k = (houseValue150kto199kPercentage / totalCountyCount);
+    var houseValue200kto299k = (houseValue200kto299kPercentage / totalCountyCount);
+    var houseValue300kto499k = (houseValue300kto499kPercentage / totalCountyCount);
+    var houseValue500kto999k = (houseValue500kto999kPercentage / totalCountyCount);
+    var houseValue1MOrMore = (houseValue1MOrMorePercentage / totalCountyCount);
 
 
     var choroplethMiniMap3Data = [];
@@ -268,22 +268,22 @@
     }
 
     // House age Bar Chart
-    var houseAge2005Newer = (houseAge2005NewerPercentage / totalCountyCount).toFixed(2);
-    var houseAge2000to2004 = (houseAge2000to2004Percentage / totalCountyCount).toFixed(2);
-    var houseAge1990to1999 = (houseAge1990to1999Percentage / totalCountyCount).toFixed(2);
-    var houseAge1980to1989 = (houseAge1980to1989Percentage / totalCountyCount).toFixed(2);
-    var houseAge1970to1979 = (houseAge1970to1979Percentage / totalCountyCount).toFixed(2);
-    var houseAge1960to1969 = (houseAge1960to1969Percentage / totalCountyCount).toFixed(2);
-    var houseAge1950to1959 = (houseAge1950to1959Percentage / totalCountyCount).toFixed(2);
-    var houseAge1940to1949 = (houseAge1940to1949Percentage / totalCountyCount).toFixed(2);
-    var houseAge1939Older = (houseAge1939OlderPercentage / totalCountyCount).toFixed(2);
+    var houseAge2005Newer = (houseAge2005NewerPercentage / totalCountyCount);
+    var houseAge2000to2004 = (houseAge2000to2004Percentage / totalCountyCount);
+    var houseAge1990to1999 = (houseAge1990to1999Percentage / totalCountyCount);
+    var houseAge1980to1989 = (houseAge1980to1989Percentage / totalCountyCount);
+    var houseAge1970to1979 = (houseAge1970to1979Percentage / totalCountyCount);
+    var houseAge1960to1969 = (houseAge1960to1969Percentage / totalCountyCount);
+    var houseAge1950to1959 = (houseAge1950to1959Percentage / totalCountyCount);
+    var houseAge1940to1949 = (houseAge1940to1949Percentage / totalCountyCount);
+    var houseAge1939Older = (houseAge1939OlderPercentage / totalCountyCount);
 
 
     var choroplethMiniMap4Data = [];
 
     if(!isNaN(houseAge2005Newer)) {
         choroplethMiniMap4Data = [
-            {"label":"> 2005", "value":houseAge2005Newer},
+            {"label":"> 2004", "value":houseAge2005Newer},
             {"label":"2000 - 2004", "value":houseAge2000to2004},
             {"label":"1990 - 1999", "value":houseAge1990to1999},
             {"label":"1980 - 1989", "value":houseAge1980to1989},
@@ -291,13 +291,13 @@
             {"label":"1960 - 1969", "value":houseAge1960to1969},
             {"label":"1950 - 1959", "value":houseAge1950to1959},
             {"label":"1940 - 1949", "value":houseAge1940to1949},
-            {"label":"< 1930", "value":houseAge1939Older}
+            {"label":"< 1940", "value":houseAge1939Older}
         ];
     }
 
     if(choroplethMiniMap4Data.length > 0)
     {
-        $('#miniMap4Title').html("Housing Age Info");
+        $('#miniMap4Title').html("Year Built Info");
         drawMiniBarChart(choroplethMiniMap4Data, "miniMap4", "miniMap4SVG", 350, 210, '#FDB462');
     } else
     {

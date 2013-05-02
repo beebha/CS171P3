@@ -383,17 +383,25 @@ function dataReady()
             {"label":"Foreign Born", "value":0}
         ];
 
+        var totalPop = 0;
+
         for (i in brushedKeys){
             var pop = miniDataset.get(brushedKeys[i])['pop']
+            totalPop += pop;
             aggregateData[0].value += (miniDataset.get(brushedKeys[i])["birth"].inStatePct * 0.01 * pop);
             aggregateData[1].value += (miniDataset.get(brushedKeys[i])["birth"].outStatePct * 0.01 * pop);
             aggregateData[2].value += (miniDataset.get(brushedKeys[i])["birth"].foreignBornPct * 0.01 * pop);
         }
 
-        console.log("Pie Data: " + aggregateData);
+        for (i in aggregateData){
+            aggregateData[i].value = (aggregateData[i].value/totalPop) * 100;
+        }
+
+//        console.log("Pie Data: " + aggregateData);
         $("#miniScatterplotMap4Title").html("Birthplace (%)");
         plotMiniPie(aggregateData, "#miniScatterplotMap4", colorbrewer.Set1[8]);
     }
+
     function plotMiniPie(data, elementID, colorScheme){
         var colorRange = d3.scale.ordinal() //builtin range of colors
                 .range(colorScheme);
@@ -448,7 +456,7 @@ function dataReady()
                             [labelX, labelY] + ")";
                 })
                 .attr("text-anchor", "middle")
-                .text(function(d, i) { return data[i].label; }); //get the label from data array
+                .text(function(d, i) { return data[i].label + " " + data[i].value.toFixed(1); }); //get the label from data array
     }
 
     function selectData(){
