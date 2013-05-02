@@ -431,7 +431,7 @@ function setIntroDetails(navigationType)
                         "⇒	Double clicking again zooms out to show the states map again.<br />" +
                         "⇒	Clicking any county highlights the clicked county.<br />" +
                         "⇒	Clicking any county outside the state, selects the new state.<br />" +
-                        "⇒	Clicking any state selects the counties in the Scatterplot Map.<br>" +
+                        "⇒	Clicking any state selects the counties in the Scatterplot Map.<br />" +
                         "⇒	Mousing over any county also displays a tooltip.<br />" +
                         "⇒	Mini maps are displayed based on clicked state or county.<br /></p>";
 
