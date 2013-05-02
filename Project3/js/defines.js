@@ -223,6 +223,7 @@ function removeMiniScatterMaps()
     d3.select("#miniScatterplotMap2").select("svg").remove();
     d3.select("#miniScatterplotMap3").select("svg").remove();
     d3.select("#miniScatterplotMap4").select("svg").remove();
+    $('#miniScatterplotMapTitle').show();
     $('#miniScatterplotMap1Title').html("");
     $('#miniScatterplotMap2Title').html("");
     $('#miniScatterplotMap3Title').html("");

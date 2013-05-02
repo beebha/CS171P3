@@ -44,7 +44,19 @@
                 .attr("transform", function(d) {
                     d.innerRadius = 0;
                     d.outerRadius = radius;
-                    return "translate(" + arc.centroid(d) + ")";
+                    var labelX = arc.centroid(d)[0];
+                    var labelY = arc.centroid(d)[1];
+                    var h = Math.sqrt(Math.pow(labelX,2) + Math.pow(labelY,2)); // Get hypotenuse
+                    var cos = Math.sin(labelX/h); // Get sin and cos of opposite and adjacent angles
+                    var sin = Math.sin(labelY/h);
+                    // Calculate new coordinates using desired hypotenuse (distance from center) and sin and cos.
+                    labelX = cos * (radius * 0.7); // Set distance from center to 75% of radius
+                    labelY = sin * (radius * 0.7);
+                    console.log(labelX + ":" + labelY);
+                    // Set transform translation to new coordinates
+                    return "translate(" +
+                            [labelX, labelY] + ")";
+//                    return "translate(" + arc.centroid(d) + ")";
                 })
                 .attr("text-anchor", "middle")
                 .text(function(d, i) {

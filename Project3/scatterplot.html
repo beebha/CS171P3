@@ -5,11 +5,12 @@
 
 var fieldLabels = [];
 var firstPlot = true;
-var transitionSpeed = 2000;
+var transitionSpeed = 1000;
 var datasetIndex = 4;
 var maxDatasetIndex = 4;
 
 var setIntervalVar;
+// This determines how fast the scatter animation runs
 var intervalTime = 1000;
 
 var defaultXMetric = "medianHouseInc";
@@ -212,21 +213,6 @@ function dataReady()
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-//    var race = d3.select("#miniScatterplotMap1")
-//            .append("svg")
-//            .attr("id", 'race')
-//            .attr("class", 'minichart')
-//            .attr("width", miniChartWidth)
-//            .attr("height", miniChartHeight);
-//
-
-    var origin = d3.select("#miniScatterplotMap4")
-            .append("svg")
-            .attr("id", 'origin')
-            .attr("class", 'minichart')
-            .attr("width", miniChartWidth)
-            .attr("height", miniChartHeight);
-
     var xMetric = defaultXMetric;
     var yMetric = defaultYMetric;
 
@@ -272,10 +258,11 @@ function dataReady()
 //        console.log("Brushed points: " + brushedKeys.length);
 //        console.log(brushedKeys);
         if (brushedKeys.length){
+            $('#miniScatterplotMapTitle').hide();
             plotRaceMini(miniDataset, brushedKeys);
             plotEducationMini(miniDataset, brushedKeys);
-            plotOriginMini(miniDataset, brushedKeys);
             plotAgeMini(miniDataset, brushedKeys);
+            plotOriginMini(miniDataset, brushedKeys);
         }
     }
 
@@ -343,23 +330,6 @@ function dataReady()
         drawMiniBarChart(aggregateData, "miniScatterplotMap2", "educationSVG", 200, 150, colorbrewer.Set2[8][3] )
     }
 
-    function plotOriginMini(miniDataset, brushedKeys){
-        var aggregateData = [
-            {"label":"In State", "value":0},
-            {"label":"In US.", "value":0},
-            {"label":"Foreign Born", "value":0}
-        ];
-
-        for (i in brushedKeys){
-            var pop = miniDataset.get(brushedKeys[i])['pop']
-            aggregateData[0].value += (miniDataset.get(brushedKeys[i])["birth"].inStatePct * 0.01 * pop);
-            aggregateData[1].value += (miniDataset.get(brushedKeys[i])["birth"].outStatePct * 0.01 * pop);
-            aggregateData[2].value += (miniDataset.get(brushedKeys[i])["birth"].foreignBornPct * 0.01 * pop);
-        }
-        $("#miniScatterplotMap4Title").html("Birthplace (%)");
-        plotMiniPie(aggregateData, "Birthplace", "#origin", colorbrewer.Set1[8]);
-    }
-
     function plotAgeMini(miniDataset, brushedKeys){
         var aggregateData = [
             {"label":"Under 5", "value":0},
@@ -404,15 +374,38 @@ function dataReady()
         drawMiniBarChart(aggregateData, "miniScatterplotMap3", "ageSVG", 200, 250, colorbrewer.Set2[8][4] )
     }
 
+    function plotOriginMini(miniDataset, brushedKeys){
+        var aggregateData = [
+            {"label":"In State", "value":0},
+            {"label":"In US.", "value":0},
+            {"label":"Foreign Born", "value":0}
+        ];
 
-    function plotMiniPie(data, title, elementID, colorScheme){
+        for (i in brushedKeys){
+            var pop = miniDataset.get(brushedKeys[i])['pop']
+            aggregateData[0].value += (miniDataset.get(brushedKeys[i])["birth"].inStatePct * 0.01 * pop);
+            aggregateData[1].value += (miniDataset.get(brushedKeys[i])["birth"].outStatePct * 0.01 * pop);
+            aggregateData[2].value += (miniDataset.get(brushedKeys[i])["birth"].foreignBornPct * 0.01 * pop);
+        }
+
+        console.log("Pie Data: " + aggregateData);
+        $("#miniScatterplotMap4Title").html("Birthplace (%)");
+        plotMiniPie(aggregateData, "#miniScatterplotMap4", colorbrewer.Set1[8]);
+    }
+    function plotMiniPie(data, elementID, colorScheme){
         var colorRange = d3.scale.ordinal() //builtin range of colors
                 .range(colorScheme);
 
         //Set title
 //        $( elementID + "Title").html(title);
 
-        var vis = d3.select(elementID).selectAll("pieGroup")
+        var vis = d3.select(elementID)
+                .append("svg")
+                .attr("id", 'origin')
+                .attr("class", 'minichart')
+                .attr("width", miniChartWidth)
+                .attr("height", miniChartHeight)
+                .selectAll("pieGroup")
                 .data([data])
                 .enter()
                 .append("g")
