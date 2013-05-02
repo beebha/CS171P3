@@ -36,31 +36,31 @@
     </div>
     <div id="mainMap" class="roundedFrame"
          data-intro=''
-         data-step='10'>
+         data-step='7'>
      </div>
     <div id="miniMapWrapper" class="roundedFrame"
             data-intro=''
-            data-step='11'>
+            data-step='8'>
         <h4><span id="miniMapTitle">Drill-Down information - Select objects on the left to activate this display</span></h4>
         <div id="miniMap">
             <div class="miniMapDiv">
-                <span id="miniMap1Title" class="miniMapTitle"></span><br>
+                <span id="miniMap1Title" class="miniMapTitle"></span><br />
                 <span id="miniMap1"></span>
             </div>
             <div class="miniMapDiv">
-                <span id="miniMap2Title" class="miniMapTitle"></span><br>
+                <span id="miniMap2Title" class="miniMapTitle"></span><br />
                 <span id="miniMap2"></span>
             </div>
             <div class="miniMapDiv">
-                <span id="miniMap3Title" class="miniMapTitle"></span><br>
+                <span id="miniMap3Title" class="miniMapTitle"></span><br />
                 <span id="miniMap3"></span>
             </div>
             <div class="miniMapDiv">
-                <span id="miniMap4Title" class="miniMapTitle"></span><br>
+                <span id="miniMap4Title" class="miniMapTitle"></span><br />
                 <span id="miniMap4"></span>
             </div>
             <div class="miniMapDiv">
-                <span id="animationTitle" class="animationTitle"></span><br>
+                <span id="animationTitle" class="animationTitle"></span><br />
                 <span id="animationDetails"></span>
             </div>
         </div>
@@ -73,7 +73,7 @@
                     class="ui-state-default ui-corner-all guide-btn"
                     id = "housingStoryBtn"
                     onclick="javascript:startHousingStory();"
-                    data-intro='Animation Story for this view'
+                    data-intro='A walk through New York housing data.'
                     data-step='3'>Housing Story</button>
             <button type="button"
                     class="ui-state-default ui-corner-all guide-btn"
@@ -84,22 +84,23 @@
             <button type="button"
                     class="ui-state-default ui-corner-all guide-btn"
                     onclick="javascript:showProjectDescription();"
-                    data-intro='Project Description that outlines all the main maps and interactivity'
-                    data-step='5'>About this Project</button>
+                    data-intro='Project Description that outlines the visualizations and interactivity options'
+                    data-step='13'>About this Project</button>
             <button type="button"
                     class="ui-state-default ui-corner-all guide-btn"
                     onclick="javascript:showProjectScreencast();"
                     data-intro='Project Screencast'
-                    data-step='6'>Screencast</button>
+                    data-step='14'>Screencast</button>
             <button type="button"
                     class="ui-state-default ui-corner-all guide-btn"
                     onclick="javascript:showAbout();"
                     data-intro='Details of the team that brought you this UBER COOL Project'
-                    data-step='7'>Team</button>
+                    data-step='15'>Team</button>
 
         </div>
     	<div id="mapSelector" class="roundedFrame">
-        <h3 data-intro='The Analysis selector that is a dropdown for all visualizations in this project.' data-step='8'>Analysis Selector</h3>
+        <h3 data-intro='The Analysis Selector is used to change the displayed visualizations in this project.'
+            data-step='5'>Analysis Selector</h3>
         <select id="mapSelection">
             <option value ="choropleth" selected>US Housing Cost Choropleth</option>
             <option value ="showreel">Housing Prices Trends Show Reel</option>
@@ -113,36 +114,43 @@
 		<div id="mainMapDetails" class="roundedFrame"></div>
 		<div id="mainMapLegend"
              class="roundedFrame"
-             data-intro='The map legend for the US Housing Cost Choropleth visualization.'
-             data-step='9'></div>
+             data-intro='The map legend for the US Housing Cost choropleth visualization (average listing price).'
+             data-step='6'></div>
     </div>
-    <div id="animationPausedMsg">ANIMATION PAUSED...</div>
+
+    <div id="animationPausedMsg">Animation paused...</div>
+
     <div id="scatterplotMapDiv">
         <div id="mainScatterplotMap"
              class="roundedFrame"
              data-intro=''
-             data-step='12'
+             data-step='9'
              data-position='top'></div>
-        <div id="miniScatterplotMapWrapper" class="roundedFrame">
+        <div id="miniScatterplotMapWrapper" class="roundedFrame"
+             data-intro=''
+             data-step='10'
+             data-position='top'>
             <h4>Selected Areas Demographics</h4>
             <p id="miniScatterplotMapTitle">Drag a selection box over points on the scatterplot to activate this display</p>
             <div id="miniScatterplotMap">
                 <div class="miniMapDiv">
-                    <span id="miniScatterplotMap1Title" class="miniMapTitle"></span><br>
+                    <span id="miniScatterplotMap1Title" class="miniMapTitle"></span><br />
                     <span id="miniScatterplotMap1"></span></div>
                 <div class="miniMapDiv">
-                    <span id="miniScatterplotMap2Title" class="miniMapTitle"></span><br>
+                    <span id="miniScatterplotMap2Title" class="miniMapTitle"></span><br />
                     <span id="miniScatterplotMap2"></span></div>
                 <div class="miniMapDiv">
-                    <span id="miniScatterplotMap3Title" class="miniMapTitle"></span><br>
+                    <span id="miniScatterplotMap3Title" class="miniMapTitle"></span><br />
                     <span id="miniScatterplotMap3"></span></div>
                 <div class="miniMapDiv">
-                    <span id="miniScatterplotMap4Title" class="miniMapTitle"></span><br>
+                    <span id="miniScatterplotMap4Title" class="miniMapTitle"></span><br />
                     <span id="miniScatterplotMap4"></span></div>
             </div>
         </div>
         <div id="controlsScatterplotWrapper">
-            <div id="mapControlsForScatterplot" class="roundedFrame">
+            <div id="mapControlsForScatterplot" class="roundedFrame"
+                 data-intro='This area has controls for changing the data plotted on each axis. Preset data of interest can also be selected with the lower buttons.'
+                 data-step='11'>
                 <h3>Scatter Data Controller</h3>
                 <div id="scatterMapControls" >
                     <p>Explore US socio-economic patterns by selecting the data to plot on the X and Y axis of the scatter plot.</p>
@@ -176,7 +184,9 @@
                 </div>
             </div>
 
-        <div id="animationControlsForScatterplot" class="roundedFrame">
+        <div id="animationControlsForScatterplot" class="roundedFrame"
+             data-intro='Data that span 2007-2011 can be selected here by moving the slider. Animation of all data is started/stopped with the play and pause buttons.'
+             data-step='12'>
             <h3>Dataset Animation Controller</h3>
             <h4 id="sliderValue">Selected Year: <span id="year">2011</span></h4>
             <div id="slider" class="sliderDiv"></div>
@@ -203,36 +213,36 @@
 </div>
 <div id="dialog-description" title="Project Description">
     <p>
-    <div class="projectDescMapTitle">The US Housing Cost Choropleth</div><br>
+    <div class="projectDescMapTitle">The US Housing Cost Choropleth</div><br />
     This visualization shows the general trends in housing prices
-    (average listing price in USD ($)) across the US.<br>
-    Interactivity in this map includes the following:<br><br>
-    ⇒	Mousing over any state displays a tooltip.<br>
-    ⇒	Clicking any state highlights the clicked state.<br>
-    ⇒	Double-clicking any state zooms in to show the county level details.<br>
-    ⇒	Double-clicking again zooms out to show the states map again.<br>
-    ⇒	Clicking any county highlights the clicked county.<br>
-    ⇒	Clicking any county outside the state, selects the new state.<br>
-    ⇒	Mousing over any county also displays a tooltip.<br>
-    ⇒	Mini maps are displayed based on clicked state or county.<br><br><br>
+    (average listing price in USD ($)) across the US.<br />
+    Interactivity in this map includes the following:<br /><br />
+    ⇒	Mousing over any state displays a tooltip.<br />
+    ⇒	Clicking any state highlights the clicked state.<br />
+    ⇒	Double-clicking any state zooms in to show the county level details.<br />
+    ⇒	Double-clicking again zooms out to show the states map again.<br />
+    ⇒	Clicking any county highlights the clicked county.<br />
+    ⇒	Clicking any county outside the state, selects the new state.<br />
+    ⇒	Mousing over any county also displays a tooltip.<br />
+    ⇒	Mini maps are displayed based on clicked state or county.<br /><br /><br />
 
-    <div class="projectDescMapTitle">The Socio-Economics Factors Scatterplot</div><br>
-    This visualization encourages the exploration of US socio-economic patterns by providing the ability to choose the data to plotted on the X and Y axis of the scatter plot.<br>
-    Interactivity in this map includes the following:<br><br>
-    ⇒	X and Y axes can each be assigned 20 datasets via the dropdown.<br>
-    ⇒	Dragging a rectangular selection box brushes data points.<br>
-    ⇒	Mini charts are displayed based on the brushed data points.<br>
-    ⇒	Brushed selections are draggable to new locations.<br>
-    ⇒	Brushed selections stay selected when new data are plotted.<br><br><br>
+    <div class="projectDescMapTitle">The Socio-Economics Factors Scatterplot</div><br />
+    This visualization encourages the exploration of US socio-economic patterns by providing the ability to choose the data to plotted on the X and Y axis of the scatter plot.<br />
+    Interactivity in this map includes the following:<br /><br />
+    ⇒	X and Y axes can each be assigned 20 datasets via the dropdown.<br />
+    ⇒	Dragging a rectangular selection box brushes data points.<br />
+    ⇒	Mini charts are displayed based on the brushed data points.<br />
+    ⇒	Brushed selections are draggable to new locations.<br />
+    ⇒	Brushed selections stay selected when new data are plotted.<br /><br /><br />
 
-    <div class="projectDescMapTitle">The Housing Prices Trends Show Reel</div><br>
+    <div class="projectDescMapTitle">The Housing Prices Trends Show Reel</div><br />
     This visualization shows an animated trend in housing prices across the 4 regions (Northeast, South, West, Midwest).
-    The first selection shows the trend for Single Family Homes and the second for Condos and the last shows the difference between Single Family Homes and Condos.<br>
-    Interactivity in this map includes the following:<br><br>
-    ⇒	Clicking the "Pause" button pauses the animation<br>
-    ⇒	In the paused state, one can mouseover the charts to view toolitips.<br>
-    ⇒	Also allows the perusal of the story details at owe's own pace.<br>
-    ⇒	Subsequently clicking the "Resume" button allows the animation to continue.<br><br>
+    The first selection shows the trend for Single Family Homes and the second for Condos and the last shows the difference between Single Family Homes and Condos.<br />
+    Interactivity in this map includes the following:<br /><br />
+    ⇒	Clicking the "Pause" button pauses the animation<br />
+    ⇒	In the paused state, one can mouseover the charts to view toolitips.<br />
+    ⇒	Also allows the perusal of the story details at owe's own pace.<br />
+    ⇒	Subsequently clicking the "Resume" button allows the animation to continue.<br /><br />
     </p>
 </div>
 <div  id="dialog-screencast" title="Project Screencast">
@@ -241,7 +251,7 @@
 <div id="housing-story-intro" title="The Housing Story">
     <p>
         After analyzing all data present in the The US Housing Cost Choropleth and The Socio-Economics Factors Scatterplot,
-        we decided that the state with the most interesting data was <b>New York</b>.<br><br>Let's begin...
+        we decided that the state with the most interesting data was <strong>New York</strong>.<br /><br />Let's begin...
     </p>
 </div>
 <div id="loading-mask" title="Loading Visualizations">
