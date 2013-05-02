@@ -85,17 +85,17 @@
                     class="ui-state-default ui-corner-all guide-btn"
                     onclick="javascript:showProjectDescription();"
                     data-intro='Project Description that outlines the visualizations and interactivity options'
-                    data-step='13'>About this Project</button>
+                    data-step='14'>About this Project</button>
             <button type="button"
                     class="ui-state-default ui-corner-all guide-btn"
                     onclick="javascript:showProjectScreencast();"
                     data-intro='Project Screencast'
-                    data-step='14'>Screencast</button>
+                    data-step='15'>Screencast</button>
             <button type="button"
                     class="ui-state-default ui-corner-all guide-btn"
                     onclick="javascript:showAbout();"
                     data-intro='Details of the team that brought you this UBER COOL Project'
-                    data-step='15'>Team</button>
+                    data-step='16'>Team</button>
 
         </div>
     	<div id="mapSelector" class="roundedFrame">
@@ -149,7 +149,7 @@
         </div>
         <div id="controlsScatterplotWrapper">
             <div id="mapControlsForScatterplot" class="roundedFrame"
-                 data-intro='This area has controls for changing the data plotted on each axis. Preset data of interest can also be selected with the lower buttons.'
+                 data-intro='This area has controls for changing the data plotted on each axis.'
                  data-step='11'>
                 <h3>Scatter Data Controller</h3>
                 <div id="scatterMapControls" >
@@ -160,33 +160,37 @@
                 <h4>Y Axis Dataset</h4>
                 <span id="yAxisSelectSpan"></span>
                     <br />
-                <h4>Selected Example Plots</h4>
-                    <button type="button"
-                            class="ui-state-default ui-corner-all guide-btn"
-                            id = "scatterExample01"
-                            onclick="scatterExample('Texas', 'medianHouseInc', 'medianHomeVal');">
-                            Texas Household Income:Housing Values</button>
-                    <button type="button"
-                            class="ui-state-default ui-corner-all guide-btn"
-                            id = "scatterExample02"
-                            onclick="scatterExample('Florida', 'houseSocSecPct', 'medianAge');">
-                        Florida Social Security Income:Median Age</button>
-                    <button type="button"
-                            class="ui-state-default ui-corner-all guide-btn"
-                            id = "scatterExample03"
-                            onclick="scatterExample('Nevada', 'ownerVacPct', 'medianHomeVal');">
-                        Nevada Housing Vacancy:Housing Values</button>
-                    <button type="button"
-                            class="ui-state-default ui-corner-all guide-btn"
-                            id = "scatterExample04"
-                            onclick="scatterExample('California', 'povFamAllPct', 'medianHouseInc');">
-                        California Familes in Poverty:Household Income</button>
+                    <div id="presetPlots"
+                         data-intro=''
+                         data-step='12'>
+                        <h4>Selected Example Plots</h4>
+                        <button type="button"
+                                class="ui-state-default ui-corner-all guide-btn"
+                                id = "scatterExample01"
+                                onclick="scatterExample('Texas', 'medianHouseInc', 'medianHomeVal');">
+                                Texas Household Income:Housing Values</button>
+                        <button type="button"
+                                class="ui-state-default ui-corner-all guide-btn"
+                                id = "scatterExample02"
+                                onclick="scatterExample('Florida', 'houseSocSecPct', 'medianAge');">
+                            Florida Social Security Income:Median Age</button>
+                        <button type="button"
+                                class="ui-state-default ui-corner-all guide-btn"
+                                id = "scatterExample03"
+                                onclick="scatterExample('Nevada', 'ownerVacPct', 'medianHomeVal');">
+                            Nevada Housing Vacancy:Housing Values</button>
+                        <button type="button"
+                                class="ui-state-default ui-corner-all guide-btn"
+                                id = "scatterExample04"
+                                onclick="scatterExample('California', 'povFamAllPct', 'medianHouseInc');">
+                            California Familes in Poverty:Household Income</button>
+                    </div>
                 </div>
             </div>
 
         <div id="animationControlsForScatterplot" class="roundedFrame"
              data-intro='Data that span 2007-2011 can be selected here by moving the slider. Animation of all data is started/stopped with the play and pause buttons.'
-             data-step='12'>
+             data-step='13'>
             <h3>Dataset Animation Controller</h3>
             <h4 id="sliderValue">Selected Year: <span id="year">2011</span></h4>
             <div id="slider" class="sliderDiv"></div>

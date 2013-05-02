@@ -419,6 +419,12 @@ function setIntroDetails(navigationType)
     var choroplethMiniMapStep = "";
     var scatterplotMainMapStep = "";
     var scatterplotMiniMainMapStep = "";
+    var scatterplotPresets = "<p>These buttons activate preset plots of interest. Observe:<br />" +
+                        "⇒	the notably low housing values at given median income levels in Texas<br />" +
+                        "⇒	the volume of Social Security beneficiaries in Florida<br />" +
+                        "⇒	the precipitous drop of housing values in Nevada<br />" +
+                        "⇒	the relatively high levels of families living in poverty at similar median incomes as elsewhere in the US.</p>";
+
 
     if(navigationType == 'NAVIGATION')
     {
@@ -460,6 +466,7 @@ function setIntroDetails(navigationType)
                         "⇒	Age Composition shows the ratios of age group populations.<br />" +
                         "⇒	Birthplace reports the percentages of where the population was born.<br /><br />" +
                         "NOTE: This section is scrollable. This is required to view all graphs.</p>";
+
     }
     if(navigationType == 'STORY')
     {
@@ -505,6 +512,7 @@ function setIntroDetails(navigationType)
     $('#miniMapWrapper').attr("data-intro", choroplethMiniMapStep);
     $('#mainScatterplotMap').attr("data-intro", scatterplotMainMapStep);
     $('#miniScatterplotMapWrapper').attr("data-intro", scatterplotMiniMainMapStep);
+    $('#presetPlots').attr("data-intro", scatterplotPresets);
 
 }
 
