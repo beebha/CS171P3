@@ -55,6 +55,7 @@ function scaleAxes(xData, yData, selectedData){
 }
 
 function startScatterAnimation(){
+    stopScatterAnimation();
     setIntervalVar = setInterval(function(){ animateScatter()}, intervalTime);
 }
 
