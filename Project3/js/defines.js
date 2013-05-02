@@ -430,7 +430,8 @@ function setIntroDetails(navigationType)
                         "⇒	Occupancy Info shows the segregation between Rental and Owned Homes.<br>" +
                         "⇒	Housing Size Info shows the breakdown for the number of bedrooms.<br>" +
                         "⇒	Housing Value Info shows the breakdown for the housing prices.<br>" +
-                        "⇒	Housing Age Info shows the breakdown for the age of the house.<br>";
+                        "⇒	Housing Age Info shows the breakdown for the age of the house.<br>" +
+                        "NOTE: This section is scrollable. This is required to view all graphs.<br>";
 
         scatterplotMapStep = "<strong>The Socio-Economics Factors Scatterplot</strong><br><br>" +
                         "This visualization allows the exploration of US socio-economic patterns" +
@@ -449,7 +450,16 @@ function setIntroDetails(navigationType)
                                 "Let's take a closer look at the mini map details for this state.<br><br>" +
                                 "Please click the \"<b>Next</b>\" button below to proceed.";
 
-        choroplethMiniMapStep = "";
+        choroplethMiniMapStep = "The first graph is a pie chart showing the Occupancy Info for New York.<br>" +
+                                "Here the % of Owner is > % of Rental, i.e. 64.46% vs 35.54%.<br><br>" +
+                                "The next graph is a bar chart that shows the breakdown of the housing size.<br>" +
+                                "For New York, the housing size that has the highest % are 3 Bedroom houses " +
+                                "and the lowest % are 5 Bedroom or More houses.<br><br>" +
+                                "It's interesting to note that for the Housing Value Info bar chart, " +
+                                "most houses fall between the price ranges of 50k - 499k, with the highest % in the range of 50-99k.<br><br>" +
+                                "Coming to the final bar chart that shows the Housing Age, it is surprsing to " +
+                                "see that the biggest % falls in the range of < 1930, i.e. most houses " +
+                                "being occupied in New York were built before 1930!";
 
         scatterplotMapStep = "";
     }
