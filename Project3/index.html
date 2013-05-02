@@ -70,29 +70,29 @@
         <div id="toolbar" class="roundedFrame">
             <h3>Guidance Center</h3>
             <button type="button"
-                    class="ui-state-default ui-corner-all"
+                    class="ui-state-default ui-corner-all guide-btn"
                     id = "housingStoryBtn"
                     onclick="javascript:startHousingStory();"
                     data-intro='Animation Story for this view'
                     data-step='7'>Housing Story</button>
             <button type="button"
-                    class="ui-state-default ui-corner-all"
+                    class="ui-state-default ui-corner-all guide-btn"
                     id = "navigationBtn"
                     onclick="javascript:showNavigation();"
                     data-intro='What you clicked to view the navigation details for this project :-)'
                     data-step='6'>Navigation</button>
             <button type="button"
-                    class="ui-state-default ui-corner-all"
+                    class="ui-state-default ui-corner-all guide-btn"
                     onclick="javascript:showProjectDescription();"
                     data-intro='Project Description that outlines all the main maps and interactivity'
                     data-step='4'>About this Project</button>
             <button type="button"
-                    class="ui-state-default ui-corner-all"
+                    class="ui-state-default ui-corner-all guide-btn"
                     onclick="javascript:showProjectScreencast();"
                     data-intro='Project Screencast'
                     data-step='5'>Screencast</button>
             <button type="button"
-                    class="ui-state-default ui-corner-all help-btn"
+                    class="ui-state-default ui-corner-all guide-btn"
                     onclick="javascript:showAbout();"
                     data-intro='Details of the team that brought you this UBER COOL Project'
                     data-step='3'>Team</button>
@@ -125,7 +125,7 @@
              data-position='top'></div>
         <div id="miniScatterplotMapWrapper" class="roundedFrame">
             <h4>Selected Areas Demographics</h4>
-            <p id="miniScatterplotMapTitle">Select points on the scatterplot to activate this display</p>
+            <p id="miniScatterplotMapTitle">Drag a selection box over points on the scatterplot to activate this display</p>
             <div id="miniScatterplotMap">
                 <div class="miniMapDiv">
                     <span id="miniScatterplotMap1Title" class="miniMapTitle"></span><br>
@@ -143,7 +143,7 @@
         </div>
         <div id="controlsScatterplotWrapper">
             <div id="mapControlsForScatterplot" class="roundedFrame">
-                <h3>Map Variables Selector</h3>
+                <h3>Scatter Data Controller</h3>
                 <div id="scatterMapControls" >
                     <p>Explore US socio-economic patterns by selecting the data to plot on the X and Y axis of the scatter plot.</p>
                 <p>Click and drag on the scatter plot to select a range of data points for deeper analysis.</p>
@@ -157,12 +157,34 @@
                         <img class="controlBtn" src="images/play.png" onclick="javascript:startScatterAnimation();"/>
                         <img class="controlBtn" src="images/pause.png" onclick="javascript:stopScatterAnimation();"/>
                     </div>
+                <h4>Selected Example Plots</h4>
+                    <button type="button"
+                            class="ui-state-default ui-corner-all guide-btn"
+                            id = "scatter-example-01"
+                            onclick="javascript:startHousingStory();">
+                            Texas Household Income:Housing Values</button>
+                    <button type="button"
+                            class="ui-state-default ui-corner-all guide-btn"
+                            id = "scatter-example-02"
+                            onclick="javascript:startHousingStory();">
+                        Florida Social Security Income:Median Age</button>
+                    <button type="button"
+                            class="ui-state-default ui-corner-all guide-btn"
+                            id = "scatter-example-03"
+                            onclick="javascript:startHousingStory();">
+                        Nevada Housing Vacancy:Housing Values</button>
+                    <button type="button"
+                            class="ui-state-default ui-corner-all guide-btn"
+                            id = "scatter-example-04"
+                            onclick="javascript:startHousingStory();">
+                        California Familes in Poverty:Household Income</button>
                 </div>
 
                 <div id="mapVariablesSelectorForScatterplot">
                 </div>
             </div>
             <div id="mainScatterplotMapLegend" class="roundedFrame"></div>
+
         </div>
     </div>
 </div>
