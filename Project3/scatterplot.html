@@ -76,20 +76,11 @@ function animateScatter(){
 
 }
 
-function scatterExample(theState, xAxis, yAxis){
-    var localeArray = [];
-    datasetIndex = 0;
-    var currentDataset = datasets[datasetIndex];
-
+function scatterExample(theState, xAxis, yAxis)
+{
     document.getElementById("xAxisSelect").value = xAxis;
     document.getElementById("yAxisSelect").value = yAxis;
-
-    currentDataset.forEach(function(d){
-        if (currentDataset.get(d)["state"] === theState)
-            localeArray.push(d);
-    });
-
-    reDrawScatterplotForState(localeArray);
+    selectStoryState(theState, false);
     startScatterAnimation();
 }
 

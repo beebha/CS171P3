@@ -342,18 +342,20 @@ function startHousingStory()
         buttons: {
             Ok: function() {
                 $(this).dialog("close");
-                selectStoryState();
+                selectStoryState("New York", true);
             }
         }
     });
 }
 
-function selectStoryState()
+function selectStoryState(selectedState, showNavigation)
 {
     for(indStateData in housingStatesD3Map) {
-        if(housingStatesD3Map[indStateData].STATE == "New York") {
+        if(housingStatesD3Map[indStateData].STATE == selectedState) {
             setStateClick(housingStatesD3Map[indStateData]);
-            introJs().goToStep(10).start();
+            if(showNavigation) {
+                introJs().goToStep(10).start();
+            }
         }
     }
 }
@@ -415,7 +417,7 @@ function setIntroDetails(navigationType)
 
     if(navigationType == 'NAVIGATION')
     {
-        choroplethMainMapStep = "<strong>The US Housing Cost Choropleth</strong><br><br>" +
+        choroplethMainMapStep = "<p><strong>The US Housing Cost Choropleth</strong><br><br>" +
                         "This visualization shows the general trends in housing prices (average listing price in USD ($)) across the US.<br>" +
                         "Interactivity in this map includes the following:<br><br>" +
                         "⇒	Mousing over any state displays a tooltip.<br>" +
@@ -425,44 +427,44 @@ function setIntroDetails(navigationType)
                         "⇒	Clicking any county highlights the clicked county.<br>" +
                         "⇒	Clicking any county outside the state, selects the new state.<br>" +
                         "⇒	Mousing over any county also displays a tooltip.<br>" +
-                        "⇒	Mini maps are displayed based on clicked state or county.<br>";
+                        "⇒	Mini maps are displayed based on clicked state or county.<br></p>";
 
-        choroplethMiniMapStep = "This section contains the mini graphs associated with the The US Housing Cost Choropleth.<br><br>" +
+        choroplethMiniMapStep = "<p>This section contains the mini graphs associated with the The US Housing Cost Choropleth.<br><br>" +
                         "Based on which state/county has been clicked, 4 graphs are shown if data is available.<br>" +
                         "⇒	Occupancy Info shows the segregation between Rental and Owned Homes.<br>" +
                         "⇒	Housing Size Info shows the breakdown for the number of bedrooms.<br>" +
                         "⇒	Housing Value Info shows the breakdown for the housing prices.<br>" +
                         "⇒	Housing Age Info shows the breakdown for the age of the house.<br>" +
-                        "NOTE: This section is scrollable. This is required to view all graphs.<br>";
+                        "NOTE: This section is scrollable. This is required to view all graphs.<br></p>";
 
-        scatterplotMainMapStep = "<strong>The Socio-Economics Factors Scatterplot</strong><br><br>" +
+        scatterplotMainMapStep = "<p><strong>The Socio-Economics Factors Scatterplot</strong><br><br>" +
                         "This visualization allows the exploration of US socio-economic patterns" +
                         "by selecting the data to plot on the X and Y axis of the scatter plot.<br>" +
                         "Interactivity in this map includes the following:<br><br>" +
                         "⇒	X and Y axes can each be assigned > 30 datasets via the dropdown.<br>" +
                         "⇒	Dragging a rectangular selection box brushes data points.<br>" +
                         "⇒	Mini maps are displayed based on selected data points.<br>" +
-                        "⇒	Brushed selections are draggable to new locations.<br>";
+                        "⇒	Brushed selections are draggable to new locations.<br></p>";
 
     }
     if(navigationType == 'STORY')
     {
-        choroplethMainMapStep = "As seen in this choropleth, the average listing price in New York State is <b>$734,338</b>.<br>" +
+        choroplethMainMapStep = "<p>As seen in this choropleth, the average listing price in New York State is <b>$734,338</b>.<br>" +
                                 "The Median Sales Price is <b>$350,000</b>.<br>" +
-                                "This puts New York in the top 3 states with the highest listing prices, i.e. <b>>$700,0001</b>.<br>" +
-                                "Let's take a closer look at the drilldown details for New York.<br><br>" +
-                                "Please click the \"<b>Next</b>\" button below to proceed.";
+                                "This puts New York in the top 3 states with the highest listing prices, i.e. <b>>$700,0001</b>.</p>" +
+                                "<p>Let's take a closer look at the drilldown details for New York.</p>" +
+                                "<p>Please click the \"<b>Next</b>\" button below to proceed.</p>";
 
-        choroplethMiniMapStep = "The first graph is a pie chart showing Occupancy Info for New York.<br>" +
-                                "Here, the % of owner occupied housing is > % of renter occupants, i.e. 64.5% vs 35.5%.<br><br>" +
-                                "The next graph is a bar chart that shows the breakdown of house sizes.<br>" +
+        choroplethMiniMapStep = "<p>The first graph is a pie chart showing Occupancy Info for New York." +
+                                "Here, the % of owner occupied housing is > % of renter occupants, i.e. 64.5% vs 35.5%.</p>" +
+                                "<p>The next graph is a bar chart that shows the breakdown of house sizes." +
                                 "In New York, the most common house size is 3 Bedroom houses " +
-                                "and the smallest % is 5 Bedroom or More housing.<br><br>" +
-                                "It's interesting to note that for in Housing Value Info bar chart, " +
-                                "most houses fall between the price ranges of 50k - 499k, with the highest % in the range of 50-99k.<br><br>" +
-                                "Coming to the final bar chart that shows the Housing Year Built breakdown, it is surprising to " +
+                                "and the smallest % is 5 Bedroom or More housing.</p>" +
+                                "<p>It's interesting to note that for in Housing Value Info bar chart, " +
+                                "most houses fall between the price ranges of 50k - 499k, with the highest % in the range of 50-99k.</p>" +
+                                "<p>Coming to the final bar chart that shows the Housing Year Built breakdown, it is surprising to " +
                                 "see that the biggest % falls in the range of < 1940, i.e. there are many more houses " +
-                                "occupied in New York built before 1940 than during more recent periods!";
+                                "occupied in New York built before 1940 than during more recent periods!</p>";
 
         scatterplotMainMapStep = "<p>Scatterplot points representing areas of New York with 65,000 or more inhabitants are colored orange. Choosing a different state will change the selected points. Unlike Los Angeles, datapoints representing New York are not particularly large, due to smaller counties in the most populous areas. </p>" +
                                  "<p>Some of the more interesting findings in New York are the extrordinarily high property values relative to median household incomes. This is illustrated by the New York County, NY datapoint, representing the top of the property value scale but the midrange of household incomes. This fact isn't quite what it seems, though, as looking at the mean household income, instead of the median, moves the datapoint to the high end of both income and housing values.</p>" +
