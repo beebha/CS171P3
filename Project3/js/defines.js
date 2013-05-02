@@ -42,7 +42,7 @@ Number.prototype.formatNumber = function(places, thousand, decimal) {
     return negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "");
 };
 
-function drawMiniBarChart(data, mapIDToDraw, mapID, mapWidth, mapHeight, barColor)
+function drawMiniBarChart(data, mapIDToDraw, mapID, mapWidth, mapHeight, barColor, xScale)
 {
     var barHeight = 15;
     var barLabelWidth = 90;
@@ -50,6 +50,7 @@ function drawMiniBarChart(data, mapIDToDraw, mapID, mapWidth, mapHeight, barColo
     var gridLabelHeight = 18;
     var gridChartOffset = 3;
     var maxBarWidth = 20;
+    xScale = xScale != undefined ? xScale: 1;
 
     var barLabel = function(d) { return d.label; };
     var barValue = function(d) { return d.value; };
@@ -88,14 +89,14 @@ function drawMiniBarChart(data, mapIDToDraw, mapID, mapWidth, mapHeight, barColo
         .attr('y', y)
         .attr('height', yScale.rangeBand())
         .attr('width', function(d) {
-            return (barValue(d));
+            return (barValue(d) * xScale);
         })
         .attr('stroke', 'white')
         .attr('fill', barColor);
 
     barsContainer.selectAll("text").data(data).enter().append("text")
         .attr("x", function(d) {
-            return barValue(d) < 80 ? (barValue(d)) + 5: (barValue(d)) - 5;
+            return barValue(d) < 80 ? (barValue(d) * xScale) + 5: (barValue(d) * xScale) - 5;
         })
         .attr("y", yText)
         .attr("dy", ".35em")

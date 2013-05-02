@@ -315,8 +315,8 @@ function dataReady()
             aggregateData[i].value = (aggregateData[i].value/totalPop) * 100;
         }
 
-        $("#miniScatterplotMap1Title").html("Racial Composition (%)");
-        drawMiniBarChart(aggregateData, "miniScatterplotMap1", "raceSVG", 210, 150, colorbrewer.Set2[8][2] )
+        $("#miniScatterplotMap2Title").html("Racial Composition (%)");
+        drawMiniBarChart(aggregateData, "miniScatterplotMap2", "raceSVG", 210, 150, colorbrewer.Set2[8][2], 1 )
     }
 
     function plotEducationMini(miniDataset, brushedKeys){
@@ -347,8 +347,8 @@ function dataReady()
             aggregateData[i].value = (aggregateData[i].value/totalPop) * 100;
         }
 
-        $("#miniScatterplotMap2Title").html("Educational Attainment (%)");
-        drawMiniBarChart(aggregateData, "miniScatterplotMap2", "educationSVG", 200, 150, colorbrewer.Set2[8][3] )
+        $("#miniScatterplotMap1Title").html("Educational Attainment (%)");
+        drawMiniBarChart(aggregateData, "miniScatterplotMap1", "educationSVG", 200, 150, colorbrewer.Set2[8][3], 2 )
     }
 
     function plotAgeMini(miniDataset, brushedKeys){
@@ -392,7 +392,7 @@ function dataReady()
         }
 
         $("#miniScatterplotMap3Title").html("Age Composition (%)");
-        drawMiniBarChart(aggregateData, "miniScatterplotMap3", "ageSVG", 200, 250, colorbrewer.Set2[8][4] )
+        drawMiniBarChart(aggregateData, "miniScatterplotMap3", "ageSVG", 200, 250, colorbrewer.Set2[8][4], 2 )
     }
 
     function plotOriginMini(miniDataset, brushedKeys){
