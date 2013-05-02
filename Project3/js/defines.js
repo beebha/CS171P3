@@ -372,8 +372,11 @@ function setStateClick(stateData)
 
     $('#mainMapDetails').show();
     $('#mainMapDetails').html(detailsText);
-    for (var housingState in housingStatesD3Map) {
-        if (stateData.STATE_FIPS != housingStatesD3Map[housingState].STATE_FIPS) {
+
+    for (var housingState in housingStatesD3Map)
+    {
+        if (stateData.STATE_FIPS != housingStatesD3Map[housingState].STATE_FIPS)
+        {
             $('#' + housingStatesD3Map[housingState].STATE_FIPS).attr("class", quantize(
                     housingStatesD3Map[housingState].AVERAGE_LISTING_PRICE
             ));
@@ -390,8 +393,9 @@ function setStateClick(stateData)
     // get counties in selected state to pass to scatterplot
     var stateFIP = parseInt(stateData.STATE_FIPS);
     var FIPOfCountiesInState = [];
-    for (var county in localeJsonData11) {
 
+    for (var county in localeJsonData11)
+    {
         if(localeJsonData11[county].stateID == stateFIP) {
             FIPOfCountiesInState.push(county);
         }
@@ -427,6 +431,7 @@ function setIntroDetails(navigationType)
                         "⇒	Double clicking again zooms out to show the states map again.<br />" +
                         "⇒	Clicking any county highlights the clicked county.<br />" +
                         "⇒	Clicking any county outside the state, selects the new state.<br />" +
+                        "⇒	Clicking any state selects the counties in the Scatterplot Map.<br>" +
                         "⇒	Mousing over any county also displays a tooltip.<br />" +
                         "⇒	Mini maps are displayed based on clicked state or county.<br /></p>";
 
@@ -449,12 +454,12 @@ function setIntroDetails(navigationType)
                           "⇒  Five years of data can be viewed and animated using animation controls on the lower right.<br /></p>";
 
         scatterplotMiniMainMapStep = "<p>This section contains the mini graphs associated with the scatterplot.<br /><br />" +
-            "The selected point data are aggregated and displayed in four graphs:<br />" +
-            "⇒	Educational Attainment shows the ratios of education levels<br />" +
-            "⇒	Racial Composition shows the summary of population by race<br />" +
-            "⇒	Age Composition shows the ratios of age group populations.<br />" +
-            "⇒	Birthplace reports the percentages of where the population was born.<br /><br />" +
-            "NOTE: This section is scrollable. This is required to view all graphs.</p>";
+                        "The selected point data are aggregated and displayed in four graphs:<br />" +
+                        "⇒	Educational Attainment shows the ratios of education levels<br />" +
+                        "⇒	Racial Composition shows the summary of population by race<br />" +
+                        "⇒	Age Composition shows the ratios of age group populations.<br />" +
+                        "⇒	Birthplace reports the percentages of where the population was born.<br /><br />" +
+                        "NOTE: This section is scrollable. This is required to view all graphs.</p>";
     }
     if(navigationType == 'STORY')
     {
@@ -475,12 +480,26 @@ function setIntroDetails(navigationType)
                                 "see that the biggest % falls in the range of < 1940, i.e. there are many more houses " +
                                 "occupied in New York built before 1940 than during more recent periods!</p>";
 
-        scatterplotMainMapStep = "<p>Below, scatterplot points representing areas of New York with 65,000 or more inhabitants are colored orange. Choosing a different state will change the selected points (which are sized based on population). Unlike Los Angeles, datapoints representing New York are not particularly large, due to smaller counties in the most populous areas.<br /><br />" +
-                                 "Some of the more interesting findings in New York are the extrordinarily high property values relative to median household incomes. This is illustrated by the New York County, NY datapoint, representing the top of the property value scale but the midrange of household incomes. This fact isn't quite what it seems, though, as looking at the mean household income, instead of the median, moves the datapoint to the high end of both income and housing values.<br /><br />" +
-                                 "A rather dubious distinction for New York can be seen when looking at household incomes and food stamp recipient levels. Bronx County shows the highest proportion of food stamp recipients in the US, with nearly the lowest median household incomes. WHen animation is enabled, the rate jumps remarkably between 2007 and 2011.</p>";
+        scatterplotMainMapStep = "<p>Below, scatterplot points representing areas of New York with 65,000 or more inhabitants are colored orange. " +
+                                "Choosing a different state will change the selected points (which are sized based on population). " +
+                                "Unlike Los Angeles, datapoints representing New York are not particularly large, due to smaller counties " +
+                                "in the most populous areas.<br /><br />" +
+                                "Some of the more interesting findings in New York are the extrordinarily high property values relative " +
+                                "to median household incomes. This is illustrated by the New York County, NY datapoint, representing the " +
+                                "top of the property value scale but the midrange of household incomes. This fact isn't quite what it seems, " +
+                                "though, as looking at the mean household income, instead of the median, moves the datapoint to the high end of " +
+                                "both income and housing values.<br /><br />" +
+                                "A rather dubious distinction for New York can be seen when looking at household incomes and food stamp " +
+                                "recipient levels. Bronx County shows the highest proportion of food stamp recipients in the US, with " +
+                                "nearly the lowest median household incomes. WHen animation is enabled, the rate jumps remarkably " +
+                                "between 2007 and 2011.</p>";
 
-        scatterplotMiniMainMapStep = "<p>Aggregating demographic data from larger, heterogenous areas often obscures information. If you lump Westchester County and Bronx County together, for example, a lot of measures will essentially cancel each other out. High and low earnings become, well, average.<br /><br />" +
-            "It can still be possible to develop general conclusions about various states' demographics this way. However, it's wise to select scatter points on an individual basis if more accurate representations are desired.</p>";
+        scatterplotMiniMainMapStep = "<p>Aggregating demographic data from larger, heterogenous areas often obscures information. " +
+                                "If you lump Westchester County and Bronx County together, for example, a lot of measures " +
+                                "will essentially cancel each other out. High and low earnings become, well, average.<br /><br />" +
+                                "It can still be possible to develop general conclusions about various states' demographics this way. " +
+                                "However, it's wise to select scatter points on an individual basis if more accurate representations " +
+                                "are desired.</p>";
     }
     $('#mainMap').attr("data-intro", choroplethMainMapStep);
     $('#miniMapWrapper').attr("data-intro", choroplethMiniMapStep);
@@ -539,7 +558,6 @@ $(document).ready(function()
         var htmlToLoad = $("#mapSelection").val() + ".html";
         $("#mainMapHTML").load(htmlToLoad);
     });
-
 });
 
 
