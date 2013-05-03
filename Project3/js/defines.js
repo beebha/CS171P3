@@ -456,8 +456,8 @@ function setIntroDetails(navigationType)
                         "⇒	X and Y axes can each be assigned 20 different datasets via dropdown menus.<br />" +
                         "⇒	Dragging a rectangular selection box brushes data points.<br />" +
                         "⇒	Mini maps are displayed based on selected data points.<br />" +
-                        "⇒  Brushed selections are draggable to new locations.<br />" +
-                        "⇒  Five years of data can be viewed and animated using animation controls on the lower right.<br /></p>";
+                        "⇒ Brushed selections are draggable to new locations.<br />" +
+                        "⇒ Five years of data can be viewed and animated using animation controls on the lower right.<br /></p>";
 
         scatterplotMiniMainMapStep = "<p>This section contains the mini graphs associated with the scatterplot.<br /><br />" +
                         "The selected point data are aggregated and displayed in four graphs:<br />" +
