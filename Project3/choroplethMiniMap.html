@@ -194,7 +194,7 @@
 
     if(choroplethMiniMap1Data.length > 0)
     {
-        $('#miniMap1Title').html("Occupancy Info");
+        $('#miniMap1Title').html("Occupancy Info (%)");
         drawMiniPieChart(choroplethMiniMap1Data, "miniMap1", "miniMap1SVG", 200, 200, ["#9ECAE1", "#3182BD"]);
         $('#miniMap1SVG').css("margin-left", "30px");
 
@@ -225,7 +225,7 @@
 
     if(choroplethMiniMap2Data.length > 0)
     {
-        $('#miniMap2Title').html("Housing Size Info");
+        $('#miniMap2Title').html("Housing Size Info (%)");
         drawMiniBarChart(choroplethMiniMap2Data, "miniMap2", "miniMap2SVG", 350, 150, '#1B9E77', 2);
     } else
     {
@@ -260,7 +260,7 @@
 
     if(choroplethMiniMap3Data.length > 0)
     {
-        $('#miniMap3Title').html("Housing Value Info");
+        $('#miniMap3Title').html("Housing Value Info (%)");
         drawMiniBarChart(choroplethMiniMap3Data, "miniMap3", "miniMap3SVG", 350, miniHeight, '#FB8072', 2);
     } else
     {
@@ -297,7 +297,7 @@
 
     if(choroplethMiniMap4Data.length > 0)
     {
-        $('#miniMap4Title').html("Year Built Info");
+        $('#miniMap4Title').html("Year Built Info (%)");
         drawMiniBarChart(choroplethMiniMap4Data, "miniMap4", "miniMap4SVG", 350, 210, '#FDB462', 2);
     } else
     {
