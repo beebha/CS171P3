@@ -266,7 +266,7 @@ function showProjectDescription()
 
 function showProjectScreencast()
 {
-    $("#screencastVideo").attr("src", "http://www.youtube.com/embed/8QuOhsTeqN0");
+    $("#screencastVideo").attr("src", "http://www.youtube.com/embed/c0VjuilKodk");
     $("#dialog-screencast").dialog({
         dialogClass: "popupDialogCls",
         width:520,
