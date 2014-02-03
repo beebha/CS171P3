@@ -554,7 +554,7 @@ function dataReady()
                 scatterTooltip.attr("class", "tooltip");
                 scatterTooltip.style("top", (d3.mouse(this)[1] + 450) + "px").style("left", (d3.mouse(this)[0] + 125) + "px");
 //                console.log(d3.mouse(this)[0]);
-                return tooltip;
+                return scatterTooltip;
             })
             .on("mouseout", function(d) {
                 return scatterTooltip.style("visibility", "hidden");
